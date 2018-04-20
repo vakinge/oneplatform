@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>新增菜单</title> 
+  <link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/global.css" media="all">
+  <link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main">  
+   <form class="layui-form" action="/api/resource/add">  
+    <input type="hidden" name="type" value="menu" /> 
+       <div class="layui-form-item"> 
+        <label class="layui-form-label">新增根节点</label> 
+        <div class="layui-input-block"> 
+         <input type="checkbox" value="true" lay-skin="switch" lay-text="是|否" /> 
+        </div> 
+       </div> 
+       <div class="layui-form-item switch-off"> 
+        <label class="layui-form-label">父级菜单</label> 
+        <div class="layui-input-block"> 
+         <input type="text" id="treeSelect" placeholder="父级菜单" autocomplete="off" class="layui-input"> 
+         <input type="hidden" id="parentIdVal" name="parentId" /> 
+        </div> 
+       </div> 
+       <div class="layui-form-item switch-on" style="display: none;"> 
+        <label class="layui-form-label">所属模块</label> 
+        <div class="layui-input-block"> 
+         <select id="moduleId" name="moduleId" lay-verify="required" asnycSelect="/api/module/options" lay-filter="module_select">
+           <option value="">请选择模块</option> 
+         </select> 
+        </div> 
+       </div>
+       <div class="layui-form-item"> 
+        <label class="layui-form-label">菜单名称</label> 
+        <div class="layui-input-block"> 
+         <input type="text" class="layui-input" bindattr="name" name="name" lay-verify="required" placeholder="请输入菜单名称" /> 
+        </div> 
+       </div> 
+       <div class="layui-form-item switch-off"> 
+        <label class="layui-form-label">菜单链接</label> 
+        <div class="layui-input-block"> 
+         <input type="text" class="layui-input" bindattr="code" name="code" lay-verify="required" placeholder="请输入菜单链接地址" /> 
+        </div> 
+       </div> 
+		     
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+ <script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
+<script>
+    var containLeaf = false;
+    var type = "menus";
+	layui.config({
+		version : "1.0.0",
+		base : '../../assets/js/modules/'
+	}).use('resource',function(){
+		var $ = layui.jquery;
+		$("body").on('click',".layui-form-switch",function() {
+			var $selected = $(this).hasClass('layui-form-onswitch');
+			if ($selected) {
+				$('.switch-on').hide();
+				$('.switch-off').show();
+				$('#parentIdVal').val('');
+			} else {
+				$('.switch-off').hide();
+				$('.switch-on').show();
+			}
+		 });
+	});
+</script>
+</html>

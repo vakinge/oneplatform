@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.system.dao.mapper.SysLogEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.system.dao.entity.SysLogEntity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="request_id" property="requestId" jdbcType="VARCHAR" />
+    <result column="module_id" property="moduleId" jdbcType="INTEGER" />
+    <result column="module" property="module" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="uri" property="uri" jdbcType="VARCHAR" />
+    <result column="origin" property="origin" jdbcType="VARCHAR" />
+    <result column="request_ip" property="requestIp" jdbcType="VARCHAR" />
+    <result column="request_at" property="requestAt" jdbcType="TIMESTAMP" />
+    <result column="response_at" property="responseAt" jdbcType="TIMESTAMP" />
+    <result column="request_uid" property="requestUid" jdbcType="INTEGER" />
+    <result column="request_uname" property="requestUname" jdbcType="VARCHAR" />
+    <result column="response_code" property="responseCode" jdbcType="VARCHAR" />
+    <result column="response_msg" property="responseMsg" jdbcType="VARCHAR" />
+    <result column="use_time" property="useTime" jdbcType="INTEGER" />
+    <result column="entrylog" property="entrylog" jdbcType="BIT" />
+    <result column="request_datas" property="requestDatas" jdbcType="LONGVARCHAR" />
+    <result column="exception" property="exception" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <select id="pageQuery" parameterType="map"  resultMap="BaseResultMap">
+	  SELECT  * FROM sys_logs where entrylog=1
+	  <if test="param.moduleId != null">and module_id = #{param.moduleId}</if>
+	  <if test="param.name != null">and name like CONCAT('%',#{param.name},'%')</if>
+	  <if test="param.actionStart != null">and <![CDATA[request_at >= #{param.actionStart}]]></if>
+	  <if test="param.actionEnd != null">and <![CDATA[request_at <= #{param.actionEnd}]]></if>
+      order by request_at desc
+   </select>
+   
+</mapper>

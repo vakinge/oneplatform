@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.system.dao.mapper.ModuleEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.system.dao.entity.ModuleEntity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="service_id" property="serviceId" jdbcType="VARCHAR" />
+    <result column="route_name" property="routeName" jdbcType="VARCHAR" />
+    <result column="cors_uris" property="corsUris" jdbcType="VARCHAR" />
+    <result column="internal" property="internal" jdbcType="BIT" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="apidoc_url" property="apidocUrl" jdbcType="VARCHAR" />
+    <result column="api_infos" property="apiInfos" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="baseColumn">id,name,service_id,route_name,cors_uris,internal,apidoc_url</sql>
+  
+  <select id="findAll" resultMap="BaseResultMap">
+     SELECT <include refid="baseColumn"></include> FROM sys_module;
+  </select>
+  
+   <select id="findAllEnabled" resultMap="BaseResultMap">
+     SELECT <include refid="baseColumn"></include> FROM sys_module WHERE enabled=1;
+  </select>
+</mapper>

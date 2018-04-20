@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.system.dao.mapper.RoleEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.system.dao.entity.RoleEntity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="findUserRoles" parameterType="int"  resultMap="BaseResultMap">
+	  SELECT  r.id,r.name 
+	  FROM sys_role r,sys_account_roles ar where r.id=ar.role_id and ar.account_id=#{accountId}
+   </select>
+   
+   <delete id="deleteAccountRoles" parameterType="map">
+     DELETE FROM sys_account_roles WHERE account_id = #{accountId} AND role_id IN
+     <foreach collection="roleIds" index="index" item="item" open="(" separator="," close=")">
+         #{item}       
+     </foreach> 
+   </delete>
+   
+   <insert id="addAccountRoles" parameterType="map">
+       INSERT INTO sys_account_roles(account_id,role_id)  
+        VALUES   
+        <foreach collection="roleIds" item="item" separator=",">  
+            (#{accountId},#{item})  
+        </foreach>  
+   </insert>
+</mapper>

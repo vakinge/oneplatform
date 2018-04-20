@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>编辑模块</title> 
+  <link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/global.css" media="all">
+  <link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main" dataLoad="/api/role/{id}"> 
+   <form class="layui-form" action="/api/role/update">  
+    <input type="hidden" name="id" bindAttr="id" />
+    <div class="layui-form-item">
+		<label class="layui-form-label">角色名</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="name" name="name" placeholder="中文、字母、数字、下划线" lay-verify="required" class="layui-input">
+		</div>
+	</div> 
+    <div class="layui-form-item">
+		<label class="layui-form-label">角色说明</label>
+		<div class="layui-input-block">
+		   <textarea placeholder="角色说明" bindAttr="memo" name="memo" class="layui-textarea"></textarea>
+		</div>
+	</div>
+      
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div>  
+ </body>
+ 
+<script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
+<script>
+	layui.cache.page = 'account';
+	layui.config({
+		version : "1.0.0",
+		base : '../../assets/js/modules/'
+	}).use('module');
+</script>
+</html>

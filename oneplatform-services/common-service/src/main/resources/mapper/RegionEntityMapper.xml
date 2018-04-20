@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.common.dao.mapper.RegionEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.common.dao.entity.RegionEntity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="name_index" property="nameIndex" jdbcType="CHAR" />
+    <result column="name_pinyin" property="namePinyin" jdbcType="VARCHAR" />
+    <result column="name_pinyin_short" property="namePinyinShort" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>编辑模块</title> 
+  <link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/global.css" media="all">
+  <link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main" dataLoad="/api/module/{id}"> 
+   <form class="layui-form" action="/api/module/update">  
+    <input type="hidden" name="id" bindAttr="id" />
+    <div class="layui-form-item">
+		<label class="layui-form-label">模块名</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="name" name="name" placeholder="中文、字母、数字、下划线" lay-verify="required" class="layui-input">
+		</div>
+	</div> 
+    <div class="layui-form-item">
+		<label class="layui-form-label">模块标识</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="serviceId" name="serviceId" placeholder="对应微服务配置的[spring.application.name]" class="layui-input">
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">模块路由</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="routeName" name="routeName" placeholder="api转发路径" class="layui-input">
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">内部模块</label>
+		<div class="layui-input-block">
+		   <input type="checkbox" bindAttr="internal" name="internal" value="true" lay-skin="switch" lay-text="否|是" /> 
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">可跨域uris</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="corsUris" name="corsUris" placeholder="可跨域uris(多个;隔开)" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">API地址</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="apidocUrl" name="apidocUrl" placeholder="Swagger API地址"  class="layui-input">
+		</div>
+	</div>
+      
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div>  
+ </body>
+ 
+<script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
+<script>
+	layui.cache.page = 'account';
+	layui.config({
+		version : "1.0.0",
+		base : '../../assets/js/modules/'
+	}).use('module');
+</script>
+</html>

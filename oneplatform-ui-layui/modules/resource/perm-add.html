@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>新增菜单</title> 
+  <link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/global.css" media="all">
+  <link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main">  
+   <form class="layui-form" action="/api/resource/add">  
+       <div class="layui-form-item">
+        <label class="layui-form-label">权限类型</label>
+         <div class="layui-input-block">
+         <input type="radio" name="type" value="uri" title="接口" checked="" lay-filter="type">
+         <!-- <input type="radio" name="type" value="button" title="前端按钮" lay-filter="type"> -->
+        </div>
+       </div>
+       <div class="layui-form-item"> 
+        <label class="layui-form-label">所属模块</label> 
+        <div class="layui-input-block"> 
+         <select id="moduleId" name="moduleId" lay-verify="required" asnycSelect="/api/module/options" lay-filter="module_select">
+           <option value="">请选择模块</option> 
+         </select> 
+        </div> 
+       </div>
+       <div class="layui-form-item"> 
+        <label class="layui-form-label">权限名称</label> 
+        <div class="layui-input-block"> 
+         <select id="name_select" name="name" lay-filter="name_select">
+            <option value="">请选择权限</option>
+         </select> 
+        </div> 
+       </div> 
+       <div class="layui-form-item"> 
+        <label id="code_label" class="layui-form-label">接口链接</label> 
+        <div class="layui-input-block"> 
+         <input type="text" id="codeinput" class="layui-input" bindattr="code" name="code" lay-verify="required" placeholder="请输入接口链接或者编码" /> 
+        </div> 
+       </div> 
+		     
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+ <script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
+<script>
+	layui.config({
+		version : "1.0.0",
+		base : '../../assets/js/modules/'
+	}).use('resource',function(){
+		layui.form.on('radio(type)', function(data){
+			var $ = layui.jquery;
+			 if(data.value === 'uri'){
+				 $('#code_label').html('接口链接');
+			 }else{
+				 $('#code_label').html('权限编码');
+			 }
+		});
+	});
+</script>
+</html>

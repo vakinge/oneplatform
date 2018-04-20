@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.system.dao.mapper.AccountEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.system.dao.entity.AccountEntity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="CHAR" />
+    <result column="password" property="password" jdbcType="CHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+    <result column="last_login_at" property="lastLoginAt" jdbcType="TIMESTAMP" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="findByParam" parameterType="com.oneplatform.system.dto.param.AccountQueryParam"  resultMap="BaseResultMap">
+	  SELECT  * FROM sys_account where <![CDATA[id <> 1]]>
+	  <if test="username != null"> and username = #{username}</if>
+	  <if test="email != null"> and email = #{email}</if>
+	  <if test="mobile != null"> and mobile = #{mobile}</if>
+	  <if test="realname != null"> and realname = #{realname}</if>
+	  <if test="enabled != null"> and enabled = #{enabled}</if>
+      order by id desc
+   </select>
+</mapper>
