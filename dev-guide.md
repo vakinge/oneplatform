@@ -1,6 +1,7 @@
 ### 模块开发指南
 
 #### 初始化模块
+[在线生成模块](http://www.jeesuite.com/tool/genProject.html) 
 #### 获取登录用户上下文
 ```
 //获取登录用户，未登录为空
