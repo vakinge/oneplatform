@@ -28,7 +28,7 @@ CREATE DATABASE IF NOT EXISTS `oneplatform` DEFAULT CHARSET utf8 COLLATE utf8_ge
 ```
 
 ### 创建表
-分别导入`oneplatform-platform/db.sql`和`oneplatform-services/demo-service/db.sql`
+分别导入`oneplatform-platform/db.sql`和`oneplatform-services/common-service/db.sql`
 
 
  ### 配置host
