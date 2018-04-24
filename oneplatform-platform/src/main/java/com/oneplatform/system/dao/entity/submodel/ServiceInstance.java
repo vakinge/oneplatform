@@ -2,30 +2,41 @@ package com.oneplatform.system.dao.entity.submodel;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jeesuite.common.json.serializer.DateTimeConvertSerializer;
+import com.netflix.appinfo.InstanceInfo;
 
-//@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class ServiceInstance {
 
 	private String nodeId;
 	private String instanceId;
 	private String hostName; 
-	private String app; 
+	private String appName; 
 	private String ipAddr; 
 	private String vipAddress; 
-	private String secureVipAddress; 
 	private String status; 
-	private int port; 
-	private int securePort; 
-	private String homePageUrl; 
-	private String statusPageUrl; 
+	private int port;  
 	private String healthCheckUrl; 
 	private Date registrationTime;
 	private Date lastRenewalTime;
-	private Date evictionTime;
-	private Date serviceUpTime;
 	
+	public ServiceInstance() {}
+	
+	public ServiceInstance(InstanceInfo instanceInfo) {
+		this.appName = instanceInfo.getAppName();
+		this.instanceId = instanceInfo.getInstanceId();
+		this.hostName = instanceInfo.getHostName();
+		this.ipAddr = instanceInfo.getIPAddr();
+		this.vipAddress = instanceInfo.getVIPAddress();
+		this.status = instanceInfo.getAppName();
+		this.port = instanceInfo.getPort();
+		this.healthCheckUrl = instanceInfo.getHealthCheckUrl();
+		this.lastRenewalTime = new Date(instanceInfo.getLastDirtyTimestamp());
+		this.nodeId = instanceInfo.getMetadata().get("nodeId");
+	}
 	
 	public String getNodeId() {
 		return nodeId;
@@ -45,12 +56,15 @@ public class ServiceInstance {
 	public void setHostName(String hostName) {
 		this.hostName = hostName;
 	}
-	public String getApp() {
-		return app;
+	
+	public String getAppName() {
+		return appName;
 	}
-	public void setApp(String app) {
-		this.app = app;
+
+	public void setAppName(String appName) {
+		this.appName = appName;
 	}
+
 	public String getIpAddr() {
 		return ipAddr;
 	}
@@ -62,12 +76,6 @@ public class ServiceInstance {
 	}
 	public void setVipAddress(String vipAddress) {
 		this.vipAddress = vipAddress;
-	}
-	public String getSecureVipAddress() {
-		return secureVipAddress;
-	}
-	public void setSecureVipAddress(String secureVipAddress) {
-		this.secureVipAddress = secureVipAddress;
 	}
 	public String getStatus() {
 		return status;
@@ -81,24 +89,7 @@ public class ServiceInstance {
 	public void setPort(int port) {
 		this.port = port;
 	}
-	public int getSecurePort() {
-		return securePort;
-	}
-	public void setSecurePort(int securePort) {
-		this.securePort = securePort;
-	}
-	public String getHomePageUrl() {
-		return homePageUrl;
-	}
-	public void setHomePageUrl(String homePageUrl) {
-		this.homePageUrl = homePageUrl;
-	}
-	public String getStatusPageUrl() {
-		return statusPageUrl;
-	}
-	public void setStatusPageUrl(String statusPageUrl) {
-		this.statusPageUrl = statusPageUrl;
-	}
+
 	public String getHealthCheckUrl() {
 		return healthCheckUrl;
 	}
@@ -121,23 +112,5 @@ public class ServiceInstance {
 	public void setLastRenewalTime(Date lastRenewalTime) {
 		this.lastRenewalTime = lastRenewalTime;
 	}
-	
-	@JsonSerialize(using=DateTimeConvertSerializer.class)
-	public Date getEvictionTime() {
-		return evictionTime;
-	}
-	public void setEvictionTime(Date evictionTime) {
-		this.evictionTime = evictionTime;
-	}
-	@JsonSerialize(using=DateTimeConvertSerializer.class)
-	public Date getServiceUpTime() {
-		return serviceUpTime;
-	}
-	public void setServiceUpTime(Date serviceUpTime) {
-		this.serviceUpTime = serviceUpTime;
-	}
-	
-	
-	
-	
+
 }

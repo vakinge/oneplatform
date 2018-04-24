@@ -16,7 +16,6 @@ import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.model.SelectOption;
-import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dto.param.ModuleParam;
 import com.oneplatform.system.dto.param.SwitchParam;
@@ -43,7 +42,7 @@ public class ModuleController {
 	@ApiOperation(value = "按id查询")
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<ModuleEntity> getById(@PathVariable("id") int id) {
-		ModuleEntity entity = moduleService.findById(id,false);
+		ModuleEntity entity = moduleService.findByIdWithInstances(id);
 		return new WrapperResponse<>(entity);
 	}
 	

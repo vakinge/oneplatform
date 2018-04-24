@@ -59,9 +59,7 @@ public class ModuleEntity extends BaseEntity {
 
     @Column(name = "updated_by")
     private Integer updatedBy;
-    
-    @Transient
-    private String runStatus;
+
     @Transient
     private List<ServiceInstance> serviceInstances;
 
@@ -235,10 +233,6 @@ public class ModuleEntity extends BaseEntity {
 		this.apidocUrl = apidocUrl;
 	}
 
-	public String getRunStatus() {
-		return runStatus;
-	}
-	
 	public String getApiInfos() {
 		return apiInfos;
 	}
@@ -246,11 +240,6 @@ public class ModuleEntity extends BaseEntity {
 	public void setApiInfos(String apiInfos) {
 		this.apiInfos = apiInfos;
 	}
-
-	public void setRunStatus(String runStatus) {
-		this.runStatus = runStatus;
-	}
-	
 
 	public int getInstanceNums() {
 		return serviceInstances == null ? 0 : serviceInstances.size();

@@ -24,6 +24,12 @@
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-springweb</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.jeesuite</groupId>
+			<artifactId>jeesuite-cache</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 		<dependency>
 			<groupId>tk.mybatis</groupId>
@@ -59,6 +65,11 @@
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-annotations</artifactId>
 			<version>1.5.10</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
 		</dependency>
 	</dependencies>
 </project>

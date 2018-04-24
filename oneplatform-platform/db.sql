@@ -132,8 +132,7 @@ CREATE TABLE `sys_api_statistics` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='接口调用统计';
 
 INSERT INTO `sys_account` (`id`,`username`, `email`, `mobile`, `password`, `enabled`,`created_at`) VALUES ('1','admin', 'vakinge@gmail.com', '13800138001', '91373cc449e43d6142f423ec78b72dcc', '1','2018-03-03 12:55:30');
-INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('1','demo服务', 'demo-service', 'demo', '0', '1','http://127.0.0.1:8002/swagger-ui.html');
-INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('2','通用服务', 'common-service', 'common', '0', '1','http://127.0.0.1:8003/swagger-ui.html');
+INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('1','通用服务', 'common-service', 'common', '0', '1','http://127.0.0.1:8002/swagger-ui.html');
 
 
 INSERT INTO `sys_role` (`id`, `name`) VALUES ('1000', '系统管理员');
@@ -149,6 +148,8 @@ INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`
 INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('3000','0', '0', '系统监控', 'menu', '1');
 INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('3001','3000', '0', '定时任务监控','/modules/monitor/schedule.html', 'menu', '1');
 INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('3002','3000', '0', 'kafka监控', '/modules/monitor/kafka.html','menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('4000','0', '0', '通用服务', 'menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('4001','4000', '1', '文件管理','/modules/common/files.html', 'menu', '1');
 
 
 INSERT INTO `sys_account_roles` (`account_id`, `role_id`) VALUES ('1', '1000');
@@ -160,3 +161,4 @@ INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2003
 INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2004');
 INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '3001');
 INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '3002');
+INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '4001');

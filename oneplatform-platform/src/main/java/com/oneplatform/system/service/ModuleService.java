@@ -1,5 +1,6 @@
 package com.oneplatform.system.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,9 @@ import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.util.ApiInfoHolder;
+import com.oneplatform.base.util.CacheUtils;
 import com.oneplatform.system.dao.entity.ModuleEntity;
+import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
 import com.oneplatform.system.dto.param.ModuleParam;
 
@@ -44,21 +47,19 @@ public class ModuleService  {
 	
 	public List<ModuleEntity> findAllModules(){
 		List<ModuleEntity> list = moduleMapper.findAll();
-		
-		for (ModuleEntity moduleEntity : list) {
-			getInstanceFromEureka(moduleEntity);
+		if(!list.isEmpty()){
+			Map<String, List<ServiceInstance>> instances = getAllInstanceFromEureka();
+			for (ModuleEntity module : list) {
+				module.setServiceInstances(instances.get(module.getServiceId().toUpperCase()));
+			}
 		}
-		
 		return list;
 	}
 	
-	public ModuleEntity findById(int id,boolean checkRunState){
+	public ModuleEntity findByIdWithInstances(int id){
 		ModuleEntity entity = moduleMapper.selectByPrimaryKey(id);
     	AssertUtil.notNull(entity);
-    	//
-    	if(checkRunState){
-    		getInstanceFromEureka(entity);
-    	}
+    	getInstanceFromEureka(entity);
     	return entity;
 	}
 	
@@ -115,26 +116,41 @@ public class ModuleService  {
 		return moduleMaps;
     }
 
-    private void getInstanceFromEureka(ModuleEntity ...moduleEntities){
-    	Application application = eurekaClient.getApplication(moduleEntities[0].getServiceId());
+    private void getInstanceFromEureka(ModuleEntity module){
+    	Application application = eurekaClient.getApplication(module.getServiceId());
     	if(application != null){
     		List<InstanceInfo> instances = application.getInstances();
+    		if(instances == null)return;
+    		for (InstanceInfo instance : instances) {
+    			
+			}
     		System.out.println("instances----->>" + JsonUtils.toJson(instances));
     	}
+    	System.out.println(1);
+    }
+    
+    private Map<String, List<ServiceInstance>> getAllInstanceFromEureka(){
     	
+    	Map<String, List<ServiceInstance>> result = new HashMap<>();
     	List<Application> applications = eurekaClient.getApplications().getRegisteredApplications();
-    	if(moduleEntities.length == 1){
-    	}else{
-    		for (ModuleEntity module : moduleEntities) {
-				
+    	if(applications == null)return result;
+    	List<ServiceInstance> instances;
+    	for (Application application : applications) {
+    		instances = result.get(application.getName());
+    		if(instances == null){
+    			instances = new ArrayList<>();
+    			result.put(application.getName(), instances);
+    		}
+    		
+    		for (InstanceInfo instanceInfo : application.getInstances()) {
+    			instances.add(new ServiceInstance(instanceInfo));
 			}
-    	}
+    		
+		}
     	
+    	return result;
     }
 
-	private void setModuleInstanceInfo(ModuleEntity moduleEntity, Application application) {}
-	
-	
 	public List<ApiInfo> findModuleApis(int moduleId){
 		if(moduleId == 0)return ApiInfoHolder.getApiInfos();
 		ModuleEntity module = moduleMapper.selectByPrimaryKey(moduleId);
