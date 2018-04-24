@@ -22,6 +22,7 @@ layui.define(['oneplatform', 'table','laydate'], function(exports){
   var $table = table.render({
     elem: '#tablecont'
     ,height: 550
+    ,width: 1160
     ,url: '/api/log/list'
     ,method: 'POST'
     ,page: true //开启分页
@@ -35,8 +36,8 @@ layui.define(['oneplatform', 'table','laydate'], function(exports){
     	  ,dataName: 'data'
     }
     ,cols: [[ //表头
-      {field: 'id', title: 'ID', width:60, sort: true, fixed: 'left'}
-      ,{field: 'module', title: '模块', width:90, sort: true}
+      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+      ,{field: 'module', title: '模块', width:135, sort: true}
       ,{field: 'name', title: '操作名', width:90}
       ,{field: 'uri', title: '请求地址', width:150} 
       ,{field: 'requestIp', title: '请求IP', width: 100}

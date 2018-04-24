@@ -23,7 +23,6 @@ import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.util.ApiInfoHolder;
-import com.oneplatform.base.util.CacheUtils;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
@@ -56,7 +55,7 @@ public class ModuleService  {
 		return list;
 	}
 	
-	public ModuleEntity findByIdWithInstances(int id){
+	public ModuleEntity getmoduleDetails(int id){
 		ModuleEntity entity = moduleMapper.selectByPrimaryKey(id);
     	AssertUtil.notNull(entity);
     	getInstanceFromEureka(entity);
@@ -122,11 +121,9 @@ public class ModuleService  {
     		List<InstanceInfo> instances = application.getInstances();
     		if(instances == null)return;
     		for (InstanceInfo instance : instances) {
-    			
+    			module.getServiceInstances().add(new ServiceInstance(instance));
 			}
-    		System.out.println("instances----->>" + JsonUtils.toJson(instances));
     	}
-    	System.out.println(1);
     }
     
     private Map<String, List<ServiceInstance>> getAllInstanceFromEureka(){
@@ -157,7 +154,7 @@ public class ModuleService  {
 		List<ApiInfo> apiInfos = null;
 		try {
 			ParameterizedTypeReference<List<ApiInfo>> arearesponseType = new ParameterizedTypeReference<List<ApiInfo>>() {};
-			apiInfos = restTemplate.exchange("http://"+module.getServiceId()+"/getApis", HttpMethod.GET, null, arearesponseType).getBody();
+			apiInfos = restTemplate.exchange("http://"+module.getServiceId().toUpperCase()+"/getApis", HttpMethod.GET, null, arearesponseType).getBody();
 			if(StringUtils.isBlank(module.getApiInfos()) || DateUtils.getDiffMinutes(module.getUpdatedAt(), new Date()) > 120){				
 				module.setApiInfos(JsonUtils.toJson(apiInfos));
 				module.setUpdatedAt(new Date());

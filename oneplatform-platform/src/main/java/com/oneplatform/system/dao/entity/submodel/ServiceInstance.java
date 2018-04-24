@@ -31,7 +31,7 @@ public class ServiceInstance {
 		this.hostName = instanceInfo.getHostName();
 		this.ipAddr = instanceInfo.getIPAddr();
 		this.vipAddress = instanceInfo.getVIPAddress();
-		this.status = instanceInfo.getAppName();
+		this.status = instanceInfo.getStatus().name();
 		this.port = instanceInfo.getPort();
 		this.healthCheckUrl = instanceInfo.getHealthCheckUrl();
 		this.lastRenewalTime = new Date(instanceInfo.getLastDirtyTimestamp());

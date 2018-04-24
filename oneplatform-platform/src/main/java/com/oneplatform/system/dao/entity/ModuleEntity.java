@@ -1,5 +1,6 @@
 package com.oneplatform.system.dao.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeesuite.common.json.JsonUtils;
 import com.jeesuite.mybatis.core.BaseEntity;
+import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 
 @Table(name = "sys_module")
@@ -62,6 +68,9 @@ public class ModuleEntity extends BaseEntity {
 
     @Transient
     private List<ServiceInstance> serviceInstances;
+    
+    @Transient
+    private List<ApiInfo> apiInfoList;
 
 	/**
      * @return id
@@ -233,6 +242,7 @@ public class ModuleEntity extends BaseEntity {
 		this.apidocUrl = apidocUrl;
 	}
 
+	@JsonIgnore
 	public String getApiInfos() {
 		return apiInfos;
 	}
@@ -246,12 +256,18 @@ public class ModuleEntity extends BaseEntity {
 	}
 
 	public List<ServiceInstance> getServiceInstances() {
-		return serviceInstances;
+		return serviceInstances == null ? (serviceInstances = new ArrayList<>()) : serviceInstances;
 	}
 
 	public void setServiceInstances(List<ServiceInstance> serviceInstances) {
 		this.serviceInstances = serviceInstances;
 	}
- 
-    
+
+	public List<ApiInfo> getApiInfoList() {
+		if(apiInfoList == null && StringUtils.isNotBlank(apiInfos)){
+			apiInfoList = JsonUtils.toList(apiInfos, ApiInfo.class);
+		}
+		return apiInfoList;
+	}
+
 }

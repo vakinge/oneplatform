@@ -42,7 +42,7 @@ public class ModuleController {
 	@ApiOperation(value = "按id查询")
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<ModuleEntity> getById(@PathVariable("id") int id) {
-		ModuleEntity entity = moduleService.findByIdWithInstances(id);
+		ModuleEntity entity = moduleService.getmoduleDetails(id);
 		return new WrapperResponse<>(entity);
 	}
 	

@@ -2,11 +2,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Table</title>
+<title>模块列表</title>
 <link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
 <link rel="stylesheet" href="../../assets/css/global.css" media="all">
 <link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="../../assets/css/table.css" />
+<style type="text/css">
+.node-up {
+	font-size: 75%;
+	border-radius: .25em;
+    background: #00CD00;
+    padding: .1em .5em .2em;
+    cursor:pointer;
+    color: #fff
+ }
+ .node-down {
+    font-size: 75%;
+    border-radius: .25em;
+    background: #e33;
+    padding: .1em .5em .2em;
+    cursor:pointer;
+    color: #fff
+ }
+</style>
 </head>
 
 <body>
@@ -28,7 +46,12 @@
     </script>
 	<script type="text/html" id="enabledTpl">
       <input type="checkbox" data-id="{{d.id}}" value="{{d.enabled}}" lay-skin="switch" lay-text="是|否" {{ d.enabled ? 'checked' : '' }} disabled>          
-    </script>    
+    </script>
+    <script type="text/html" id="nodesTpl">
+    {{# layui.each(d.serviceInstances, function(index, item){ }}
+       <span class="node-{{ item.status.toLowerCase() }}">{{ item.instanceId }}</span><br>
+    {{# }); }}
+    </script>     
 	<script type="text/html" id="toolBar">
       <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="switch">{{#  if(d.enabled){ }}禁用{{#  } else { }}启用{{#  } }} </a>
       <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
