@@ -23,5 +23,6 @@
 
 
 ### 文档
- - [快速开始](./quick-start.md) 
- - [模块开发指南](./dev-guide.md) 
+ - [快速开始](./docs/quick-start.md) 
+ - [模块开发指南](./docs/dev-guide.md) 
+ - [历史遗留系统接入指南](./docs/old-system-guide.md) 
