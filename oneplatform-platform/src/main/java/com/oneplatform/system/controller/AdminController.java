@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.springweb.model.WrapperResponse;
+import com.jeesuite.springweb.utils.WebUtils;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.model.TreeModel;
@@ -59,13 +60,13 @@ public class AdminController {
 	
 	@ApiOperation(value = "退出登录")
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
-    public @ResponseBody WrapperResponse<String> logout() {
+    public String logout(HttpServletRequest request) {
 		Subject subject = SecurityUtils.getSubject();
 		if(subject != null){
 			SSOHelper.reset();
 			subject.logout();
 		}
-		return new WrapperResponse<>();
+		return "redirect:" + WebUtils.getBaseUrl(request) + "/login.html";
 	} 
 	
 	@ApiOperation(value = "查询当前登录用户信息")

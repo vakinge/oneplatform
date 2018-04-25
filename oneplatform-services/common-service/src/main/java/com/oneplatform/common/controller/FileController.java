@@ -42,6 +42,9 @@ import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.filesystem.FileSystemClient;
 import com.jeesuite.filesystem.UploadTokenParam;
+import com.jeesuite.mybatis.plugin.pagination.Page;
+import com.jeesuite.mybatis.plugin.pagination.PageExecutor;
+import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.PageResult;
@@ -193,7 +196,13 @@ public class FileController implements InitializingBean{
 	@ApiOperation(value = "分页查询上传文件信息")
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	public @ResponseBody PageResult<UploadFileEntity> pageQueryUploadFiles(@RequestBody UploadQueryParam param){
-		return null;
+		Page<UploadFileEntity> page = PageExecutor.pagination(param, new PageDataLoader<UploadFileEntity>() {
+			@Override
+			public List<UploadFileEntity> load() {
+				return uploadFileMapper.findByParam(param);
+			}
+		});
+		return new PageResult<UploadFileEntity>(page.getPageNo(), page.getPageSize(), page.getTotal(), page.getData());
 	}
 
 	@Override
