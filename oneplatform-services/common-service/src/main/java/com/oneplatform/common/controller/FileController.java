@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -203,6 +204,17 @@ public class FileController implements InitializingBean{
 			}
 		});
 		return new PageResult<UploadFileEntity>(page.getPageNo(), page.getPageSize(), page.getTotal(), page.getData());
+	}
+	
+	@ApiOperation(value = "删除文件")
+	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
+    public @ResponseBody WrapperResponse<String> deleteFile(@PathVariable("id") int id) {
+		
+		UploadFileEntity uploadFileEntity = uploadFileMapper.selectByPrimaryKey(id);
+		if(uploadFileEntity != null){
+			FileSystemClient.getClient(uploadFileEntity.getGroup()).delete(uploadFileEntity.getFileUrl());
+		}
+		return new WrapperResponse<>();
 	}
 
 	@Override

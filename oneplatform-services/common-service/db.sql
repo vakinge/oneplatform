@@ -13,7 +13,7 @@ CREATE TABLE `static_region` (
 DROP TABLE IF EXISTS `upload_files`;
 CREATE TABLE `upload_files` (
   `id` int(10)  NOT NULL AUTO_INCREMENT,
-  `app_id` varchar(32) DEFAULT NULL,
+  `app_id` varchar(50) DEFAULT NULL,
   `group` varchar(32) DEFAULT NULL,
   `provider` varchar(32) DEFAULT NULL,
   `file_name` varchar(32) DEFAULT NULL,

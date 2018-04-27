@@ -65,8 +65,8 @@ CREATE DATABASE IF NOT EXISTS `oneplatform` DEFAULT CHARSET utf8 COLLATE utf8_ge
  ### 启动基础平台服务
  入口：oneplatform-platform/src/main/java/com/oneplatform/platform/ApplicationStarter.java
  
-  ### 启动demo服务
- 入口：oneplatform-services/demo-service/src/main/java/com/oneplatform/demo/ApplicationStarter.java
+  ### 启动common服务
+ 入口：oneplatform-services/common-service/src/main/java/com/oneplatform/common/ApplicationStarter.java
  
  
  >启动完成，访问：http://www.oneplatform.com 
