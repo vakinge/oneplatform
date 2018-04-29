@@ -275,9 +275,6 @@ public class ResourceEntity extends BaseEntity {
     }
     
     public String getModuleName() {
-    	if(moduleName == null && getModuleId() == 0){
-    		moduleName = ModuleEntity.PLATFORM_MODULE_NAME;
-    	}
 		return moduleName;
 	}
 

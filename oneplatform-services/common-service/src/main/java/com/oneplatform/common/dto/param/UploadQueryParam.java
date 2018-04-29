@@ -25,15 +25,16 @@ import com.jeesuite.mybatis.plugin.pagination.PageParams;
  */
 public class UploadQueryParam extends PageParams{
 
-    private String group;
+    private String groupName;
     private String provider; 
     private String startDate;
     private String endDate;
-	public String getGroup() {
-		return group;
+	
+	public String getGroupName() {
+		return groupName;
 	}
-	public void setGroup(String group) {
-		this.group = group;
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 	public String getProvider() {
 		return provider;

@@ -22,7 +22,6 @@ import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 @Table(name = "sys_module")
 public class ModuleEntity extends BaseEntity {
 	
-	public static final String PLATFORM_MODULE_NAME = "平台内置模块";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

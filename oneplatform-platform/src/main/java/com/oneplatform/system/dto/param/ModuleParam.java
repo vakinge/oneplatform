@@ -4,7 +4,6 @@ public class ModuleParam {
 
 	private Integer id;
 	private String name;
-    private String serviceId;
     private String routeName;
     /**
      * 可跨域uri集合(多个;隔开)
@@ -28,12 +27,6 @@ public class ModuleParam {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getServiceId() {
-		return serviceId;
-	}
-	public void setServiceId(String serviceId) {
-		this.serviceId = serviceId;
 	}
 	public String getRouteName() {
 		return routeName;

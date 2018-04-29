@@ -132,24 +132,25 @@ CREATE TABLE `sys_api_statistics` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='接口调用统计';
 
 INSERT INTO `sys_account` (`id`,`username`, `email`, `mobile`, `password`, `enabled`,`created_at`) VALUES ('1','admin', 'vakinge@gmail.com', '13800138001', '91373cc449e43d6142f423ec78b72dcc', '1','2018-03-03 12:55:30');
-INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('1','通用服务', 'common-service', 'common', '0', '1','http://127.0.0.1:8002/swagger-ui.html');
+INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('1','基础平台', 'oneplatform', '/', '0', '1','http://127.0.0.1:8001/api/swagger-ui.html');
+INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('2','通用服务', 'common-service', 'common', '0', '1','http://127.0.0.1:8002/swagger-ui.html');
 
 
 INSERT INTO `sys_role` (`id`, `name`) VALUES ('1000', '系统管理员');
 
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('1000','0', '0', '系统管理', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('1001','1000', '0', '模块管理','/modules/module/list.html', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('1002','1000', '0', '日志管理', '/modules/log/list.html','menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('2000','0', '0', '权限管理', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('2001','2000', '0', '用户管理','/modules/account/list.html', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2002','2000', '0', '角色管理', '/modules/role/list.html','menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2003','2000', '0', '权限管理', '/modules/resource/permissions.html','menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2004','2000', '0', '菜单管理', '/modules/resource/menus.html','menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('1000','0', '1', '系统管理', 'menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('1001','1000', '1', '模块管理','/modules/module/list.html', 'menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('1002','1000', '1', '日志管理', '/modules/log/list.html','menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('2000','0', '1', '权限管理', 'menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('2001','2000', '1', '用户管理','/modules/account/list.html', 'menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2002','2000', '1', '角色管理', '/modules/role/list.html','menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2003','2000', '1', '权限管理', '/modules/resource/permissions.html','menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2004','2000', '1', '菜单管理', '/modules/resource/menus.html','menu', '1');
 INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('3000','0', '0', '系统监控', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('3001','3000', '0', '定时任务监控','/modules/monitor/schedule.html', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('3002','3000', '0', 'kafka监控', '/modules/monitor/kafka.html','menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('3001','3000', '1', '定时任务监控','/modules/monitor/schedule.html', 'menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('3002','3000', '1', 'kafka监控', '/modules/monitor/kafka.html','menu', '1');
 INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('4000','0', '0', '通用服务', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('4001','4000', '1', '文件管理','/modules/common/files.html', 'menu', '1');
+INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('4001','4000', '2', '文件管理','/modules/common/files.html', 'menu', '1');
 
 
 INSERT INTO `sys_account_roles` (`account_id`, `role_id`) VALUES ('1', '1000');

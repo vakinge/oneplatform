@@ -36,25 +36,50 @@ layui.define(['oneplatform', 'table','laydate'], function(exports){
     	  ,dataName: 'data'
     }
     ,cols: [[ //表头
-      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-      ,{field: 'fileName', title: '文件名', width:150, sort: true}
-      ,{field: 'group', title: '所属组', width:90}
-      ,{field: 'provider', title: '服务商', width:100} 
-      ,{field: 'fileUrl', title: 'url', width: 380}
-      ,{field: 'mimeType', title: 'mimeType', width: 80}
+      {field: 'id', title: 'ID', width:60, sort: true, fixed: 'left'}
+      ,{field: 'fileName', title: '文件名', width:120, sort: true}
+      ,{field: 'groupName', title: '所属组', width:75}
+      ,{field: 'provider', title: '服务商', width:75} 
+      ,{field: 'appId', title: '所属应用', width: 120}
+      ,{field: 'fileUrl', title: 'url', width: 330}
+      ,{field: 'mimeType', title: 'mimeType', width: 95}
       ,{field: 'createdAt', title: '创建时间', width: 170}
-      ,{fixed: 'right', width: 70, align:'center', toolbar: '#toolBar'}
+      ,{fixed: 'right', width: 115, align:'center', toolbar: '#toolBar'}
     ]]
   });
   
   //监听工具条
   table.on('tool(table)', function(obj){ 
 	  var data = obj.data,layEvent = obj.event; 
-	  if(layEvent === 'acess'){
-		  
+	  if(layEvent === 'view'){
+		  $.getJSON('/api/common/file/geturl/'+data.id,function(result){
+			  if(result.code == 200){
+				  if(data.mimeType.indexOf('image') >= 0){
+					  layer.open({
+						  type: 2,
+						  title: '预览',
+						  shadeClose: true,
+						  shade: 0.8,
+						  area: ['893px', '600px'],
+						  content: [result.data, 'no']
+						}); 
+				  }else{
+					  window.open(result.data); 
+				  }
+			  }else{
+				  oneplatform.error(result.msg);
+			  }
+		  });
 	  }else if(layEvent === 'del'){
-		  
-	  }
+	      layer.confirm('确认删除么?', function(index){
+		    	oneplatform.post('/api/common/file/delete/'+data.id,null,function(data){
+		    		obj.del(); 
+			        layer.close(index);
+			        oneplatform.success('删除成功');
+		    	});
+		       
+		      });
+		    }
   });
   
   $('.J_search').on('click',function(){

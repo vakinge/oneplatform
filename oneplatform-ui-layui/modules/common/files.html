@@ -14,16 +14,21 @@
 		<div class="content-search">
 			<form id="searchform" action="" class="layui-form">
               <div class="layui-inline">
-                <select name="moduleId" asnycSelect="/api/module/options" lay-filter="module_select">
-                  <option value="">请选择模块</option>
+                <select name="groupName" asnycSelect="/api/common/file/groups" lay-filter="group_select">
+                  <option value="">请选择上传分组</option>
                 </select>     
               </div>
               <div class="layui-inline">
-				 <input class="layui-input layui-date" name="actionStart" placeholder="开始时间" id="start">
+                <select name="provider" asnycSelect="/api/common/file/providers" lay-filter="provider_select">
+                  <option value="">请选择文件系统服务商</option>
+                </select>     
+              </div>
+              <div class="layui-inline">
+				 <input class="layui-input layui-date" name="startDate" placeholder="开始时间" id="start">
 			  </div>
 			  <div class="layui-form-mid">-</div>
 			  <div class="layui-inline">
-				 <input class="layui-input layui-date" name="actionEnd" placeholder="截止时间" id="end">
+				 <input class="layui-input layui-date" name="endDate" placeholder="截止时间" id="end">
 			  </div>
               <div class="layui-inline">
                 <input type="button" class="layui-btn J_search" lay-submit lay-filter="search" value="筛选"/>    
@@ -41,7 +46,8 @@
       <span class="layui-badge {{ d.success ? 'layui-bg-green' : 'layui-bg-orange' }}">{{ d.success ? '成功' : '失败' }}</span>
     </script>    
 	<script type="text/html" id="toolBar">
-      <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
+      <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 </body>
 <script type="text/javascript" src="../../assets/js/layui/layui.js"></script>

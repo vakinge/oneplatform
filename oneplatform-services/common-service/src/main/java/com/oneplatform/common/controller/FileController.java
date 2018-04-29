@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -119,7 +120,7 @@ public class FileController implements InitializingBean{
 		entity.setFileUrl(param.getUrl());
 		entity.setFileLocation(param.getLocation());
 		entity.setMimeType(param.getMimeType());
-		entity.setGroup(param.getGroup());
+		entity.setGroupName(param.getGroup());
 		entity.setProvider(param.getProvider());
 		entity.setCreatedAt(new Date());
 		uploadFileMapper.insertSelective(entity);
@@ -127,7 +128,7 @@ public class FileController implements InitializingBean{
 	}
 	
 	@ApiOperation(value = "获取文件地址", notes = "获取文件地址")
-	@RequestMapping(value = "get_access_url", method = RequestMethod.GET)
+	@RequestMapping(value = "geturl", method = RequestMethod.GET)
 	public @ResponseBody WrapperResponse<String> getUploadFileUrl(HttpServletResponse response
 			,@RequestParam("group") String group
 			,@RequestParam(value="file") String fileKey) {
@@ -159,7 +160,7 @@ public class FileController implements InitializingBean{
 			
 			UploadFileEntity entity = new UploadFileEntity();
 			entity.setAppId(appId);
-			entity.setGroup(group);
+			entity.setGroupName(group);
 			entity.setFileName(originFileName);
 			entity.setFileUrl(url);
 			entity.setMimeType(file.getContentType());
@@ -196,7 +197,7 @@ public class FileController implements InitializingBean{
 	
 	@ApiOperation(value = "分页查询上传文件信息")
 	@RequestMapping(value = "list", method = RequestMethod.POST)
-	public @ResponseBody PageResult<UploadFileEntity> pageQueryUploadFiles(@RequestBody UploadQueryParam param){
+	public @ResponseBody PageResult<UploadFileEntity> pageQueryUploadFiles(@ModelAttribute UploadQueryParam param){
 		Page<UploadFileEntity> page = PageExecutor.pagination(param, new PageDataLoader<UploadFileEntity>() {
 			@Override
 			public List<UploadFileEntity> load() {
@@ -206,13 +207,27 @@ public class FileController implements InitializingBean{
 		return new PageResult<UploadFileEntity>(page.getPageNo(), page.getPageSize(), page.getTotal(), page.getData());
 	}
 	
+	
+	@ApiOperation(value = "获取文件地址", notes = "获取文件地址")
+	@RequestMapping(value = "geturl/{id}", method = RequestMethod.GET)
+	public @ResponseBody WrapperResponse<String> getUploadFileUrlById(@PathVariable("id") int id) {
+		UploadFileEntity uploadFileEntity = uploadFileMapper.selectByPrimaryKey(id);
+		String downloadUrl = null;
+		if(uploadFileEntity != null){			
+			downloadUrl = FileSystemClient.getClient(uploadFileEntity.getGroupName()).getDownloadUrl(uploadFileEntity.getFileUrl());
+		}else{
+			throw new JeesuiteBaseException(4001, "文件不存在");
+		}
+		return new WrapperResponse<>(downloadUrl);
+	}
+	
 	@ApiOperation(value = "删除文件")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> deleteFile(@PathVariable("id") int id) {
 		
 		UploadFileEntity uploadFileEntity = uploadFileMapper.selectByPrimaryKey(id);
 		if(uploadFileEntity != null){
-			FileSystemClient.getClient(uploadFileEntity.getGroup()).delete(uploadFileEntity.getFileUrl());
+			FileSystemClient.getClient(uploadFileEntity.getGroupName()).delete(uploadFileEntity.getFileUrl());
 		}
 		return new WrapperResponse<>();
 	}

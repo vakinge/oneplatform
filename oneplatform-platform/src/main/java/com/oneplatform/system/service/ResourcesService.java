@@ -73,7 +73,6 @@ public class ResourcesService {
 	public List<TreeModel> findAllPermissions(){
 		List<ResourceEntity> resources = resourceMapper.findAllNotMenuResources();
 		//
-		resources.add(new ResourceEntity(0,0,0,ModuleEntity.PLATFORM_MODULE_NAME));
 		//把模块当着父级节点
         for (ResourceEntity resource : resources) {
         	resource.setParentId(resource.getModuleId());
@@ -93,7 +92,7 @@ public class ResourcesService {
 	public List<ModuleRoleResource> findAllModuleRoleResources(int roleId){
 		Map<Integer, ModuleRoleResource> moduleRoleResources = new HashMap<>();
 		//全部模块
-		Map<Integer, ModuleEntity> modules = moduleService.getAllEnabledModules();
+		Map<Integer, ModuleEntity> modules = moduleService.getAllModules(true);
 		//全部资源
 		List<ResourceEntity> resources = resourceMapper.findLeafResources(ResourceType.all.name());
 		//角色已分配的资源
@@ -109,13 +108,9 @@ public class ResourcesService {
 		for (ResourceEntity resource : resources) {
 			moduleRoleResource = moduleRoleResources.get(resource.getModuleId());
 			if(moduleRoleResource == null){
-				if(resource.getModuleId() == 0){
-					moduleRoleResource = new ModuleRoleResource(0,ModuleEntity.PLATFORM_MODULE_NAME);
-				}else{
-					module = modules.get(resource.getModuleId());
-					if(module == null)continue;
-					moduleRoleResource = new ModuleRoleResource(module.getId(), module.getName());
-				}
+				module = modules.get(resource.getModuleId());
+				if(module == null)continue;
+				moduleRoleResource = new ModuleRoleResource(module.getId(), module.getName());
 				moduleRoleResources.put(moduleRoleResource.getModuleId(), moduleRoleResource);
 			}
 			roleResource = new RoleResource(resource.getId(), resource.getModuleId(), resource.getName(), resource.getType());
@@ -137,7 +132,7 @@ public class ResourcesService {
 	
 	public List<TreeModel> findUserMenus(int accountId){
 		//
-		Map<Integer, ModuleEntity> modules = moduleService.getAllEnabledModules();
+		Map<Integer, ModuleEntity> modules = moduleService.getAllModules(true);
 		
 		Map<Integer, ResourceEntity> resourceMap = new HashMap<>();
 		List<ResourceEntity> resources = resourceMapper.findNotLeafResources(ResourceType.menu.name());
@@ -167,13 +162,13 @@ public class ResourcesService {
 	
 	private List<TreeModel> buildResourceTree(List<ResourceEntity> resources) {
 		
-		Map<Integer, ModuleEntity> modules = moduleService.getAllEnabledModules();
+		Map<Integer, ModuleEntity> modules = moduleService.getAllModules(true);
 		TreeModel treeModel;String moduleName;
 		List<TreeModel> models = new ArrayList<>();
 		for (ResourceEntity resource : resources) {
 			if(resource.getModuleId() > 0 && !modules.containsKey(resource.getModuleId()))continue;
 			treeModel = new TreeModel(resource.getId(), resource.getName(),resource.getCode(), resource.getIcon(), resource.getParentId(), resource.isLeaf());
-			moduleName = resource.getModuleId() == 0 ? ModuleEntity.PLATFORM_MODULE_NAME : modules.get(resource.getModuleId()).getName();
+			moduleName = modules.get(resource.getModuleId()).getName();
 			treeModel.setExtraAttr(moduleName);
 			models.add(treeModel);
 		}

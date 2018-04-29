@@ -47,15 +47,6 @@ public class ModuleController {
 	}
 	
 	
-	@ApiOperation(value = "新增模块")
-	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> addModule(@RequestBody ModuleParam param) {
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		moduleService.addModule(loginUser, param);
-		
-		return new WrapperResponse<>();
-	}
-	
 	@ApiOperation(value = "更新模块")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> updateModule(@RequestBody ModuleParam param) {
@@ -88,7 +79,6 @@ public class ModuleController {
 		List<ModuleEntity> modules = moduleService.findAllModules();
 		
 		List<SelectOption> options = new ArrayList<>();
-		options.add(new SelectOption("0", ModuleEntity.PLATFORM_MODULE_NAME));
 		for (ModuleEntity moduleEntity : modules) {
 			if(!moduleEntity.getEnabled())continue;
 			options.add(new SelectOption(moduleEntity.getId().toString(), moduleEntity.getName()));

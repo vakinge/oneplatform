@@ -1,8 +1,14 @@
 package com.oneplatform.common.dao.entity;
 
-import com.jeesuite.mybatis.core.BaseEntity;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.jeesuite.mybatis.core.BaseEntity;
 
 @Table(name = "upload_files")
 public class UploadFileEntity extends BaseEntity {
@@ -13,7 +19,8 @@ public class UploadFileEntity extends BaseEntity {
     @Column(name = "app_id")
     private String appId;
 
-    private String group;
+    @Column(name = "group_name")
+    private String groupName;
     
     private String provider;
 
@@ -63,13 +70,12 @@ public class UploadFileEntity extends BaseEntity {
         this.appId = appId;
     }
     
-
-    public String getGroup() {
-		return group;
+	public String getGroupName() {
+		return groupName;
 	}
 
-	public void setGroup(String group) {
-		this.group = group;
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
 	}
 
 	/**

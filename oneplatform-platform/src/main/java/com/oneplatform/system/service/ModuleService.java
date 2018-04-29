@@ -13,13 +13,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.json.JsonUtils;
-import com.jeesuite.common.util.BeanCopyUtils;
 import com.jeesuite.common.util.DateUtils;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import com.oneplatform.base.exception.AssertUtil;
+import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.util.ApiInfoHolder;
@@ -46,12 +47,27 @@ public class ModuleService  {
 	
 	public List<ModuleEntity> findAllModules(){
 		List<ModuleEntity> list = moduleMapper.findAll();
-		if(!list.isEmpty()){
-			Map<String, List<ServiceInstance>> instances = getAllInstanceFromEureka();
-			for (ModuleEntity module : list) {
-				module.setServiceInstances(instances.get(module.getServiceId().toUpperCase()));
+		Map<String, ModuleEntity> hisModules = new HashMap<>();
+		for (ModuleEntity moduleEntity : list) {
+			hisModules.put(moduleEntity.getServiceId().toUpperCase(), moduleEntity);
+		}
+		Map<String, List<ServiceInstance>> activeInstances = getAllInstanceFromEureka();
+		
+		for (String serviceId : activeInstances.keySet()) {
+			if(!hisModules.containsKey(serviceId)){
+				ModuleEntity moduleEntity = new ModuleEntity();
+				moduleEntity.setName(serviceId);
+				moduleEntity.setRouteName(serviceId.split("-")[0]);
+				moduleEntity.setServiceId(serviceId);
+				moduleEntity.setCreatedAt(new Date());
+				moduleMapper.insertSelective(moduleEntity);
+				list.add(moduleEntity);
 			}
 		}
+		for (ModuleEntity module : list) {
+			module.setServiceInstances(activeInstances.get(module.getServiceId().toUpperCase()));
+		}
+	
 		return list;
 	}
 	
@@ -60,18 +76,6 @@ public class ModuleService  {
     	AssertUtil.notNull(entity);
     	getInstanceFromEureka(entity);
     	return entity;
-	}
-	
-	public void addModule(LoginUserInfo loginUser,ModuleParam param){
-		
-		AssertUtil.isNull(moduleMapper.findByServiceId(param.getServiceId()), String.format("ServiceId[%s]已存在", param.getServiceId()));
-		AssertUtil.isNull(moduleMapper.findByServiceId(param.getRouteName()), String.format("RouteName[%s]已存在", param.getRouteName()));
-		
-		ModuleEntity entity = BeanCopyUtils.copy(param, ModuleEntity.class);
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(loginUser.getId());
-		
-		moduleMapper.insertSelective(entity);
 	}
 	
     public void updateModule(LoginUserInfo loginUser,ModuleParam param){
@@ -90,6 +94,9 @@ public class ModuleService  {
 	}
     
     public void switchModule(LoginUserInfo loginUser,Integer id,boolean enable){
+    	if(id == 1){
+    		throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "系统模块不允许禁用");
+    	}
     	ModuleEntity entity = moduleMapper.selectByPrimaryKey(id);
     	AssertUtil.notNull(entity);
     	if(entity.getEnabled() == enable)return;
@@ -103,11 +110,20 @@ public class ModuleService  {
     }
     
     public void deleteModule(LoginUserInfo loginUser,int id){
+    	if(id == 1){
+    		throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "系统模块不允许禁用");
+    	}
+    	ModuleEntity moduleEntity = moduleMapper.selectByPrimaryKey(id);
+    	if(moduleEntity == null)return;
+    	Application application = eurekaClient.getApplication(moduleEntity.getServiceId());
+    	if(application != null){
+    		throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "该模块在运行中不允许删除");
+        }
     	moduleMapper.deleteByPrimaryKey(id);
     }
     
-    public Map<Integer, ModuleEntity> getAllEnabledModules(){
-    	List<ModuleEntity> modules = moduleMapper.findAllEnabled();
+    public Map<Integer, ModuleEntity> getAllModules(boolean enabledOnly){
+    	List<ModuleEntity> modules = enabledOnly ? moduleMapper.findAllEnabled() : moduleMapper.findAll();
 		Map<Integer, ModuleEntity> moduleMaps = new HashMap<>();
 		for (ModuleEntity moduleEntity : modules) {
 			moduleMaps.put(moduleEntity.getId(), moduleEntity);

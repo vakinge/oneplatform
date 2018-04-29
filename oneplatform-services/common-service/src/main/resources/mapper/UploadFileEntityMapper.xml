@@ -7,7 +7,7 @@
     -->
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="app_id" property="appId" jdbcType="VARCHAR" />
-    <result column="group" property="group" jdbcType="VARCHAR" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
     <result column="provider" property="provider" jdbcType="VARCHAR" />
     <result column="file_name" property="fileName" jdbcType="VARCHAR" />
     <result column="file_url" property="fileUrl" jdbcType="VARCHAR" />
@@ -19,8 +19,10 @@
   
   <select id="findByParam" parameterType="com.oneplatform.common.dto.param.UploadQueryParam"  resultMap="BaseResultMap">
 	  SELECT  * FROM upload_files where 1=1
-	  <if test="group != null"> and group = #{group}</if>
+	  <if test="groupName != null"> and group_name = #{groupName}</if>
 	  <if test="provider != null"> and provider = #{provider}</if>
+	  <if test="startDate != null"><![CDATA[ and created_at >= #{startDate}]]></if>
+	  <if test="endDate != null"><![CDATA[ and created_at <= #{endDate}]]></if>
       order by id desc
    </select>
 </mapper>
