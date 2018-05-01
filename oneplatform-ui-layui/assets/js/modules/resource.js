@@ -56,7 +56,7 @@ layui.define(['laypage','form','oneplatform', 'layer', 'tree', 'treeselect','ele
   }
   
   form.on('select(module_select)',function(data) {
-      var dataurl = '/api/module/apis/' + data.value;
+      var dataurl = '/api/module/notperm_apis/' + data.value;
       $.getJSON(dataurl,
       function(result) {
       	if(result.code && result.code != 200){

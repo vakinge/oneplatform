@@ -20,7 +20,7 @@
               </div> 
               <div class="layui-inline">
                 <input type="button" class="layui-btn J_search" lay-submit lay-filter="search" value="查询"/>    
-                <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/schedule/clear_invalid_group" value="清理无效任务"/>  
+                <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/schedule/clean_invalid_group" value="清理无效任务"/>  
               </div>                           
            </form>
             <fieldset class="layui-elem-field">
@@ -66,15 +66,15 @@
             {{#  } }} 
 				<td>
                   <input id="cron_{{index}}" lass="layui-input" type="text" value="{{ item.cronExpr }}" style="width:120px;">
-                  <a href="javascript:;" class="layui-btn layui-btn-mini J_commond_btn" data-ref="#cron_{{index}}" data-id="{{ item.jobName }}" data-cmd="updatecron">更新</a>
+                  <a href="javascript:;" class="layui-btn layui-btn-xs J_commond_btn" data-ref="#cron_{{index}}" data-id="{{ item.jobName }}" data-cmd="updatecron">更新</a>
                 </td>
 				<td>{{ item.active ? '是' : '否' }}</td>
                 <td>{{ item.currentNodeId }}</td>
                 <td>{{ item.lastFireTime }}</td>
                 <td>{{ item.nextFireTime }}</td>
 				<td>
-                    <a href="javascript:;" class="layui-btn layui-btn-mini J_commond_btn" data-id="{{ item.jobName }}" data-cmd="switch" data="{{ item.active ? '0' : '1'}}">{{ item.active ? '停用' : '启用'}}</a>
-                    <a href="javascript:;" data-id="{{ item.jobName }}" class="layui-btn layui-btn-mini J_commond_btn" data-cmd="exec">执行</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs J_commond_btn" data-id="{{ item.jobName }}" data-cmd="switch" data="{{ item.active ? '0' : '1'}}">{{ item.active ? '停用' : '启用'}}</a>
+                    <a href="javascript:;" data-id="{{ item.jobName }}" class="layui-btn layui-btn-xs J_commond_btn" data-cmd="exec">执行</a>
 				</td>
 			</tr>
 			{{# }); }}
@@ -86,6 +86,6 @@
 	layui.config({
 		version : "1.0.0",
 		base : '../../assets/js/modules/'
-	}).use('role');
+	}).use('schedule');
 </script>
 </html>

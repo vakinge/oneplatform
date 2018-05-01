@@ -414,10 +414,13 @@ exports('oneplatform', oneplatform);
 			url = self.attr('data-url'),
 			method=self.attr('ajax-method') || 'GET',
 			msg = self.attr('data-msg') || '您确认该操作吗',
-			data = self.attr('data') || '{}',
+			data = self.attr('data'),
 			dataId = self.attr('data-id'),
 			callback = self.attr('onSuccessCallback');
 		
+		if(!data && method.toUpperCase() === 'POST'){
+			data = '{}';
+		}
 		if(dataId)url=url.replace('{id}',dataId);
 		layer.confirm(msg, {
 		    btn: ['确定','取消'], //按钮

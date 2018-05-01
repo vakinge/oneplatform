@@ -82,6 +82,7 @@ public class ResourcesService {
 		for (ModuleEntity module : modules) {
 			resource = new ResourceEntity();
 			resource.setId(module.getId());
+			resource.setModuleId(module.getId());
 			resource.setName(module.getName());
 			resources.add(resource);
 		}
@@ -166,7 +167,7 @@ public class ResourcesService {
 		TreeModel treeModel;String moduleName;
 		List<TreeModel> models = new ArrayList<>();
 		for (ResourceEntity resource : resources) {
-			if(resource.getModuleId() > 0 && !modules.containsKey(resource.getModuleId()))continue;
+			if(!modules.containsKey(resource.getModuleId()))continue;
 			treeModel = new TreeModel(resource.getId(), resource.getName(),resource.getCode(), resource.getIcon(), resource.getParentId(), resource.isLeaf());
 			moduleName = modules.get(resource.getModuleId()).getName();
 			treeModel.setExtraAttr(moduleName);

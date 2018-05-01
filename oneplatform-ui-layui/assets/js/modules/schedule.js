@@ -1,17 +1,20 @@
-layui.use(['oneplatform','layer', 'laytpl', 'form'],function() {
+layui.config({
+  version: '20180325',
+  base : '../../assets/js/'
+});
+layui.define(['oneplatform','layer', 'laytpl', 'form'], function(exports){
     var $ = layui.jquery,
     laytpl = layui.laytpl,
     oneplatform = layui.oneplatform,
-    form = layui.form();
+    form = layui.form;
     //
     form.on('submit(search)',function(data) {
         var loading = layer.load();
         $.ajax({
             dataType: "json",
-            type: "POST",
-            url: '/api/schedule/group/jobs',
+            type: "GET",
+            url: '/api/schedule/jobs?group=' + data.field.groupName,
             contentType: "application/json",
-            data: JSON.stringify(data.field),
             complete: function() {
                 layer.close(loading);
             },
@@ -41,7 +44,6 @@ layui.use(['oneplatform','layer', 'laytpl', 'form'],function() {
     $("#content").on('click', ".J_commond_btn",function() {
     	var cmd = $(this).attr('data-cmd'),dataref = $(this).attr('data-ref');
     	var  params = {};
-    	params.env = $('#env_select').val();
     	params.group = $('#group_select').val();
     	params.job = $(this).attr('data-id');
     	
@@ -55,7 +57,7 @@ layui.use(['oneplatform','layer', 'laytpl', 'form'],function() {
 			$.ajax({
 	            dataType: "json",
 	            type: "POST",
-	            url: '../admin/schedule/job/'+cmd,
+	            url: '/api/schedule/job/'+cmd,
 	            contentType: "application/json",
 	            data: JSON.stringify(params),
 	            complete: function() {
@@ -81,5 +83,7 @@ layui.use(['oneplatform','layer', 'laytpl', 'form'],function() {
 		});
         
     });
+    
+    exports('schedule', null);
 
 });

@@ -3,6 +3,7 @@ package com.oneplatform.system.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import com.oneplatform.base.util.ApiInfoHolder;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
+import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dto.param.ModuleParam;
 
 
@@ -40,6 +42,7 @@ import com.oneplatform.system.dto.param.ModuleParam;
 public class ModuleService  {
 
 	private @Autowired ModuleEntityMapper moduleMapper;
+	private @Autowired ResourceEntityMapper resourceMapper;
 	
 	private @Autowired RestTemplate restTemplate;
 	
@@ -57,7 +60,7 @@ public class ModuleService  {
 			if(!hisModules.containsKey(serviceId)){
 				ModuleEntity moduleEntity = new ModuleEntity();
 				moduleEntity.setName(serviceId);
-				moduleEntity.setRouteName(serviceId.split("-")[0]);
+				moduleEntity.setRouteName(serviceId.split("-")[0].toLowerCase());
 				moduleEntity.setServiceId(serviceId);
 				moduleEntity.setCreatedAt(new Date());
 				moduleMapper.insertSelective(moduleEntity);
@@ -83,6 +86,7 @@ public class ModuleService  {
     	AssertUtil.notNull(entity);
     	
     	entity.setName(param.getName());
+    	entity.setRouteName(param.getRouteName());
     	entity.setApidocUrl(param.getApidocUrl());
     	entity.setCorsUris(param.getCorsUris());
     	entity.setInternal(param.isInternal());
@@ -165,13 +169,13 @@ public class ModuleService  {
     }
 
 	public List<ApiInfo> findModuleApis(int moduleId){
-		if(moduleId == 0)return ApiInfoHolder.getApiInfos();
+		if(moduleId == 1)return ApiInfoHolder.getApiInfos();
 		ModuleEntity module = moduleMapper.selectByPrimaryKey(moduleId);
 		List<ApiInfo> apiInfos = null;
 		try {
 			ParameterizedTypeReference<List<ApiInfo>> arearesponseType = new ParameterizedTypeReference<List<ApiInfo>>() {};
 			apiInfos = restTemplate.exchange("http://"+module.getServiceId().toUpperCase()+"/getApis", HttpMethod.GET, null, arearesponseType).getBody();
-			if(StringUtils.isBlank(module.getApiInfos()) || DateUtils.getDiffMinutes(module.getUpdatedAt(), new Date()) > 120){				
+			if(StringUtils.isBlank(module.getApiInfos()) || DateUtils.getDiffMinutes(module.getUpdatedAt(), new Date()) > 60){				
 				module.setApiInfos(JsonUtils.toJson(apiInfos));
 				module.setUpdatedAt(new Date());
 				moduleMapper.updateByPrimaryKey(module);
@@ -181,6 +185,23 @@ public class ModuleService  {
 		}
 		
 		return apiInfos;
+	}
+	
+	public List<ApiInfo> findNotPermModuleApis(int moduleId){
+		List<ApiInfo> apis = findModuleApis(moduleId);
+		List<String> permCodes = resourceMapper.findPermCodeByModule(moduleId);
+		
+		if(permCodes.isEmpty()){
+			return apis;
+		}
+		Iterator<ApiInfo> iterator = apis.iterator();
+		while(iterator.hasNext()){
+			ApiInfo apiInfo = iterator.next();
+			if(permCodes.contains(apiInfo.getUrl())){
+				iterator.remove();
+			}
+		}
+		return apis;
 	}
 
 

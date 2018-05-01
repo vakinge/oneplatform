@@ -23,13 +23,13 @@ layui.define(['oneplatform', 'table'], function(exports){
     	  ,dataName: 'data'
     	}
     ,cols: [[ //表头
-      {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}
+      {field: 'id', title: 'ID', width:60, sort: true, fixed: 'left'}
       ,{field: 'name', title: '模块名', width:120}
       ,{field: 'serviceId', title: '模块标识', width:150, sort: true}
       ,{field: 'routeName', title: '模块路由', width:100} 
       ,{field: 'internal', title: '内部模块', width: 90,templet: '#internalTpl'}
       ,{field: 'enabled', title: '是否启用', width: 90,templet: '#enabledTpl'}
-      ,{field: 'runStatus', title: '节点信息', width: 350,templet: '#nodesTpl'}
+      ,{field: 'runStatus', title: '节点信息', width: 340,templet: '#nodesTpl'}
       ,{fixed: 'right', width: 210, align:'center', toolbar: '#toolBar'}
     ]],
   });
@@ -37,6 +37,10 @@ layui.define(['oneplatform', 'table'], function(exports){
   //监听工具条
   table.on('tool(table)', function(obj){ 
 	  var data = obj.data,layEvent = obj.event; 
+	  if(layEvent !== 'detail' && data.id == 1){
+		  oneplatform.error('基础平台不能该操作');
+		  return;
+	  }
 	  if(layEvent === 'switch'){
 	      layer.confirm('确认'+(data.enabled ? '禁用' : '启用' )+'么?', function(index){
 	    	    var param = {};

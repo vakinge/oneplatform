@@ -51,7 +51,7 @@ public class ApiInfoHolder {
 
 		String classPattern = "/**/*.class";
 		String[] parts = StringUtils.split(ApiInfoHolder.class.getPackage().getName(),".");
-		String scanBasePackage = parts[0] + "." + parts[1];
+		String scanBasePackage = System.getProperty("controller.base-package", parts[0] + "." + parts[1]);
 		ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 		try {

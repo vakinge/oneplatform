@@ -30,7 +30,7 @@
 <body>
 	<div class="admin-main">
 		<blockquote class="layui-elem-quote">
-			模块无需手动创建,每次自动从注册中心拉取。
+			模块无需手动创建,新增模块会自动同注册中心同步。
 		</blockquote>
 		<fieldset class="layui-elem-field">
 			<legend>模块列表</legend>
@@ -51,10 +51,10 @@
     {{# }); }}
     </script>     
 	<script type="text/html" id="toolBar">
-      <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="switch">{{#  if(d.enabled){ }}禁用{{#  } else { }}启用{{#  } }} </a>
+      <a class="layui-btn layui-btn-primary layui-btn-xs if(d.id == 1){ }}layui-btn-disabled{{#  } }}" lay-event="switch">{{#  if(d.enabled){ }}禁用{{#  } else { }}启用{{#  } }} </a> 
       <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-      <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+      <a class="layui-btn layui-btn-xs" lay-event="edit if(d.id == 1){ }}layui-btn-disabled{{#  } }}">编辑</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs if(d.id == 1){ }}layui-btn-disabled{{#  } }}" lay-event="del">删除</a>
     </script>
 </body>
 <script type="text/javascript" src="../../assets/js/layui/layui.js"></script>

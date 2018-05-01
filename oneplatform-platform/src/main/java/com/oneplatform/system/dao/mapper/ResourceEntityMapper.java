@@ -9,13 +9,16 @@ import org.apache.ibatis.annotations.Select;
 
 import com.oneplatform.base.dao.CustomBaseMapper;
 import com.oneplatform.system.dao.entity.ResourceEntity;
-import com.oneplatform.system.dao.entity.RoleEntity;
 
 public interface ResourceEntityMapper extends CustomBaseMapper<ResourceEntity> {
 	
 	@Select("select * from sys_resources where module_id = #{moduleId} and code = #{code} limit 1")
 	@ResultMap("BaseResultMap")
 	ResourceEntity findByModuleAndCode(@Param("moduleId") int moduleId,@Param("code") String code);
+	
+	@Select("select code from sys_resources where module_id = #{moduleId}")
+	@ResultType(String.class)
+	List<String> findPermCodeByModule(@Param("moduleId") int moduleId);
 	
 	List<ResourceEntity> findAllResources();
 	

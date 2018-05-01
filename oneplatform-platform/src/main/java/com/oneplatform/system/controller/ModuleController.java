@@ -86,10 +86,10 @@ public class ModuleController {
 		return new WrapperResponse<>(options);
 	}
 	
-	@ApiOperation(value = "查询接口列表")
-	@RequestMapping(value = "apis/{moduleId}", method = RequestMethod.GET)
+	@ApiOperation(value = "查询无需鉴权接口列表")
+	@RequestMapping(value = "notperm_apis/{moduleId}", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<List<ApiInfo>> getApis(@PathVariable("moduleId") int moduleId) {
-		List<ApiInfo> list = moduleService.findModuleApis(moduleId);
+		List<ApiInfo> list = moduleService.findNotPermModuleApis(moduleId);
 		return new WrapperResponse<>(list);
 	}
     

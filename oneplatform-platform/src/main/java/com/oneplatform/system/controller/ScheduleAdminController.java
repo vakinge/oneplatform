@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.util.ResourceUtils;
@@ -48,16 +50,24 @@ public class ScheduleAdminController implements InitializingBean{
 	}
 	
 	@RequestMapping(value = "clean_invalid_group", method = RequestMethod.GET)
-	public @ResponseBody WrapperResponse<String> clearInvalidGroup(@PathVariable("env") String env){
+	public @ResponseBody WrapperResponse<String> clearInvalidGroup(){
 		if(monitor != null )monitor.clearInvalidGroup();
 		return new WrapperResponse<>();
 	}
 	
 	
-	@RequestMapping(value = "group/jobs", method = RequestMethod.POST)
-	public @ResponseBody WrapperResponse<JobGroupInfo> listGroupAllJobs(@RequestBody Map<String, String> params){
-		String groupName = params.get("groupName");
-		JobGroupInfo groupInfo = monitor.getJobGroupInfo(groupName);
+	@RequestMapping(value = "jobs", method = RequestMethod.GET)
+	public @ResponseBody WrapperResponse<JobGroupInfo> listGroupAllJobs(@RequestParam(value="group") String group){
+		if(StringUtils.isBlank(group)){			
+			List<String> groups = monitor.getGroups();
+			if(!groups.isEmpty()){
+				group = groups.get(0);
+			}
+		}
+		JobGroupInfo groupInfo = null;
+		if(StringUtils.isNotBlank(group)){
+			groupInfo = monitor.getJobGroupInfo(group);
+		}
 		return new WrapperResponse<>(groupInfo);
 	}
 	
