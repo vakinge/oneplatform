@@ -4,6 +4,7 @@
  
 `oneplatform`基于spring cloud微服务架构，采用模块化设计，提供企业级分布式应用开发一站式解决方案。平台提供SSO、统一认证授权、api网关、统一日志、全局事件以及模块化管理等基础能力。
 
+
 #### 优势
  - 模块化设计：真正意义实现平台与业务分离，业务开发者只需关心业务功能且无需额外学习成本。
  - 底层框架稳定：底层框架基于[jeesuite-libs](http://git.oschina.net/vakinge/jeesuite-libs)增强框架、经过4年数十家公司生产环境实践。
@@ -29,3 +30,8 @@
 
 ### 在线演示
 ### 界面预览
+![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/module.png)
+![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/menu.png)
+![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/log.png)
+![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/schedule.png)
+![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/kafka.png)
