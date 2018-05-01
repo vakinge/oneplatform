@@ -34,7 +34,6 @@ CREATE DATABASE IF NOT EXISTS `oneplatform` DEFAULT CHARSET utf8 COLLATE utf8_ge
  ### 配置host
 ```
 127.0.0.1 www.oneplatform.com
-123.207.101.193 dev.oneplatform.com
 ```
 
  ### 配置Nginx

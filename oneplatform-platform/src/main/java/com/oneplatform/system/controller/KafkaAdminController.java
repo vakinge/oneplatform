@@ -49,6 +49,7 @@ private static KafkaMonitor monitor;
 		if(monitor != null){			
 			List<ConsumerGroupInfo> groupInfos = monitor.getAllConsumerGroupInfos();
 			for (ConsumerGroupInfo g : groupInfos) {
+				if(g == null)continue;
 				result.add(new SelectOption(g.getGroupName(),g.getGroupName()));
 			}
 			

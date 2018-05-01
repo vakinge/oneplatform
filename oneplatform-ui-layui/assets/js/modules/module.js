@@ -29,8 +29,8 @@ layui.define(['oneplatform', 'table'], function(exports){
       ,{field: 'routeName', title: '模块路由', width:100} 
       ,{field: 'internal', title: '内部模块', width: 90,templet: '#internalTpl'}
       ,{field: 'enabled', title: '是否启用', width: 90,templet: '#enabledTpl'}
-      ,{field: 'runStatus', title: '节点信息', width: 340,templet: '#nodesTpl'}
-      ,{fixed: 'right', width: 210, align:'center', toolbar: '#toolBar'}
+      ,{field: 'runStatus', title: '运行节点信息', width: 330,templet: '#nodesTpl'}
+      ,{fixed: 'right', width: 220, align:'center', toolbar: '#toolBar'}
     ]],
   });
   

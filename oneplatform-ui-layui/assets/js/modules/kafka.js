@@ -1,7 +1,11 @@
-layui.use(['oneplatform','layer', 'laytpl', 'form'],function() {
+layui.config({
+  version: '20180325',
+  base : '../../assets/js/'
+});
+layui.define(['oneplatform','layer', 'laytpl', 'form'],function(exports) {
     var $ = layui.jquery,
     laytpl = layui.laytpl,
-    form = layui.form(),
+    form = layui.form,
     oneplatform = layui.oneplatform;
     //
     form.on('submit(search)',function(data) {
@@ -77,4 +81,5 @@ layui.use(['oneplatform','layer', 'laytpl', 'form'],function() {
         return false;
     });
 
+    exports('kafka', null);
 });

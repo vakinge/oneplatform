@@ -21,8 +21,8 @@ layui.define(['oneplatform', 'table','laydate'], function(exports){
   
   var $table = table.render({
     elem: '#tablecont'
-    ,height: 550
-    ,width: 1160
+    ,height: 450
+    ,width: 1200
     ,url: '/api/log/list'
     ,method: 'POST'
     ,page: true //开启分页
@@ -42,10 +42,10 @@ layui.define(['oneplatform', 'table','laydate'], function(exports){
       ,{field: 'uri', title: '请求地址', width:150} 
       ,{field: 'requestIp', title: '请求IP', width: 100}
       ,{field: 'requestUname', title: '操作人', width: 75}
-      ,{field: 'requestAt', title: '请求时间', width: 170}
-      ,{field: 'responseAt', title: '响应时间', width: 170}
-      ,{field: 'useTime', title: '耗时', width: 70}
-      ,{field: 'status', title: '状态', width: 70,templet: '#statusTpl'}
+      ,{field: 'requestAt', title: '请求时间', width: 168}
+      ,{field: 'responseAt', title: '响应时间', width: 168}
+      ,{field: 'useTime', title: '耗时', width: 72}
+      ,{field: 'status', title: '状态', width: 72,templet: '#statusTpl'}
       ,{fixed: 'right', width: 70, align:'center', toolbar: '#toolBar'}
     ]]
   });
