@@ -1,7 +1,5 @@
 package com.oneplatform.base.exception;
 
-import java.lang.reflect.Method;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -20,27 +18,9 @@ public class GlobalExceptionHandler {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private static Method rollbackCacheMethod;
-
-	static {
-		try {
-			Class<?> cacheHandlerClass = Class.forName("com.jeesuite.mybatis.plugin.cache.CacheHandler");
-			rollbackCacheMethod = cacheHandlerClass.getMethod("rollbackCache");
-		} catch (Exception e) {
-		}
-	}
-
 	@ExceptionHandler(Exception.class)
 	@ResponseBody
 	public WrapperResponseEntity exceptionHandler(Exception e, HttpServletResponse response) {
-
-		// 缓存回滚
-		if (rollbackCacheMethod != null) {
-			try {
-				rollbackCacheMethod.invoke(null);
-			} catch (Exception e2) {
-			}
-		}
 
 		WrapperResponseEntity resp = new WrapperResponseEntity();
 		if (e.getCause() != null && e.getCause() instanceof JeesuiteBaseException) {

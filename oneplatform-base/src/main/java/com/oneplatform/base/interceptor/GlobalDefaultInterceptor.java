@@ -48,7 +48,7 @@ public class GlobalDefaultInterceptor implements HandlerInterceptor {
 						if(logOption != null && StringUtils.isNotBlank(logOption.actionName())){
 							logObject.setActionName(logOption.actionName());
 						}
-						if(StringUtils.isNotBlank(logObject.getActionName())){
+						if(StringUtils.isBlank(logObject.getActionName())){
 							ApiOperation annotation = method.getMethod().getAnnotation(ApiOperation.class);
 							logObject.setActionName(annotation.value());
 						}

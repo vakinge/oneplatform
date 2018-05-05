@@ -51,7 +51,7 @@
 		<druid.version>1.0.16</druid.version>
 		<junit.version>4.12</junit.version>
 		<swagger.version>2.6.1</swagger.version>
-		<jeesuite.version>1.2.0-SNAPSHOT</jeesuite.version>
+		<jeesuite.version>1.2.0</jeesuite.version>
 		<jeesuite.config.version>1.1.8</jeesuite.config.version>
 		<docker.image.prefix>oneplatform</docker.image.prefix>
 	</properties>
