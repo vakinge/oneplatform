@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.jeesuite</groupId>
-    <artifactId>oneplatform-parent</artifactId>
+    <artifactId>oneplatform-services</artifactId>
     <version>1.0.0</version>
   </parent>
   <artifactId>common-service</artifactId>

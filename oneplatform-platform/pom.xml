@@ -220,6 +220,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>  
+                    <mainClass>com.oneplatform.platform.ApplicationStarter</mainClass>  
+                </configuration> 
 				<executions>
 					<execution>
 						<goals>

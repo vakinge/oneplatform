@@ -52,11 +52,4 @@ public class SecurityCryptUtils {
 			throw new JeesuiteBaseException(4005, "authToken过期");
 		}
 	}
-	
-	public static void main(String[] args) {
-		String sessionId = generateAuthCode();
-		System.out.println(sessionId);
-		
-		validateAuthCode("RTdFOTNDREU5QzMzOTBCOTA4RjAxQ0RGMTc4NTQ5RDEwMzE1NDBGNDBCNzlCMEIw",true);
-	}
 }

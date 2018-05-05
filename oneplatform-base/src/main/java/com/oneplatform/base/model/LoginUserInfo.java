@@ -145,17 +145,5 @@ public class LoginUserInfo implements Serializable {
 
 		return userInfo;
 	}
-	
-	public static void main(String[] args) {
-		LoginUserInfo userInfo = new LoginUserInfo();
-		userInfo.setId(100);
-		userInfo.setUsername("admin");
-		
-		String encodeString = userInfo.toEncodeString();
-		System.out.println(encodeString);
-		
-		userInfo = decode(encodeString);
-		System.out.println(userInfo);
-	}
 
 }
