@@ -25,6 +25,7 @@ import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.util.ApiInfoHolder;
+import com.oneplatform.platform.zuul.CustomRouteLocator;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
@@ -43,10 +44,9 @@ public class ModuleService  {
 
 	private @Autowired ModuleEntityMapper moduleMapper;
 	private @Autowired ResourceEntityMapper resourceMapper;
-	
 	private @Autowired RestTemplate restTemplate;
-	
 	private @Autowired EurekaClient eurekaClient;
+	private @Autowired CustomRouteLocator routeLocator; 
 	
 	public List<ModuleEntity> findAllModules(){
 		List<ModuleEntity> list = moduleMapper.findAll();
@@ -55,6 +55,8 @@ public class ModuleService  {
 			hisModules.put(moduleEntity.getServiceId().toUpperCase(), moduleEntity);
 		}
 		Map<String, List<ServiceInstance>> activeInstances = getAllInstanceFromEureka();
+		
+		boolean refreshRequired = false;
 		
 		for (String serviceId : activeInstances.keySet()) {
 			if(!hisModules.containsKey(serviceId)){
@@ -65,7 +67,12 @@ public class ModuleService  {
 				moduleEntity.setCreatedAt(new Date());
 				moduleMapper.insertSelective(moduleEntity);
 				list.add(moduleEntity);
+				refreshRequired = true;
 			}
+		}
+		
+		if(refreshRequired){
+			routeLocator.refresh();
 		}
 		for (ModuleEntity module : list) {
 			module.setServiceInstances(activeInstances.get(module.getServiceId().toUpperCase()));
