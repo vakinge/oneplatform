@@ -10,6 +10,7 @@
 	<loggers>
 		<logger name="com.jeesuite" level="debug"></logger>
 		<logger name="com.oneplatform" level="debug"></logger>
+		<logger name="org.apache.kafka" level="warn"></logger>
 		<root level="info">
 			<appender-ref ref="Console" />
 		</root>
