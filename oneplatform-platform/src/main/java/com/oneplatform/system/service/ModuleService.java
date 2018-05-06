@@ -64,6 +64,7 @@ public class ModuleService  {
 				moduleEntity.setName(serviceId);
 				moduleEntity.setRouteName(serviceId.split("-")[0].toLowerCase());
 				moduleEntity.setServiceId(serviceId);
+				moduleEntity.setApidocUrl(String.format("/api/%s/swagger-ui.html", moduleEntity.getRouteName()));
 				moduleEntity.setCreatedAt(new Date());
 				moduleMapper.insertSelective(moduleEntity);
 				list.add(moduleEntity);

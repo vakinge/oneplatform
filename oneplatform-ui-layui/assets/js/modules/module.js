@@ -14,7 +14,7 @@ layui.define(['oneplatform', 'table'], function(exports){
   table.render({
     elem: '#tablecont'
     ,height: 332
-    ,width: 1160
+    ,width: 1200
     ,url: '/api/module/list'
     ,page: false //开启分页
     ,response: {
@@ -30,14 +30,14 @@ layui.define(['oneplatform', 'table'], function(exports){
       ,{field: 'internal', title: '内部模块', width: 90,templet: '#internalTpl'}
       ,{field: 'enabled', title: '是否启用', width: 90,templet: '#enabledTpl'}
       ,{field: 'runStatus', title: '运行节点信息', width: 330,templet: '#nodesTpl'}
-      ,{fixed: 'right', width: 220, align:'center', toolbar: '#toolBar'}
+      ,{fixed: 'right', width: 260, align:'center', toolbar: '#toolBar'}
     ]],
   });
   
   //监听工具条
   table.on('tool(table)', function(obj){ 
 	  var data = obj.data,layEvent = obj.event; 
-	  if(layEvent !== 'detail' && data.id == 1){
+	  if(layEvent !== 'apidoc' && data.id == 1){
 		  oneplatform.error('基础平台不能该操作');
 		  return;
 	  }
@@ -53,8 +53,8 @@ layui.define(['oneplatform', 'table'], function(exports){
 		    	});
 		       
 		      });
-	    }else if(layEvent === 'detail'){
-	    	oneplatform.iframeDialog('模块详情','/modules/module/details.html?id='+data.id);
+	    }else if(layEvent === 'apidoc'){
+	    	oneplatform.iframeDialog('API文档',data.apidocUrl);
 	    }else if(layEvent === 'del'){
 	      layer.confirm('确认删除么?', function(index){
 	    	oneplatform.post('/api/module/delete/'+data.id,null,function(data){

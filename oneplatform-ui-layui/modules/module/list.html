@@ -52,7 +52,7 @@
     </script>     
 	<script type="text/html" id="toolBar">
       <a class="layui-btn layui-btn-primary layui-btn-xs {{# if(d.id == 1){ }}layui-btn-disabled{{#  } }}" lay-event="switch">{{#  if(d.enabled){ }}禁用{{#  } else { }}启用{{#  } }} </a> 
-      <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+      <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="apidoc">API文档</a>
       <a class="layui-btn layui-btn-xs" lay-event="edit {{# if(d.id == 1){ }}layui-btn-disabled{{#  } }}">编辑</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs {{# if(d.id == 1){ }}layui-btn-disabled{{#  } }}" lay-event="del">删除</a>
     </script>
