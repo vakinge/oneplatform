@@ -11,7 +11,7 @@ mkdir -p /datas/kafka
 mkdir -p /datas/zookeeper
 mkdir -p /datas/logs
 mkdir -p /datas/config
-# /datas/config文件夹 包含：kafka.properties,zookeeper.properties,redis.conf
+# /datas/config文件夹 包含：kafka.properties,zookeeper.properties,redis.conf（群里面有）
 #拉取并运行
 docker run -it --net="host" -p 6379:6379 -p 2181:2181 -p 9092:9092 -m 1024M --memory-swap=1024M -v /datas:/datas vakinge/centos_dev
 ```
