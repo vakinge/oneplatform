@@ -4,7 +4,7 @@
  - zookeeper
  - redis 
  
-使用docker：构建了一个基础环境docker（jdk8，redis，kafka，zookeeper）
+使用docker：构建了一个基础环境docker（jdk8，redis，kafka，zookeeper）[镜像地址](https://hub.docker.com/r/vakinge/centos-java-dev/)
 ```
 mkdir -p /datas/redis
 mkdir -p /datas/kafka
@@ -13,7 +13,7 @@ mkdir -p /datas/logs
 mkdir -p /datas/config
 # /datas/config文件夹 包含：kafka.properties,zookeeper.properties,redis.conf（群里面有）
 #拉取并运行
-docker run -it --net="host" -p 6379:6379 -p 2181:2181 -p 9092:9092 -m 1024M --memory-swap=1024M -v /datas:/datas vakinge/centos_dev
+docker run -it --net="host" -p 6379:6379 -p 2181:2181 -p 9092:9092 -m 1024M --memory-swap=1024M -v /datas:/datas vakinge/centos-java-dev
 ```
 
 #### 注
