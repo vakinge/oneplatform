@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.zookeeper.KeeperException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +40,13 @@ public class ScheduleAdminController implements InitializingBean{
 		
 		List<SelectOption> result = new ArrayList<>();
 		if(monitor != null){			
-			List<String> groups = monitor.getGroups();
+			List<String> groups = null;
+			
+			try {
+				groups = monitor.getGroups();
+			} catch (Exception e) {
+				// TODO: may be no node
+			}
 			if(groups != null){
 				for (String g : groups) {
 					result.add(new SelectOption(g,g));
