@@ -37,17 +37,28 @@ import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
  * @author <a href="mailto:vakinge@gmail.com">vakin</a>
  * @date 2018年4月14日
  */
-public class PermmissionDataHelper {
+public class AuthHelper {
 
 	private static volatile boolean loadFinished = false;
 	private static String contextPath = ResourceUtils.getProperty("server.context-path");
 	private static final String WILDCARD_START = "{";
 	
-	private static List<String> anonUris = new ArrayList<>();
-	private static List<Pattern> anonUriPatterns = new ArrayList<>();
+	private static volatile List<String> anonUris = new ArrayList<>();
+	private static volatile List<Pattern> anonUriPatterns = new ArrayList<>();
 	// 无通配符uri
-	private static Map<String,String> nonWildcardUriPerms = new HashMap<>();
-	private static Map<Pattern,String>  wildcardUriPermPatterns = new HashMap<>();
+	private static volatile Map<String,String> nonWildcardUriPerms = new HashMap<>();
+	private static volatile Map<Pattern,String>  wildcardUriPermPatterns = new HashMap<>();
+	
+	public static boolean anonymousAllowed(String uri){
+		
+        doLoadPermDatasIfRequired();
+		
+		if(anonUris.contains(uri))return true;
+		for (Pattern pattern : anonUriPatterns) {
+			if(pattern.matcher(uri).matches())return true;
+		}
+		return false;
+	}
 
 	public static String getPermssionCode(String uri){
 		
@@ -113,7 +124,6 @@ public class PermmissionDataHelper {
 	}
 	
 	public static void reset(){
-		//TODO lock
 		anonUris.clear();
 		anonUriPatterns.clear();
 		nonWildcardUriPerms.clear();

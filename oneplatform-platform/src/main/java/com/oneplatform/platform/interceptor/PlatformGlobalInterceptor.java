@@ -16,26 +16,20 @@
  */
 package com.oneplatform.platform.interceptor;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 
-import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.springweb.WebConstants;
 import com.jeesuite.springweb.exception.ForbiddenAccessException;
 import com.jeesuite.springweb.exception.UnauthorizedException;
-import com.jeesuite.springweb.utils.WebUtils;
 import com.netflix.zuul.context.RequestContext;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.interceptor.GlobalDefaultInterceptor;
 import com.oneplatform.base.model.LoginUserInfo;
-import com.oneplatform.platform.shiro.PermmissionDataHelper;
+import com.oneplatform.platform.shiro.AuthHelper;
 
 /**
  * @description <br>
@@ -44,26 +38,11 @@ import com.oneplatform.platform.shiro.PermmissionDataHelper;
  */
 public class PlatformGlobalInterceptor extends GlobalDefaultInterceptor {
 
-	private static final String REDIRCT_LOGIN_URI = "/api/redirctLogin";
-	private static final String MSG_401_UNAUTHORIZED = "{\"code\": 401,\"msg\":\"401 Unauthorized\"}";
-	private List<String> ignoreList = new ArrayList<String>(Arrays.asList("/api/login","/api/error"));
-	
-	private String loginUri = ResourceUtils.getProperty("front.login.uri");
-	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		
-		if(REDIRCT_LOGIN_URI.equals(request.getRequestURI())){
-			if(WebUtils.isAjax(request)){
-				WebUtils.responseOutJson(response, MSG_401_UNAUTHORIZED);
-			}else{
-				String redirctToLoin = WebUtils.getBaseUrl(request) + loginUri;
-				response.sendRedirect(redirctToLoin);
-			}
-			return false;
-		}
-		boolean anon = ignoreList.contains(request.getRequestURI());
+
+		boolean anon = AuthHelper.anonymousAllowed(request.getRequestURI());
 
 		LoginUserInfo user = null;
 		try {
@@ -80,7 +59,7 @@ public class PlatformGlobalInterceptor extends GlobalDefaultInterceptor {
 			throw new UnauthorizedException();
 		}
 		
-		String permssionCode = PermmissionDataHelper.getPermssionCode(request.getRequestURI());
+		String permssionCode = AuthHelper.getPermssionCode(request.getRequestURI());
 		if(StringUtils.isNotBlank(permssionCode) && !SecurityUtils.getSubject().isPermitted(permssionCode)){
 			throw new ForbiddenAccessException();
 		}

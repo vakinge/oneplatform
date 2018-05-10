@@ -30,7 +30,7 @@ import com.jeesuite.common.util.BeanCopyUtils;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.LoginUserInfo;
-import com.oneplatform.platform.shiro.PermmissionDataHelper;
+import com.oneplatform.platform.shiro.AuthHelper;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dao.mapper.RoleEntityMapper;
@@ -117,7 +117,7 @@ public class RoleService {
 			acted = true;
 		}
 		if(acted){
-			PermmissionDataHelper.reset();
+			AuthHelper.reset();
 		}
 	}
 }
