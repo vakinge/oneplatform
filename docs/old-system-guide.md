@@ -1,6 +1,7 @@
-#### 使用案例
+### 使用案例
 [一个传统jersey的web项目接入Springcloud例子](https://gitee.com/vakinge/jerseydemo) 
 
+### 以下是详细步骤
 ### 新增依赖
 ```
 <dependency>
@@ -19,13 +20,13 @@ eureka.registration.enabled=true
 eureka.preferIpAddress=true
 eureka.preferSameZone=true
 eureka.shouldUseDns=false
-eureka.serviceUrl.default=${eureka.client.serviceUrl.defaultZone}
+eureka.serviceUrl.default=http://superms:superms2018@eureka.jeesuite.com/eureka/
 eureka.decoderName=JacksonJson
 
 
 #应用配置
-server.port=8081
-eureka.name=tax
+server.port=8080
+eureka.name=jerseydemo
 eureka.vipAddress=${eureka.name}
 eureka.port=${server.port}
 eureka.ipAddr=${spring.cloud.client.ipAddress}
