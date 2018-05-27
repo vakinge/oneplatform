@@ -1,3 +1,6 @@
+#### 使用案例
+[一个传统jersey的web项目接入Springcloud例子](https://gitee.com/vakinge/jerseydemo) 
+
 ### 新增依赖
 ```
 <dependency>
@@ -71,3 +74,4 @@ eureka.statusPageUrl=http://${spring.cloud.client.ipAddress}:${eureka.port}/serv
     return lists;
   }
 ```
+
