@@ -3,15 +3,15 @@ package com.oneplatform.platform.filter;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Component;
 
 import com.jeesuite.springweb.WebConstants;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.oneplatform.base.LoginContext;
-import com.oneplatform.base.model.LoginUserInfo;
-import com.oneplatform.platform.shiro.AuthHelper;
+import com.oneplatform.base.model.LoginSession;
+import com.oneplatform.platform.auth.AuthPermHelper;
+import com.oneplatform.platform.auth.AuthSessionHelper;
 
 @Component
 public class AuthFilter extends ZuulFilter {
@@ -28,28 +28,25 @@ public class AuthFilter extends ZuulFilter {
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		HttpServletRequest request = ctx.getRequest();
-		boolean anon = AuthHelper.anonymousAllowed(request.getRequestURI());
+		boolean anon = AuthPermHelper.anonymousAllowed(request.getRequestURI());
+		
+		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,ctx.getResponse());
 
-		LoginUserInfo user = null;
-		try {
-			user = (LoginUserInfo) SecurityUtils.getSubject().getPrincipal();
-		} catch (Exception e) {
-		}
-		if (user != null) {
-			LoginContext.setLoginUser(user);
+		if (session != null) {
+			LoginContext.setLoginSession(session);
 			RequestContext.getCurrentContext().addZuulRequestHeader(WebConstants.HEADER_AUTH_USER,
-					user.toEncodeString());
+					session.toEncodeString());
 		}
 
-		if (anon == false && user == null) {
+		if (anon == false && session.isAnonymous()) {
 			ctx.setSendZuulResponse(false);
 			ctx.setResponseStatusCode(401);
 			ctx.setResponseBody(MSG_401_UNAUTHORIZED);
 			return null;
 		}
 		
-		String permssionCode = AuthHelper.getPermssionCode(request.getRequestURI());
-		if(StringUtils.isNotBlank(permssionCode) && !SecurityUtils.getSubject().isPermitted(permssionCode)){
+		String permssionCode = AuthPermHelper.getPermssionCode(request.getRequestURI());
+		if(StringUtils.isNotBlank(permssionCode) && !AuthPermHelper.isPermitted(session.getUserId(),permssionCode)){
 			ctx.setSendZuulResponse(false);
 			ctx.setResponseStatusCode(403);
 			ctx.setResponseBody(MSG_403_FORBIDDEN);

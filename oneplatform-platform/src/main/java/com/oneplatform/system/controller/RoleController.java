@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
-import com.oneplatform.base.model.LoginUserInfo;
+import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.ResourceEntity;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.RoleEntityMapper;
@@ -53,8 +53,7 @@ public class RoleController {
 	@ApiOperation(value = "新增角色")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> addRole(@RequestBody RoleParam param) {
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		roleService.addRole(loginUser, param);
+		roleService.addRole(LoginContext.getLoginUserId(), param);
 		return new WrapperResponse<>();
 	}
 	
@@ -62,8 +61,7 @@ public class RoleController {
 	@RequestMapping(value = "update", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> updateRole(@RequestBody RoleParam param) {
 		AssertUtil.notInitData(param.getId());
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		roleService.updateRole(loginUser, param);
+		roleService.updateRole(LoginContext.getLoginUserId(), param);
 		return new WrapperResponse<>();
 	}
 	
@@ -71,24 +69,23 @@ public class RoleController {
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> deleteRole(@PathVariable("id") int id) {
 		AssertUtil.notInitData(id);
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		roleService.deleteRole(loginUser, id);
+		roleService.deleteRole(LoginContext.getLoginUserId(), id);
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "启用/停止角色")
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchRole(@RequestBody SwitchParam param) {
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		roleService.switchRole(loginUser, param.getId(), param.getValue());
+		roleService.switchRole(LoginContext.getLoginUserId(), param.getId(), param.getValue());
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "分配资源")
 	@RequestMapping(value = "assignment", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> assignmentRoles(@RequestBody AssignmentParam param) {		
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		roleService.assignmentResources(loginUser, param.getId(), param.getAssignmentIds());
+		roleService.assignmentResources(LoginContext.getLoginUserId(), param.getId(), param.getAssignmentIds());
+		//
+		AuthPermHelper.refreshPermData();
 		return new WrapperResponse<>();
 	}
 	

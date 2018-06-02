@@ -6,20 +6,17 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.oneplatform.base.util.SecurityCryptUtils;
 
 @JsonInclude(Include.NON_NULL)
 public class LoginUserInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String CONTACT_CHAR = "#";
-
 	private Integer id;
 
 	private String username;
 
-	private String nickname;
+	private String realname;
 
 	private String email;
 
@@ -28,10 +25,6 @@ public class LoginUserInfo implements Serializable {
 	private String avatar;
 	
 	private String userType;
-
-	private Integer expiresIn;
-
-	private Long expiresAt;
 
 	public LoginUserInfo() {
 	}
@@ -58,12 +51,13 @@ public class LoginUserInfo implements Serializable {
 		this.username = username;
 	}
 
-	public String getNickname() {
-		return nickname;
+
+	public String getRealname() {
+		return realname;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setRealname(String realname) {
+		this.realname = realname;
 	}
 
 	public String getEmail() {
@@ -96,54 +90,6 @@ public class LoginUserInfo implements Serializable {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
-	}
-
-	public Integer getExpiresIn() {
-		return expiresIn;
-	}
-
-	public void setExpiresIn(Integer expiresIn) {
-		this.expiresIn = expiresIn;
-	}
-
-	public Long getExpiresAt() {
-		return expiresAt;
-	}
-
-	public void setExpiresAt(Long expiresAt) {
-		this.expiresAt = expiresAt;
-	}
-
-	public String toEncodeString() {
-
-		StringBuilder builder = new StringBuilder();
-		builder.append(id).append(CONTACT_CHAR);
-		if (userType != null)
-			builder.append(userType);
-		builder.append(CONTACT_CHAR);
-		if (username != null)
-			builder.append(username);
-		builder.append(CONTACT_CHAR);
-		if (nickname != null)
-			builder.append(nickname);
-		builder.append(CONTACT_CHAR);
-
-		return SecurityCryptUtils.encrypt(builder.toString());
-	}
-
-	public static LoginUserInfo decode(String encodeString) {
-		if (StringUtils.isBlank(encodeString))
-			return null;
-		encodeString = SecurityCryptUtils.decrypt(encodeString);
-		String[] splits = encodeString.split(CONTACT_CHAR);
-
-		LoginUserInfo userInfo = new LoginUserInfo();
-		userInfo.setId(Integer.parseInt(splits[0]));
-		userInfo.setUserType(splits[1]);
-		userInfo.setUsername(StringUtils.trimToNull(splits[2]));
-		if(splits.length >=4)userInfo.setNickname(StringUtils.trimToNull(splits[3]));
-
-		return userInfo;
 	}
 
 }

@@ -13,6 +13,7 @@ import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.common.util.TokenGenerator;
 import com.jeesuite.springweb.utils.IpUtils;
 import com.oneplatform.base.LoginContext;
+import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.LoginUserInfo;
 
 /**
@@ -54,10 +55,10 @@ public class LogContext {
 		log.setRequestIp(IpUtils.getIpAddr(request));
 		log.setUri(request.getRequestURI());
 		log.setOrigin(request.getHeader(HttpHeaders.REFERER));
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
+		LoginSession loginUser = LoginContext.getLoginSession();
 		if(loginUser != null){
-			log.setRequestUid(loginUser.getId());
-			log.setRequestUname(loginUser.getUsername());
+			log.setRequestUid(loginUser.getUserId());
+			log.setRequestUname(loginUser.getUserName());
 		}
 	}
 	

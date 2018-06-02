@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 
 import com.jeesuite.springweb.WebConstants;
 import com.jeesuite.springweb.exception.ForbiddenAccessException;
@@ -28,8 +27,9 @@ import com.jeesuite.springweb.exception.UnauthorizedException;
 import com.netflix.zuul.context.RequestContext;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.interceptor.GlobalDefaultInterceptor;
-import com.oneplatform.base.model.LoginUserInfo;
-import com.oneplatform.platform.shiro.AuthHelper;
+import com.oneplatform.base.model.LoginSession;
+import com.oneplatform.platform.auth.AuthPermHelper;
+import com.oneplatform.platform.auth.AuthSessionHelper;
 
 /**
  * @description <br>
@@ -42,25 +42,22 @@ public class PlatformGlobalInterceptor extends GlobalDefaultInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		boolean anon = AuthHelper.anonymousAllowed(request.getRequestURI());
+		boolean anon = AuthPermHelper.anonymousAllowed(request.getRequestURI());
 
-		LoginUserInfo user = null;
-		try {
-			user = (LoginUserInfo) SecurityUtils.getSubject().getPrincipal();
-		} catch (Exception e) {
-		}
-		if (user != null) {
-			LoginContext.setLoginUser(user);
+		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,response);
+
+		if (session != null) {
+			LoginContext.setLoginSession(session);
 			RequestContext.getCurrentContext().addZuulRequestHeader(WebConstants.HEADER_AUTH_USER,
-					user.toEncodeString());
+					session.toEncodeString());
 		}
 
-		if (anon == false && user == null) {
+		if (anon == false && session.isAnonymous()) {
 			throw new UnauthorizedException();
 		}
 		
-		String permssionCode = AuthHelper.getPermssionCode(request.getRequestURI());
-		if(StringUtils.isNotBlank(permssionCode) && !SecurityUtils.getSubject().isPermitted(permssionCode)){
+		String permssionCode = AuthPermHelper.getPermssionCode(request.getRequestURI());
+		if(StringUtils.isNotBlank(permssionCode) && !AuthPermHelper.isPermitted(session.getUserId(),permssionCode)){
 			throw new ForbiddenAccessException();
 		}
 		

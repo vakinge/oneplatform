@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.ApiInfo;
-import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.model.SelectOption;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dto.param.ModuleParam;
@@ -50,8 +49,7 @@ public class ModuleController {
 	@ApiOperation(value = "更新模块")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> updateModule(@RequestBody ModuleParam param) {
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		moduleService.updateModule(loginUser, param);
+		moduleService.updateModule(LoginContext.getLoginUserId(), param);
 		
 		return new WrapperResponse<>();
 	}
@@ -59,16 +57,14 @@ public class ModuleController {
 	@ApiOperation(value = "启用/停止模块")
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchModule(@RequestBody SwitchParam param) {
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		moduleService.switchModule(loginUser, param.getId(),param.getValue());
+		moduleService.switchModule(LoginContext.getLoginUserId(), param.getId(),param.getValue());
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "删除模块")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> deleteModule(@PathVariable("id") int id) {
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		moduleService.deleteModule(loginUser, id);
+		moduleService.deleteModule(LoginContext.getLoginUserId(), id);
 		return new WrapperResponse<>();
 	}
     

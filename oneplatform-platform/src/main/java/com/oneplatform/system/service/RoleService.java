@@ -29,8 +29,7 @@ import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.BeanCopyUtils;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
-import com.oneplatform.base.model.LoginUserInfo;
-import com.oneplatform.platform.shiro.AuthHelper;
+import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dao.mapper.RoleEntityMapper;
@@ -51,15 +50,15 @@ public class RoleService {
 		return roleMapper.selectAll();
 	}
 	
-	public void addRole(LoginUserInfo loginUser,RoleParam param){
+	public void addRole(int operUserId,RoleParam param){
 		AssertUtil.isNull(roleMapper.findByName(param.getName()), "角色名称重复");
 		RoleEntity entity = BeanCopyUtils.copy(param, RoleEntity.class);
 		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(loginUser.getId());
+		entity.setCreatedBy(operUserId);
 		roleMapper.insertSelective(entity);
 	}
 	
-	public void updateRole(LoginUserInfo loginUser,RoleParam param){
+	public void updateRole(int operUserId,RoleParam param){
 		RoleEntity entity = roleMapper.selectByPrimaryKey(param.getId());
 		AssertUtil.notNull(entity);
 		RoleEntity sameNameEntity = roleMapper.findByName(param.getName());
@@ -69,12 +68,12 @@ public class RoleService {
 		entity.setName(param.getName());
 		entity.setMemo(param.getMemo());
 		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(loginUser.getId());
+		entity.setCreatedBy(operUserId);
 		roleMapper.insertSelective(entity);
 	}
 	
 	@Transactional
-	public void deleteRole(LoginUserInfo loginUser,int id){
+	public void deleteRole(int operUserId,int id){
 		//判断是否有用户绑定了该角色
 		Integer bindAccountNums = roleMapper.countRoleBindAccount(id);
 		if(bindAccountNums > 0)throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "请先解除该角色绑定账号");
@@ -83,20 +82,20 @@ public class RoleService {
 		roleMapper.deleteByPrimaryKey(id);
 	}
 	
-	public void switchRole(LoginUserInfo loginUser,Integer id,boolean enable){
+	public void switchRole(int operUserId,Integer id,boolean enable){
 		RoleEntity entity = roleMapper.selectByPrimaryKey(id);
 		AssertUtil.notNull(entity);
     	if(entity.getEnabled() == enable)return;
     	entity.setEnabled(enable);
     	
     	entity.setUpdatedAt(new Date());
-    	entity.setUpdatedBy(loginUser.getId());
+    	entity.setUpdatedBy(operUserId);
     	
     	roleMapper.updateByPrimaryKey(entity);
 	}
 	
 	@Transactional
-	public void  assignmentResources(LoginUserInfo loginUser,int roleId,Integer[] resourceIds){
+	public void  assignmentResources(int operUserId,int roleId,Integer[] resourceIds){
 		List<Integer> newIds = new ArrayList<Integer>(Arrays.asList(resourceIds));
 		List<Integer> assignedIds = resourceMapper.findRoleResourceIds(roleId);
 		
@@ -117,7 +116,7 @@ public class RoleService {
 			acted = true;
 		}
 		if(acted){
-			AuthHelper.reset();
+			AuthPermHelper.reset();
 		}
 	}
 }

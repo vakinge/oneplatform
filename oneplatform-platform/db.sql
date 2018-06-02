@@ -131,7 +131,7 @@ CREATE TABLE `sys_api_statistics` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='接口调用统计';
 
-INSERT INTO `sys_account` (`id`,`username`, `email`, `mobile`, `password`, `enabled`,`created_at`) VALUES ('1','admin', 'vakinge@gmail.com', '13800138001', '91373cc449e43d6142f423ec78b72dcc', '1','2018-03-03 12:55:30');
+INSERT INTO `sys_account` (`id`,`username`, `email`, `mobile`, `password`, `enabled`,`created_at`) VALUES ('1','admin', 'vakinge@gmail.com', '13800138001', '5d10ac96f72efe7c0b984e8283518ac6', '1','2018-03-03 12:55:30');
 INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('1','基础平台', 'oneplatform', '/', '0', '1','/api/swagger-ui.html');
 INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('2','通用服务', 'common-service', 'common', '0', '1','/api/common/swagger-ui.html');
 

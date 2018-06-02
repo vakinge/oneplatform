@@ -5,9 +5,11 @@
 #### 获取登录用户上下文
 ```
 //获取登录用户，未登录为空
-LoginUserInfo loginUser = LoginContext.getLoginUser();
+LoginSession session = LoginContext.getLoginSession();
 //获取并验证是否登录
-LoginUserInfo loginUser = LoginContext.getAndValidateLoginUser();
+LoginSession session = LoginContext.getAndValidateLoginUser();
+//获取当前登录用户
+Integer LoginContext.getLoginUserId();
 ```
 #### 统一日志记录
  - 默认所有`POST`请求都会记录操作日志

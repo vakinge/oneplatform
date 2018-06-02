@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
-import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ResourceEntity;
@@ -65,8 +64,7 @@ public class ResourceController {
 	@ApiOperation(value = "新增资源")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> addResource(@RequestBody ResourceParam param) {
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		resourcesService.addResource(loginUser, param);
+		resourcesService.addResource(LoginContext.getLoginUserId(), param);
 		return new WrapperResponse<>();
 	}
 	
@@ -74,8 +72,7 @@ public class ResourceController {
 	@RequestMapping(value = "update", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> updateResource(@RequestBody ResourceParam param) {
 		AssertUtil.notInitData(param.getId());
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		resourcesService.updateResource(loginUser, param);
+		resourcesService.updateResource(LoginContext.getLoginUserId(), param);
 		return new WrapperResponse<>();
 	}
 	
@@ -83,16 +80,14 @@ public class ResourceController {
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> deleteResource(@PathVariable("id") int id) {
 		AssertUtil.notInitData(id);
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		resourcesService.deleteResource(loginUser, id);
+		resourcesService.deleteResource(LoginContext.getLoginUserId(), id);
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "启用/停止资源")
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchResource(@RequestBody SwitchParam param) {
-		LoginUserInfo loginUser = LoginContext.getLoginUser();
-		resourcesService.switchResource(loginUser, param.getId(), param.getValue());
+		resourcesService.switchResource(LoginContext.getLoginUserId(), param.getId(), param.getValue());
 		return new WrapperResponse<>();
 	}
     

@@ -18,9 +18,7 @@ import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
 import com.jeesuite.mybatis.plugin.pagination.PageParams;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
-import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.model.PageResult;
-import com.oneplatform.platform.shiro.Passwordhelper;
 import com.oneplatform.system.dao.entity.AccountEntity;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.AccountEntityMapper;
@@ -59,7 +57,7 @@ public class AccountService {
 	}
 
 	@Transactional
-	public void addAccount(LoginUserInfo loginUser, AccountParam param) {
+	public void addAccount(int operUserId, AccountParam param) {
 		AccountEntity existEntity = accountMapper.findByLoginName(param.getMobile());
 		AssertUtil.isNull(existEntity, "手机号码已存在");
 		existEntity = accountMapper.findByLoginName(param.getEmail());
@@ -69,58 +67,58 @@ public class AccountService {
 		AccountEntity entity = BeanCopyUtils.copy(param, AccountEntity.class);
 		entity.setEnabled(true);
 		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(loginUser.getId());
-		entity.setPassword(Passwordhelper.encryptPassword("123456", entity.getCreatedAt()));
+		entity.setCreatedBy(operUserId);
+		entity.setPassword(AccountEntity.encryptPassword("123456"));
 		accountMapper.insertSelective(entity);
 		
 		roleMapper.addAccountRoles(entity.getId(), param.getRoleIds());
 	}
 
 	@Transactional
-	public void updateAccount(LoginUserInfo loginUser, AccountParam param) {
+	public void updateAccount(int operUserId, AccountParam param) {
 		AccountEntity entity = findById(param.getId());
 		entity.setEmail(param.getEmail());
 		entity.setMobile(param.getMobile());
 		entity.setRealname(param.getRealname());
 		entity.setUpdatedAt(new Date());
-		entity.setUpdatedBy(loginUser.getId());
+		entity.setUpdatedBy(operUserId);
 		
 		accountMapper.updateByPrimaryKeySelective(entity);
 		
-		assignmentRoles(loginUser, entity.getId(), param.getRoleIds());
+		assignmentRoles(operUserId, entity.getId(), param.getRoleIds());
 		
 	}
 	
-	public void deleteAccount(LoginUserInfo loginUser, int id) {
+	public void deleteAccount(int operUserId, int id) {
 		accountMapper.deleteByPrimaryKey(id);
 	}
 	
-	public void updatePassword(LoginUserInfo loginUser, UpdatepasswordParam param) {
+	public void updatePassword(int operUserId, UpdatepasswordParam param) {
 		AccountEntity entity = findById(param.getUserId());
-		String oldPass = Passwordhelper.encryptPassword(param.getOldPassword(), entity.getCreatedAt());
+		String oldPass = AccountEntity.encryptPassword(param.getOldPassword());
 		if(!StringUtils.equals(oldPass, entity.getPassword())){
 			throw new JeesuiteBaseException(ExceptionCode.REQUEST_PARAM_ERROR.code, "原密码错误");
 		}
-		entity.setPassword(Passwordhelper.encryptPassword(param.getPassword(), entity.getCreatedAt()));
+		entity.setPassword(AccountEntity.encryptPassword(param.getPassword()));
 		entity.setUpdatedAt(new Date());
-		entity.setUpdatedBy(loginUser.getId());
+		entity.setUpdatedBy(operUserId);
 		
 		accountMapper.updateByPrimaryKeySelective(entity);
 	}
 	
-	public void switchAccount(LoginUserInfo loginUser,Integer id,boolean enable){
+	public void switchAccount(int operUserId,Integer id,boolean enable){
 		AccountEntity entity = findById(id);
 		if(entity.getEnabled() != enable){
 			entity.setEnabled(enable);
 			entity.setUpdatedAt(new Date());
-			entity.setUpdatedBy(loginUser.getId());
+			entity.setUpdatedBy(operUserId);
 			
 			accountMapper.updateByPrimaryKeySelective(entity);
 		}
 	}
 	
 	@Transactional
-	public void  assignmentRoles(LoginUserInfo loginUser,int accountId,Integer[] roleIds){
+	public void  assignmentRoles(int operUserId,int accountId,Integer[] roleIds){
 		List<Integer> newRoleIds = new ArrayList<Integer>(Arrays.asList(roleIds));
 		List<Integer> assignedRoleIds = roleMapper.findAccountRoleIds(accountId);
 		

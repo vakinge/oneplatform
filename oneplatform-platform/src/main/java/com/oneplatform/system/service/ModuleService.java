@@ -23,7 +23,6 @@ import com.netflix.discovery.shared.Application;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
-import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.util.ApiInfoHolder;
 import com.oneplatform.platform.zuul.CustomRouteLocator;
 import com.oneplatform.system.dao.entity.ModuleEntity;
@@ -89,7 +88,7 @@ public class ModuleService  {
     	return entity;
 	}
 	
-    public void updateModule(LoginUserInfo loginUser,ModuleParam param){
+    public void updateModule(int operUserId,ModuleParam param){
     	ModuleEntity entity = moduleMapper.selectByPrimaryKey(param.getId());
     	AssertUtil.notNull(entity);
     	
@@ -99,13 +98,13 @@ public class ModuleService  {
     	entity.setCorsUris(param.getCorsUris());
     	entity.setInternal(param.isInternal());
     	entity.setUpdatedAt(new Date());
-    	entity.setUpdatedBy(loginUser.getId());
+    	entity.setUpdatedBy(operUserId);
     	
     	moduleMapper.updateByPrimaryKeySelective(entity);
     	
 	}
     
-    public void switchModule(LoginUserInfo loginUser,Integer id,boolean enable){
+    public void switchModule(int operUserId,Integer id,boolean enable){
     	if(id == 1){
     		throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "系统模块不允许禁用");
     	}
@@ -115,13 +114,13 @@ public class ModuleService  {
     	entity.setEnabled(enable);
     	
     	entity.setUpdatedAt(new Date());
-    	entity.setUpdatedBy(loginUser.getId());
+    	entity.setUpdatedBy(operUserId);
     	
     	moduleMapper.updateByPrimaryKeySelective(entity);
     	
     }
     
-    public void deleteModule(LoginUserInfo loginUser,int id){
+    public void deleteModule(int operUserId,int id){
     	if(id == 1){
     		throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "系统模块不允许禁用");
     	}

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.BeanCopyUtils;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
-import com.oneplatform.base.model.LoginUserInfo;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
@@ -53,6 +53,20 @@ public class ResourcesService {
 			role.setResources(resources);
 		}
 		return roles;
+	}
+	
+	public Set<String> findAllPermsByUserId(Integer accountId){
+		
+		Set<String> result = new  java.util.HashSet<>();
+		List<RoleEntity> roles = roleMapper.findUserRoles(accountId);
+		List<ResourceEntity> resources;
+		for (RoleEntity role : roles) {
+			resources = resourceMapper.findRoleResources(role.getId(), ResourceType.uri.name());
+			for (ResourceEntity resourceEntity : resources) {
+				result.add(resourceEntity.getCode());
+			}
+		}
+		return result;
 	}
 	
 	public List<ResourceEntity> findResourceByRole(Integer roleId){
@@ -182,7 +196,7 @@ public class ResourcesService {
 		return entity;
 	}
 	
-	public void addResource(LoginUserInfo loginUser,ResourceParam param){
+	public void addResource(int operUserId,ResourceParam param){
 		if(param.getParentId() != null && param.getParentId() > 0){
 			ResourceEntity parent = resourceMapper.selectByPrimaryKey(param.getParentId());
 			param.setModuleId(parent.getModuleId());
@@ -190,12 +204,12 @@ public class ResourcesService {
 		AssertUtil.isNull(resourceMapper.findByModuleAndCode(param.getModuleId(), param.getCode()), "uri或编码重复");
 		ResourceEntity entity = BeanCopyUtils.copy(param, ResourceEntity.class);
 		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(loginUser.getId());
+		entity.setCreatedBy(operUserId);
 		resourceMapper.insertSelective(entity);
 	}
 	
 	
-	public void updateResource(LoginUserInfo loginUser,ResourceParam param){
+	public void updateResource(int operUserId,ResourceParam param){
 		ResourceEntity entity = resourceMapper.selectByPrimaryKey(param.getId());
 		AssertUtil.notNull(entity);
 		ResourceEntity sameCodeEntity = resourceMapper.findByModuleAndCode(param.getModuleId(), param.getCode());
@@ -208,25 +222,25 @@ public class ResourcesService {
 		entity.setName(param.getName());
 		entity.setSort(param.getSort());
 		entity.setUpdatedAt(new Date());
-		entity.setUpdatedBy(loginUser.getId());
+		entity.setUpdatedBy(operUserId);
 		
 		resourceMapper.insertSelective(entity);
 	}
 	
 	@Transactional
-	public void deleteResource(LoginUserInfo loginUser,int id){
+	public void deleteResource(int operUserId,int id){
 		resourceMapper.deleteResourceRalations(id);
 		resourceMapper.deleteByPrimaryKey(id);
 	}
 	
-	public void switchResource(LoginUserInfo loginUser,Integer id,boolean enable){
+	public void switchResource(int operUserId,Integer id,boolean enable){
 		ResourceEntity entity = resourceMapper.selectByPrimaryKey(id);
 		AssertUtil.notNull(entity);
     	if(entity.getEnabled() == enable)return;
     	entity.setEnabled(enable);
     	
     	entity.setUpdatedAt(new Date());
-    	entity.setUpdatedBy(loginUser.getId());
+    	entity.setUpdatedBy(operUserId);
     	
     	resourceMapper.updateByPrimaryKey(entity);
 	}

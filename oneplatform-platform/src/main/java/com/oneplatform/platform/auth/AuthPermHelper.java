@@ -14,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.oneplatform.platform.shiro;
+package com.oneplatform.platform.auth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,13 +32,18 @@ import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.entity.ResourceEntity;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
 import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
+import com.oneplatform.system.service.ResourcesService;
 
 /**
  * @description <br>
  * @author <a href="mailto:vakinge@gmail.com">vakin</a>
  * @date 2018年4月14日
  */
-public class AuthHelper {
+public class AuthPermHelper {
+	
+	private static final String USER_PERMS_PRIFIX = "perms:";
+
+	private static Cache cache =  InstanceFactory.getInstance(AuthCacheManager.class).getPermCache();
 
 	private static volatile boolean loadFinished = false;
 	private static String contextPath = ResourceUtils.getProperty("server.context-path");
@@ -75,6 +81,18 @@ public class AuthHelper {
 		}
 		
 		return null;
+	}
+	
+	
+	public static boolean isPermitted(int accountId,String permCode){
+		String key = USER_PERMS_PRIFIX + accountId;
+		Set<String> perms = cache.getObject(key);
+		if(perms == null || perms.isEmpty()){
+			ResourcesService resourcesService = InstanceFactory.getInstance(ResourcesService.class);
+			perms = resourcesService.findAllPermsByUserId(accountId);
+			cache.setObject(key, perms);
+		}
+		return perms.contains(permCode);
 	}
 	
 	private static void doLoadPermDatasIfRequired(){
@@ -123,12 +141,20 @@ public class AuthHelper {
 		}
 	}
 	
+	public static void refreshPermData(int accountId){
+		String key = USER_PERMS_PRIFIX + accountId;
+		cache.remove(key);
+	}
+	
+	public static void refreshPermData(){
+		cache.removeAll();
+	}
+	
 	public static void reset(){
 		anonUris.clear();
 		anonUriPatterns.clear();
 		nonWildcardUriPerms.clear();
 		wildcardUriPermPatterns.clear();
-		
 		loadFinished = false;
 	}
 
