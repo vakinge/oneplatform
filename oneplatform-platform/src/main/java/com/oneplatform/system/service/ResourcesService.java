@@ -216,7 +216,6 @@ public class ResourcesService {
 		if(sameCodeEntity != null && !sameCodeEntity.getId().equals(entity.getId())){
 			throw new JeesuiteBaseException(ExceptionCode.REQUEST_DUPLICATION.code, "url或者编码重复");
 		}
-		AssertUtil.isNull(resourceMapper.findByModuleAndCode(param.getModuleId(), param.getCode()), "uri或编码重复");
 		entity.setCode(param.getCode());
 		entity.setIcon(param.getIcon());
 		entity.setName(param.getName());
