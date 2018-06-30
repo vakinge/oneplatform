@@ -11,7 +11,6 @@ import com.netflix.zuul.context.RequestContext;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.platform.auth.AuthPermHelper;
-import com.oneplatform.platform.auth.AuthSessionHelper;
 
 @Component
 public class AuthFilter extends ZuulFilter {
@@ -30,7 +29,7 @@ public class AuthFilter extends ZuulFilter {
 		HttpServletRequest request = ctx.getRequest();
 		boolean anon = AuthPermHelper.anonymousAllowed(request.getRequestURI());
 		
-		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,ctx.getResponse());
+		LoginSession session = (LoginSession) ctx.get(GlobalFilter.CONTEXT_SESSION_KEY);
 
 		if (session != null) {
 			LoginContext.setLoginSession(session);

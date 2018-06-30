@@ -19,8 +19,10 @@ import com.jeesuite.springweb.utils.IpUtils;
 import com.jeesuite.springweb.utils.WebUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.util.SecurityCryptUtils;
 import com.oneplatform.platform.PlatformConfigManager;
+import com.oneplatform.platform.auth.AuthSessionHelper;
 
 /**
  * 
@@ -32,6 +34,8 @@ import com.oneplatform.platform.PlatformConfigManager;
 public class GlobalFilter extends ZuulFilter{
 	
 	private static Logger log = LoggerFactory.getLogger(GlobalFilter.class);
+	
+	public static final String CONTEXT_SESSION_KEY = "context-session";
 	
 	@Autowired(required=false)
 	private PlatformConfigManager configManager;
@@ -68,6 +72,9 @@ public class GlobalFilter extends ZuulFilter{
 				if(routeName.contains("/"))routeName = routeName.substring(0,routeName.indexOf("/"));
 				ctx.put(PlatformConfigManager.CONTEXT_ROUTE_NAME, routeName);
 			}
+			
+			LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,ctx.getResponse());
+			ctx.put(CONTEXT_SESSION_KEY, session);
 			//
 			Cookie[] cookies = request.getCookies();
 			if(cookies != null){
