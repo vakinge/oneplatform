@@ -139,7 +139,7 @@ public class AuthPermHelper {
 				nonWildcardUriPerms.put(fullUri, resource.getCode());
 			}
 		}
-		
+
 		loadFinished = true;
 	}
 	

@@ -29,8 +29,8 @@
 	  SELECT  * FROM sys_logs where entrylog=1
 	  <if test="param.moduleId != null">and module_id = #{param.moduleId}</if>
 	  <if test="param.name != null">and name like CONCAT('%',#{param.name},'%')</if>
-	  <if test="param.actionStart != null">and <![CDATA[request_at >= #{param.actionStart}]]></if>
-	  <if test="param.actionEnd != null">and <![CDATA[request_at <= #{param.actionEnd}]]></if>
+      <if test="param.actionStart != null">and request_at &gt;= #{param.actionStart}</if>
+      <if test="param.actionEnd != null">and request_at &lt;= #{param.actionEnd}</if>
       order by request_at desc
    </select>
    
