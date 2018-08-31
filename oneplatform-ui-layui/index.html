@@ -103,11 +103,13 @@
 			<script>
 			layui.use('layer', function() {
 				var $ = layui.jquery,
-					layer = layui.layer;
+					layer = layui.layer,
+					id = '';
 				$(function(){
 					 $.getJSON('/api/profile',function(data){
                    	　if(data.code == 200){
                    		$("#userName").html(data.data.username);
+                   		id = data.data.id;
                    	　}else{
                    		location.href='login.html';
                    	　}
@@ -118,7 +120,7 @@
 					layer.open({
 						  type: 2, 
 						  title:'编辑资料',
-						  content: '/module/account/edit.html',
+						  content: '/module/account/edit.html?id=' + id,
 						  area: ['500px', '400px']
 					}); 
 				});
