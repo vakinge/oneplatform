@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeesuite.common.JeesuiteBaseException;
-import com.jeesuite.common.util.BeanCopyUtils;
+import com.jeesuite.common.util.BeanUtils;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.platform.auth.AuthPermHelper;
@@ -52,7 +52,7 @@ public class RoleService {
 	
 	public void addRole(int operUserId,RoleParam param){
 		AssertUtil.isNull(roleMapper.findByName(param.getName()), "角色名称重复");
-		RoleEntity entity = BeanCopyUtils.copy(param, RoleEntity.class);
+		RoleEntity entity = BeanUtils.copy(param, RoleEntity.class);
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(operUserId);
 		roleMapper.insertSelective(entity);

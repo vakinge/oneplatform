@@ -54,7 +54,7 @@ public class ContextLoaderListener extends org.springframework.web.context.Conte
 		try {
 			System.setProperty("spring.cloud.client.hostname", InetAddress.getLocalHost().getHostName());
 		} catch (Exception e) {}
-		System.setProperty("spring.cloud.client.ipAddress", IpUtils.getLocalIpAddr());
+		System.setProperty("spring.cloud.client.ip-address", IpUtils.getLocalIpAddr());
 		System.setProperty("client.nodeId", NodeNameHolder.getNodeId());
 		
 		super.contextInitialized(event);

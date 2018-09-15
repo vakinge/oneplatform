@@ -98,6 +98,11 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-spring</artifactId>
 		</dependency>
@@ -171,14 +176,14 @@
 			<artifactId>oneplatform-base</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		   <groupId>org.apache.kafka</groupId>
-		   <artifactId>kafka_2.11</artifactId>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka_2.11</artifactId>
 		</dependency>
 
 	</dependencies>
-	
+
 	<profiles>
 		<profile>
 			<id>docker</id>
@@ -208,9 +213,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>  
-                    <mainClass>com.oneplatform.platform.ApplicationStarter</mainClass>  
-                </configuration> 
+				<configuration>
+					<mainClass>com.oneplatform.platform.ApplicationStarter</mainClass>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>

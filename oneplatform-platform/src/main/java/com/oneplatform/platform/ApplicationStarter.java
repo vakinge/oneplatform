@@ -19,6 +19,7 @@ import com.oneplatform.base.BaseApplicationStarter;
 
 @EnableZuulProxy
 @EnableDiscoveryClient
+//@EnableEurekaClient
 @SpringCloudApplication
 @EnableTransactionManagement
 @EnableJeesuiteMybatis

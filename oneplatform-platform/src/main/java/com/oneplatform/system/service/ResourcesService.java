@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeesuite.common.JeesuiteBaseException;
-import com.jeesuite.common.util.BeanCopyUtils;
+import com.jeesuite.common.util.BeanUtils;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.TreeModel;
@@ -202,7 +202,7 @@ public class ResourcesService {
 			param.setModuleId(parent.getModuleId());
 		}
 		AssertUtil.isNull(resourceMapper.findByModuleAndCode(param.getModuleId(), param.getCode()), "uri或编码重复");
-		ResourceEntity entity = BeanCopyUtils.copy(param, ResourceEntity.class);
+		ResourceEntity entity = BeanUtils.copy(param, ResourceEntity.class);
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(operUserId);
 		resourceMapper.insertSelective(entity);

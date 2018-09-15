@@ -2,9 +2,9 @@ package com.oneplatform.common;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -15,7 +15,7 @@ import com.oneplatform.base.BaseApplicationStarter;
 
 
 @EnableDiscoveryClient
-@SpringCloudApplication
+@SpringBootApplication
 @EnableTransactionManagement
 @EnableJeesuiteMybatis
 @EnableJeesuiteCache

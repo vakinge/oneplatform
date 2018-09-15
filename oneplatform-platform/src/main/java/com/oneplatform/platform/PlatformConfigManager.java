@@ -64,7 +64,7 @@ public class PlatformConfigManager implements InitializingBean,ApplicationStarte
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		contextpth = environment.getProperty("server.context-path");
+		contextpth = environment.getProperty("server.servlet.context-path","");
 
 		log.info("contextpth:{}", contextpth);
 		if (StringUtils.isNotBlank(contextpth) && contextpth.endsWith("/")) {

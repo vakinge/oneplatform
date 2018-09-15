@@ -50,14 +50,16 @@ public class GlobalDefaultInterceptor implements HandlerInterceptor {
 						}
 						if(StringUtils.isBlank(logObject.getActionName())){
 							ApiOperation annotation = method.getMethod().getAnnotation(ApiOperation.class);
-							logObject.setActionName(annotation.value());
+							if(annotation!= null)logObject.setActionName(annotation.value());
 						}
 						LogContext.end(String.valueOf(200), null);
 						KafkaProduceClient.send(LogContext.SYS_LOG_TOPIC, logObject);
 					}
 				}
 			}
-		} finally {
+		} catch (Exception e) {
+			log.warn("process_log_error",e);
+		}finally {
 			LogContext.clear();
 		}
 	}

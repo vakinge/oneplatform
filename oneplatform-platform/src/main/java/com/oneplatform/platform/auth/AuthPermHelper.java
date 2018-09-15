@@ -46,7 +46,7 @@ public class AuthPermHelper {
 	private static Cache cache =  InstanceFactory.getInstance(AuthCacheManager.class).getPermCache();
 
 	private static volatile boolean loadFinished = false;
-	private static String contextPath = ResourceUtils.getProperty("server.context-path");
+	private static String contextPath = ResourceUtils.getProperty("server.servlet.context-path","");
 	private static final String WILDCARD_START = "{";
 	
 	private static volatile List<String> anonUris = new ArrayList<>();

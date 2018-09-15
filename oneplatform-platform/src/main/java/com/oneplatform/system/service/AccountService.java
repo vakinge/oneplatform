@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeesuite.common.JeesuiteBaseException;
-import com.jeesuite.common.util.BeanCopyUtils;
+import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.mybatis.plugin.pagination.Page;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
@@ -64,7 +64,7 @@ public class AccountService {
 		AssertUtil.isNull(existEntity, "邮箱已存在");
 		existEntity = accountMapper.findByLoginName(param.getUsername());
 		AssertUtil.isNull(existEntity, "用户名已存在");
-		AccountEntity entity = BeanCopyUtils.copy(param, AccountEntity.class);
+		AccountEntity entity = BeanUtils.copy(param, AccountEntity.class);
 		entity.setEnabled(true);
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(operUserId);

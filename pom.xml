@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.1.RELEASE</version>
+		<version>2.0.2.RELEASE</version>
 		<relativePath />
 	</parent>
 
@@ -43,7 +43,7 @@
 		<compiler.jdk.version>1.8</compiler.jdk.version>
 		<output.encoding>utf-8</output.encoding>
 		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
-		<spring.version>4.3.7.RELEASE</spring.version>
+		<spring.version>5.0.5.RELEASE</spring.version>
 		<kafka.version>1.1.0</kafka.version>
 		<zkclient.version>0.10</zkclient.version>
 		<zookeeper.version>3.4.9</zookeeper.version>
@@ -53,10 +53,24 @@
 		<druid.version>1.0.16</druid.version>
 		<junit.version>4.12</junit.version>
 		<swagger.version>2.8.0</swagger.version>
-		<jeesuite.version>1.2.0</jeesuite.version>
-		<jeesuite.config.version>1.1.8</jeesuite.config.version>
+		<jeesuite.version>1.3.0-SNAPSHOT</jeesuite.version>
+		<jeesuite.config.version>1.3.0-SNAPSHOT</jeesuite.config.version>
 		<docker.image.prefix>oneplatform</docker.image.prefix>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>snapshots-repo</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
 
 	<dependencyManagement>
 		<dependencies>
@@ -96,6 +110,18 @@
 				<groupId>tk.mybatis</groupId>
 				<artifactId>mapper</artifactId>
 				<version>${mapper.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${druid.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.alibaba</groupId>
+						<artifactId>tools</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -228,7 +254,7 @@
 			<dependency>
 				<groupId>com.netflix.eureka</groupId>
 				<artifactId>eureka-client</artifactId>
-				<version>1.4.12</version>
+				<version>1.9.2</version>
 				<exclusions>
 					<exclusion>
 						<groupId>javax.servlet</groupId>
@@ -294,6 +320,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-properties-migrator</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 
 	</dependencies>

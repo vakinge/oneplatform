@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.cors.CorsConfiguration;
@@ -45,7 +46,7 @@ public class SwitchEnableCorsFilter extends OncePerRequestFilter {
 	 * to find the {@link CorsConfiguration} to use for each incoming request.
 	 * @see UrlBasedCorsConfigurationSource
 	 */
-	public SwitchEnableCorsFilter(CorsConfigurationSource configSource) {
+	public SwitchEnableCorsFilter(@Qualifier("mvcHandlerMappingIntrospector") CorsConfigurationSource configSource) {
 		Assert.notNull(configSource, "CorsConfigurationSource must not be null");
 		this.configSource = configSource;
 	}
