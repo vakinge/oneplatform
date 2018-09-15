@@ -8,6 +8,7 @@
 	</appenders>
 
 	<loggers>
+	    <logger name="org.springframework.web.context.support.StandardServletEnvironment" level="info"></logger>
 		<logger name="com.jeesuite" level="debug"></logger>
 		<logger name="com.oneplatform" level="debug"></logger>
 		<logger name="org.apache.kafka" level="warn"></logger>

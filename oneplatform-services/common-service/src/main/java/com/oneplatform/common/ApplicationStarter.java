@@ -1,6 +1,7 @@
 package com.oneplatform.common;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.client.SpringCloudApplication;
@@ -25,7 +26,7 @@ public class ApplicationStarter extends BaseApplicationStarter{
 
 	public static void main(String[] args) {
 		long starTime = before();
-		new SpringApplicationBuilder(ApplicationStarter.class).web(true).run(args);
+		new SpringApplicationBuilder(ApplicationStarter.class).web(WebApplicationType.SERVLET).run(args);
 		after(starTime);
 	}
 }
