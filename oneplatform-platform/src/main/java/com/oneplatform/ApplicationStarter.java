@@ -1,4 +1,4 @@
-package com.oneplatform.platform;
+package com.oneplatform;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.WebApplicationType;

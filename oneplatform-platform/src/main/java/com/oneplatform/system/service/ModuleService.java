@@ -181,7 +181,7 @@ public class ModuleService  {
 		List<ApiInfo> apiInfos = null;
 		try {
 			ParameterizedTypeReference<List<ApiInfo>> arearesponseType = new ParameterizedTypeReference<List<ApiInfo>>() {};
-			apiInfos = restTemplate.exchange("http://"+module.getServiceId().toUpperCase()+"/getApis", HttpMethod.GET, null, arearesponseType).getBody();
+			apiInfos = restTemplate.exchange("http://"+module.getServiceId().toUpperCase()+"/metadata/api", HttpMethod.GET, null, arearesponseType).getBody();
 			if(StringUtils.isBlank(module.getApiInfos()) || DateUtils.getDiffMinutes(module.getUpdatedAt(), new Date()) > 60){				
 				module.setApiInfos(JsonUtils.toJson(apiInfos));
 				module.setUpdatedAt(new Date());

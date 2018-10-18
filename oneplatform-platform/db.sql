@@ -18,6 +18,14 @@ CREATE TABLE `sys_account` (
    UNIQUE INDEX `email_uq_index` (`email`),
    UNIQUE INDEX `mobile_uq_index` (`mobile`) 
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='系统账号表';
+
+DROP TABLE IF EXISTS `sys_account_scopes`;
+CREATE TABLE `sys_account_scopes` (
+  `account_id` int(10) NOT NULL COMMENT '账号ID',
+  `scope` ENUM('admin', 'saas','user') NOT NULL COMMENT '范围类型',
+  PRIMARY KEY (`account_id`,`scope`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账号应用范围';
+
 -- ----------------------------
 --  Table structure for `resources`
 -- ----------------------------
