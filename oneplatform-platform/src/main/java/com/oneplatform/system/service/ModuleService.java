@@ -6,30 +6,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.jeesuite.common.JeesuiteBaseException;
-import com.jeesuite.common.json.JsonUtils;
-import com.jeesuite.common.util.DateUtils;
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.shared.Application;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.util.ApiInfoHolder;
-import com.oneplatform.platform.zuul.CustomRouteLocator;
 import com.oneplatform.system.dao.entity.ModuleEntity;
-import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
 import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dto.param.ModuleParam;
+import com.oneplatform.system.task.ModuleMetadataUpdateTask;
 
 
 /**
@@ -43,49 +34,15 @@ public class ModuleService  {
 
 	private @Autowired ModuleEntityMapper moduleMapper;
 	private @Autowired ResourceEntityMapper resourceMapper;
-	private @Autowired RestTemplate restTemplate;
-	private @Autowired EurekaClient eurekaClient;
-	private @Autowired CustomRouteLocator routeLocator; 
 	
 	public List<ModuleEntity> findAllModules(){
-		List<ModuleEntity> list = moduleMapper.findAll();
-		Map<String, ModuleEntity> hisModules = new HashMap<>();
-		for (ModuleEntity moduleEntity : list) {
-			hisModules.put(moduleEntity.getServiceId().toUpperCase(), moduleEntity);
-		}
-		Map<String, List<ServiceInstance>> activeInstances = getAllInstanceFromEureka();
-		
-		boolean refreshRequired = false;
-		
-		for (String serviceId : activeInstances.keySet()) {
-			if(!hisModules.containsKey(serviceId)){
-				ModuleEntity moduleEntity = new ModuleEntity();
-				moduleEntity.setName(serviceId);
-				moduleEntity.setRouteName(serviceId.split("-")[0].toLowerCase());
-				moduleEntity.setServiceId(serviceId);
-				moduleEntity.setApidocUrl(String.format("/api/%s/swagger-ui.html", moduleEntity.getRouteName()));
-				moduleEntity.setCreatedAt(new Date());
-				moduleMapper.insertSelective(moduleEntity);
-				list.add(moduleEntity);
-				refreshRequired = true;
-			}
-		}
-		
-		if(refreshRequired){
-			routeLocator.refresh();
-		}
-		for (ModuleEntity module : list) {
-			module.setServiceInstances(activeInstances.get(module.getServiceId().toUpperCase()));
-		}
-	
-		return list;
+		return new ArrayList<>(ModuleMetadataUpdateTask.getActiveModules().values());
 	}
 	
-	public ModuleEntity getmoduleDetails(int id){
-		ModuleEntity entity = moduleMapper.selectByPrimaryKey(id);
-    	AssertUtil.notNull(entity);
-    	getInstanceFromEureka(entity);
-    	return entity;
+	public ModuleEntity getmoduleDetails(int moduleId){
+		Optional<ModuleEntity> optional = ModuleMetadataUpdateTask.getActiveModules().values().stream().filter(m -> (m.getId().intValue() == moduleId)).findFirst();
+		if(!optional.isPresent())throw new JeesuiteBaseException(ExceptionCode.RECORD_NOT_EXIST.code, "模块不存在或者未运行");
+    	return optional.get();
 	}
 	
     public void updateModule(int operUserId,ModuleParam param){
@@ -126,8 +83,8 @@ public class ModuleService  {
     	}
     	ModuleEntity moduleEntity = moduleMapper.selectByPrimaryKey(id);
     	if(moduleEntity == null)return;
-    	Application application = eurekaClient.getApplication(moduleEntity.getServiceId());
-    	if(application != null){
+    	Optional<ModuleEntity> optional = ModuleMetadataUpdateTask.getActiveModules().values().stream().filter(m -> (m.getId().intValue() == id)).findFirst();
+		if(optional.isPresent()){
     		throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "该模块在运行中不允许删除");
         }
     	moduleMapper.deleteByPrimaryKey(id);
@@ -142,56 +99,12 @@ public class ModuleService  {
 		return moduleMaps;
     }
 
-    private void getInstanceFromEureka(ModuleEntity module){
-    	Application application = eurekaClient.getApplication(module.getServiceId());
-    	if(application != null){
-    		List<InstanceInfo> instances = application.getInstances();
-    		if(instances == null)return;
-    		for (InstanceInfo instance : instances) {
-    			module.getServiceInstances().add(new ServiceInstance(instance));
-			}
-    	}
-    }
-    
-    private Map<String, List<ServiceInstance>> getAllInstanceFromEureka(){
-    	
-    	Map<String, List<ServiceInstance>> result = new HashMap<>();
-    	List<Application> applications = eurekaClient.getApplications().getRegisteredApplications();
-    	if(applications == null)return result;
-    	List<ServiceInstance> instances;
-    	for (Application application : applications) {
-    		instances = result.get(application.getName());
-    		if(instances == null){
-    			instances = new ArrayList<>();
-    			result.put(application.getName(), instances);
-    		}
-    		
-    		for (InstanceInfo instanceInfo : application.getInstances()) {
-    			instances.add(new ServiceInstance(instanceInfo));
-			}
-    		
-		}
-    	
-    	return result;
-    }
 
 	public List<ApiInfo> findModuleApis(int moduleId){
 		if(moduleId == 1)return ApiInfoHolder.getApiInfos();
-		ModuleEntity module = moduleMapper.selectByPrimaryKey(moduleId);
-		List<ApiInfo> apiInfos = null;
-		try {
-			ParameterizedTypeReference<List<ApiInfo>> arearesponseType = new ParameterizedTypeReference<List<ApiInfo>>() {};
-			apiInfos = restTemplate.exchange("http://"+module.getServiceId().toUpperCase()+"/metadata/api", HttpMethod.GET, null, arearesponseType).getBody();
-			if(StringUtils.isBlank(module.getApiInfos()) || DateUtils.getDiffMinutes(module.getUpdatedAt(), new Date()) > 60){				
-				module.setApiInfos(JsonUtils.toJson(apiInfos));
-				module.setUpdatedAt(new Date());
-				moduleMapper.updateByPrimaryKey(module);
-			}
-		} catch (Exception e) {
-			apiInfos = JsonUtils.toList(module.getApiInfos(), ApiInfo.class);
-		}
-		
-		return apiInfos;
+		Optional<ModuleEntity> optional = ModuleMetadataUpdateTask.getActiveModules().values().stream().filter(m -> (m.getId().intValue() == moduleId)).findFirst();
+		if(!optional.isPresent())throw new JeesuiteBaseException(ExceptionCode.RECORD_NOT_EXIST.code, "模块不存在或者未运行");
+		return optional.get().getMetadata().getApis();
 	}
 	
 	public List<ApiInfo> findNotPermModuleApis(int moduleId){

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import com.oneplatform.system.dao.mapper.RoleEntityMapper;
 import com.oneplatform.system.dto.ModuleRoleResource;
 import com.oneplatform.system.dto.RoleResource;
 import com.oneplatform.system.dto.param.ResourceParam;
+import com.oneplatform.system.task.ModuleMetadataUpdateTask;
 
 /**
  * 
@@ -147,8 +149,7 @@ public class ResourcesService {
 	
 	public List<TreeModel> findUserMenus(int accountId){
 		//
-		Map<Integer, ModuleEntity> modules = moduleService.getAllModules(true);
-		
+		Map<Integer, ModuleEntity> modules = ModuleMetadataUpdateTask.getActiveModules().values().stream().collect(Collectors.toMap(ModuleEntity::getId, module -> module));
 		Map<Integer, ResourceEntity> resourceMap = new HashMap<>();
 		List<ResourceEntity> resources = resourceMapper.findNotLeafResources(ResourceType.menu.name());
 		for (ResourceEntity resource : resources) {

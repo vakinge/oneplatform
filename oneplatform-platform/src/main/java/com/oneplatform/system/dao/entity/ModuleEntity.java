@@ -11,12 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jeesuite.common.json.JsonUtils;
 import com.jeesuite.mybatis.core.BaseEntity;
-import com.oneplatform.base.model.ApiInfo;
+import com.oneplatform.base.model.ModuleMetadata;
 import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 
 @Table(name = "sys_module")
@@ -42,9 +38,6 @@ public class ModuleEntity extends BaseEntity {
     
     @Column(name = "apidoc_url")
     private String apidocUrl;
-    
-    @Column(name = "api_infos")
-    private String apiInfos;
 
     /**
      * 是否内部服务模块
@@ -69,7 +62,10 @@ public class ModuleEntity extends BaseEntity {
     private List<ServiceInstance> serviceInstances;
     
     @Transient
-    private List<ApiInfo> apiInfoList;
+    private ModuleMetadata metadata;
+    
+    @Transient
+    private Date fetchMetaDataTime;
 
 	/**
      * @return id
@@ -241,15 +237,6 @@ public class ModuleEntity extends BaseEntity {
 		this.apidocUrl = apidocUrl;
 	}
 
-	@JsonIgnore
-	public String getApiInfos() {
-		return apiInfos;
-	}
-
-	public void setApiInfos(String apiInfos) {
-		this.apiInfos = apiInfos;
-	}
-
 	public int getInstanceNums() {
 		return serviceInstances == null ? 0 : serviceInstances.size();
 	}
@@ -262,11 +249,21 @@ public class ModuleEntity extends BaseEntity {
 		this.serviceInstances = serviceInstances;
 	}
 
-	public List<ApiInfo> getApiInfoList() {
-		if(apiInfoList == null && StringUtils.isNotBlank(apiInfos)){
-			apiInfoList = JsonUtils.toList(apiInfos, ApiInfo.class);
-		}
-		return apiInfoList;
+	public ModuleMetadata getMetadata() {
+		return metadata;
 	}
 
+	public void setMetadata(ModuleMetadata metadata) {
+		this.metadata = metadata;
+	}
+
+	public Date getFetchMetaDataTime() {
+		return fetchMetaDataTime == null ? createdAt : fetchMetaDataTime;
+	}
+
+	public void setFetchMetaDataTime(Date fetchMetaDataTime) {
+		this.fetchMetaDataTime = fetchMetaDataTime;
+	}
+
+	
 }

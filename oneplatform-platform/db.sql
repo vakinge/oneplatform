@@ -93,7 +93,6 @@ CREATE TABLE `sys_module` (
   `internal` tinyint(1) DEFAULT 0  COMMENT '是否内部服务模块',
   `enabled` tinyint(1) DEFAULT 1,
   `apidoc_url` varchar(100) DEFAULT NULL,
-  `api_infos` TEXT DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `created_by` int(10) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,

@@ -14,18 +14,19 @@ import com.jeesuite.springboot.starter.cache.EnableJeesuiteCache;
 import com.jeesuite.springboot.starter.kafka.EnableJeesuiteKafkaConsumer;
 import com.jeesuite.springboot.starter.kafka.EnableJeesuiteKafkaProducer;
 import com.jeesuite.springboot.starter.mybatis.EnableJeesuiteMybatis;
+import com.jeesuite.springboot.starter.scheduler.EnableJeesuiteSchedule;
 import com.oneplatform.base.BaseApplicationStarter;
 
 
 @EnableZuulProxy
 @EnableDiscoveryClient
-//@EnableEurekaClient
 @SpringCloudApplication
 @EnableTransactionManagement
 @EnableJeesuiteMybatis
 @EnableJeesuiteCache
 @EnableJeesuiteKafkaProducer
 @EnableJeesuiteKafkaConsumer
+@EnableJeesuiteSchedule
 @MapperScan(basePackages = "com.oneplatform.system.dao.mapper")
 @ComponentScan(value = {"com.oneplatform"})
 @ServletComponentScan({ "com.oneplatform.base.servlet" })

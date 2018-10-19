@@ -362,7 +362,7 @@
 					<include>**/*.xml</include>
 					<include>*.jks</include>
 					<include>templates/**</include>
-					<include>metadata/**</include>
+					<include>metadata.json</include>
 					<include>static/**</include>
 				</includes>
 			</resource>

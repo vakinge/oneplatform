@@ -1,0 +1,9 @@
+{
+    "name": "通用服务",
+	"routePath": "common",
+	"menus": [{
+		"uri": "赵二柱",
+		"text": "qqq@163.com",
+		"sort": 1
+	}]
+}
