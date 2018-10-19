@@ -9,7 +9,7 @@
 		<relativePath />
 	</parent>
 
-	<groupId>com.jeesuite</groupId>
+	<groupId>com.jeesuite.oneplatform</groupId>
 	<artifactId>oneplatform-parent</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
