@@ -1,6 +1,7 @@
 package com.oneplatform.base.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
-public class LoginUserInfo implements Serializable {
+public class UserInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,11 +26,13 @@ public class LoginUserInfo implements Serializable {
 	private String avatar;
 	
 	private String userType;
+	
+	private List<String> roles;
 
-	public LoginUserInfo() {
+	public UserInfo() {
 	}
 
-	public LoginUserInfo(Integer id, String username) {
+	public UserInfo(Integer id, String username) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -90,6 +93,14 @@ public class LoginUserInfo implements Serializable {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }

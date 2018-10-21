@@ -65,7 +65,7 @@
 					$.ajax({
 						dataType:"json",
 					    type: "POST",
-				        url: '/api/login',
+				        url: '/api/user/login',
 				        contentType: "application/json",
 				        data:JSON.stringify(data.field) ,
 						complete: function(){layer.close(loading);},

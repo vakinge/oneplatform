@@ -14,7 +14,7 @@ import com.jeesuite.common.util.TokenGenerator;
 import com.jeesuite.springweb.utils.IpUtils;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.LoginSession;
-import com.oneplatform.base.model.LoginUserInfo;
+import com.oneplatform.base.model.UserInfo;
 
 /**
  * 

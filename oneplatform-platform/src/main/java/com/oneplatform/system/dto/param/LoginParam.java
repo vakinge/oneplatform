@@ -13,6 +13,11 @@ public class LoginParam {
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
 	}
+	
+	public void setUsername(String username) {
+		this.loginName = username;
+	}
+	
 	public String getPassword() {
 		return password;
 	}

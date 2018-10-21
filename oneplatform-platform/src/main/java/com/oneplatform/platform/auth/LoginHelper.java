@@ -4,18 +4,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.oneplatform.base.model.LoginSession;
-import com.oneplatform.base.model.LoginUserInfo;
+import com.oneplatform.base.model.UserInfo;
 import com.oneplatform.system.dao.entity.AccountEntity;
 
 public class LoginHelper {
 
-	public static void login(HttpServletRequest request, HttpServletResponse response, AccountEntity account) {
+	public static UserInfo login(HttpServletRequest request, HttpServletResponse response, AccountEntity account) {
 
 		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request, response);
 		session.setUserId(account.getId());
 		session.setUserName(account.getUsername());
 		
-		LoginUserInfo userInfo = new LoginUserInfo(account.getId(), account.getUsername());
+		UserInfo userInfo = new UserInfo(account.getId(), account.getUsername());
 		userInfo.setRealname(account.getRealname());
 		userInfo.setEmail(account.getEmail());
 		userInfo.setMobile(account.getMobile());
@@ -28,7 +28,12 @@ public class LoginHelper {
 		}
 		
 		AuthSessionHelper.storgeLoginSession(session);
+		//敏感信息不返回前端
+		userInfo.setRealname(null);
+		userInfo.setEmail(null);
+		userInfo.setMobile(null);
 		
+		return userInfo;
 	}
 
 	public static void logout(HttpServletRequest request, HttpServletResponse response) {

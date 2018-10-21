@@ -26,7 +26,7 @@ import com.oneplatform.base.BaseApplicationStarter;
 @EnableJeesuiteCache
 @EnableJeesuiteKafkaProducer
 @EnableJeesuiteKafkaConsumer
-@EnableJeesuiteSchedule
+//@EnableJeesuiteSchedule
 @MapperScan(basePackages = "com.oneplatform.system.dao.mapper")
 @ComponentScan(value = {"com.oneplatform"})
 @ServletComponentScan({ "com.oneplatform.base.servlet" })

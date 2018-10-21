@@ -47,7 +47,7 @@
 									<a href="javascript:;" id="btn_edit_myinfo"><i class="fa fa-gear" aria-hidden="true"></i>编辑资料</a>
 								</dd>
 								<dd>
-									<a href="/api/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
+									<a href="/api/user/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
 								</dd>
 							</dl>
 						</li>
@@ -106,7 +106,7 @@
 					layer = layui.layer,
 					id = '';
 				$(function(){
-					 $.getJSON('/api/profile',function(data){
+					 $.getJSON('/api/user/profile',function(data){
                    	　if(data.code == 200){
                    		$("#userName").html(data.data.username);
                    		id = data.data.id;

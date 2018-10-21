@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ import com.jeesuite.common.util.DateUtils;
 import com.jeesuite.scheduler.AbstractJob;
 import com.jeesuite.scheduler.JobContext;
 import com.jeesuite.scheduler.annotation.ScheduleConf;
+import com.jeesuite.spring.ApplicationStartedListener;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
@@ -37,15 +39,15 @@ import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
  * @date 2017年11月7日
  */
 @Component
-@ScheduleConf(cronExpr="0 */1 * * * ?",jobName="moduleMetadataUpdateTask",executeOnStarted = true)
-public class ModuleMetadataUpdateTask extends AbstractJob{
+@ScheduleConf(cronExpr="0 0/5 * * * ?",jobName="moduleMetadataUpdateTask",executeOnStarted = false)
+public class ModuleMetadataUpdateTask extends AbstractJob implements ApplicationStartedListener{
 	
 	private final static Logger logger = LoggerFactory.getLogger("com.oneplatform.system.task");
 	
 	private @Autowired ModuleEntityMapper moduleMapper;
-	private @Autowired CustomRouteLocator routeLocator; 
+	private @Autowired(required=false) CustomRouteLocator routeLocator; 
 	private @Autowired RestTemplate restTemplate;
-	private @Autowired EurekaClient eurekaClient;
+	private @Autowired(required=false) EurekaClient eurekaClient;
 	
 	private static Map<String, ModuleEntity> activeModulesCache = new HashMap<>();
 	
@@ -56,7 +58,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob{
 
 	@Override
 	public void doJob(JobContext context) throws Exception {
-		
+		updateModules();
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob{
 		return true;
 	}
 	
-	public void updateModules(){
+	private void updateModules(){
 		//数据库已经存在的模块
 		Map<String, ModuleEntity> hisModules = moduleMapper.findAll().stream().collect(Collectors.toMap(ModuleEntity::getServiceId, module -> module));
         //
@@ -160,5 +162,10 @@ public class ModuleMetadataUpdateTask extends AbstractJob{
 			return null;
 		}
     }
+
+	@Override
+	public void onApplicationStarted(ApplicationContext applicationContext) {
+		updateModules();
+	}
 
 }

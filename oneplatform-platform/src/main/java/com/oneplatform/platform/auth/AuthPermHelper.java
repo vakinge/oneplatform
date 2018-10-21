@@ -16,15 +16,13 @@
  */
 package com.oneplatform.platform.auth;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.jeesuite.common.util.PathMatcher;
 import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.spring.InstanceFactory;
 import com.oneplatform.system.constants.ResourceType;
@@ -49,31 +47,21 @@ public class AuthPermHelper {
 	private static String contextPath = ResourceUtils.getProperty("server.servlet.context-path","");
 	private static final String WILDCARD_START = "{";
 	
-	private static volatile List<String> anonUris = new ArrayList<>();
-	private static volatile List<Pattern> anonUriPatterns = new ArrayList<>();
+	private static PathMatcher anonymousUriMatcher;
 	// 无通配符uri
 	private static volatile Map<String,String> nonWildcardUriPerms = new HashMap<>();
 	private static volatile Map<Pattern,String>  wildcardUriPermPatterns = new HashMap<>();
 	
 	public static boolean anonymousAllowed(String uri){
-		
         doLoadPermDatasIfRequired();
-		
-		if(anonUris.contains(uri))return true;
-		for (Pattern pattern : anonUriPatterns) {
-			if(pattern.matcher(uri).matches())return true;
-		}
-		return false;
+		return anonymousUriMatcher.match(uri);
 	}
 
 	public static String getPermssionCode(String uri){
 		
 		doLoadPermDatasIfRequired();
 		
-		if(anonUris.contains(uri))return null;
-		for (Pattern pattern : anonUriPatterns) {
-			if(pattern.matcher(uri).matches())return null;
-		}
+		if(anonymousUriMatcher.match(uri))return null;
 		if(nonWildcardUriPerms.containsKey(uri))return nonWildcardUriPerms.get(uri);
 		
 		for (Pattern pattern : wildcardUriPermPatterns.keySet()) {
@@ -102,16 +90,7 @@ public class AuthPermHelper {
 			contextPath = contextPath.substring(0,contextPath.indexOf("/"));
 		}
 		
-		String[] uris = StringUtils.split(ResourceUtils.getProperty("anonymous.uris"), ";");
-        for (String uri : uris) {
-        	uri = contextPath + uri;
-        	if(uri.endsWith("*")){
-        		String regex = uri.replaceAll("\\*+", ".*");
-        		anonUriPatterns.add(Pattern.compile(regex));
-        	}else{
-        		anonUris.add(uri);
-        	}
-        }
+		anonymousUriMatcher = new PathMatcher(contextPath,ResourceUtils.getProperty("anonymous.uris"));
 		
 		ModuleEntityMapper moduleMapper = InstanceFactory.getInstance(ModuleEntityMapper.class);
 		List<ModuleEntity> modules = moduleMapper.findAllEnabled();
@@ -153,8 +132,6 @@ public class AuthPermHelper {
 	}
 	
 	public static void reset(){
-		anonUris.clear();
-		anonUriPatterns.clear();
 		nonWildcardUriPerms.clear();
 		wildcardUriPermPatterns.clear();
 		loadFinished = false;
