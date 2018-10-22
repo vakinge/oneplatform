@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.jeesuite.mybatis.core.BaseEntity;
 import com.oneplatform.base.model.ModuleMetadata;
 import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
@@ -99,7 +101,7 @@ public class ModuleEntity extends BaseEntity {
      * @return service_id
      */
     public String getServiceId() {
-        return serviceId;
+        return StringUtils.isBlank(serviceId) ? serviceId : serviceId.toUpperCase();
     }
 
     /**

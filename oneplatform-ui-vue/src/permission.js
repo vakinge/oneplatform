@@ -1,4 +1,6 @@
 import router from './router'
+import store from './store'
+import { Message } from 'element-ui'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import { isLogined } from '@/utils/auth' // 验权
@@ -11,7 +13,18 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      next()
+      if (store.getters.menus.length === 0) {
+        store.dispatch('GetMenus').then(res => { // 拉取菜单
+          next()
+        }).catch((err) => {
+          store.dispatch('FedLogOut').then(() => {
+            Message.error(err || 'Verification failed, please login again')
+            next({ path: '/' })
+          })
+        })
+      } else {
+        next()
+      }
     }
   } else {
     if (whiteList.indexOf(to.path) !== -1) {

@@ -1,11 +1,13 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfo, getMenus } from '@/api/login'
 import { setLogined, removeLoginedState } from '@/utils/auth'
+import { initMenu } from '@/utils/menu'
 
 const user = {
   state: {
     id: 0,
     name: '',
-    avatar: ''
+    avatar: '',
+    menus: []
   },
 
   mutations: {
@@ -17,6 +19,9 @@ const user = {
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
+    },
+    SET_MENUS: (state, menus) => {
+      state.menus = menus
     }
   },
 
@@ -46,6 +51,20 @@ const user = {
           commit('SET_ID', data.id)
           commit('SET_NAME', data.username)
           commit('SET_AVATAR', data.avatar)
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 获取用户菜单
+    GetMenus({ commit }) {
+      return new Promise((resolve, reject) => {
+        getMenus().then(response => {
+          const menus = initMenu(response.data)
+          console.log(menus)
+          commit('SET_MENUS', menus)
           resolve(response)
         }).catch(error => {
           reject(error)

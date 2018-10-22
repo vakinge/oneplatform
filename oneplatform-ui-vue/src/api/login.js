@@ -18,6 +18,13 @@ export function getInfo() {
   })
 }
 
+export function getMenus() {
+  return request({
+    url: '/user/menus',
+    method: 'get'
+  })
+}
+
 export function logout() {
   return request({
     url: '/user/logout',

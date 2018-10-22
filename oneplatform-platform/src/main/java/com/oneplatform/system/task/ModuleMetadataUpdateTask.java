@@ -26,6 +26,7 @@ import com.jeesuite.spring.ApplicationStartedListener;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
+import com.oneplatform.base.GlobalContants;
 import com.oneplatform.base.model.ModuleMetadata;
 import com.oneplatform.platform.zuul.CustomRouteLocator;
 import com.oneplatform.system.dao.entity.ModuleEntity;
@@ -68,7 +69,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 	
 	private void updateModules(){
 		//数据库已经存在的模块
-		Map<String, ModuleEntity> hisModules = moduleMapper.findAll().stream().collect(Collectors.toMap(ModuleEntity::getServiceId, module -> module));
+		Map<String, ModuleEntity> hisModules = moduleMapper.findAll().stream().collect(Collectors.toMap((ModuleEntity::getServiceId), module -> module));
         //
 		Map<String, ModuleEntity> activeModules = getActiveModulesFromEureka();
 		
@@ -78,7 +79,9 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 		ModuleMetadata metadata;
 		for (String serviceId : activeModules.keySet()) {
 			if(!hisModules.containsKey(serviceId)){
+				if(GlobalContants.MODULE_NAME.equalsIgnoreCase(serviceId))continue;
 				metadata = fetchModuleMetadata(serviceId);
+				if(metadata == null)continue;
 				moduleEntity = activeModules.get(serviceId);
 				moduleEntity.setName(metadata.getName());
 				moduleEntity.setRouteName(metadata.getRoutePath());
@@ -126,11 +129,12 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
     	if(applications == null)return result;
     	ModuleEntity module;
     	for (Application application : applications) {
-    		module = result.get(application.getName());
+    		String serviceId = application.getName().toUpperCase();
+			module = result.get(serviceId);
     		if(module == null){
     			module = new ModuleEntity();
-    			module.setServiceId(application.getName());
-    			result.put(application.getName(), module);
+    			module.setServiceId(serviceId);
+    			result.put(serviceId, module);
     		}
     		
     		for (InstanceInfo instanceInfo : application.getInstances()) {
