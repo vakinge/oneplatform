@@ -32,7 +32,7 @@ layui.config({
         spreadOne: true,
         elem: '#admin-navbar-side',
 		cached:false,
-		url: '/api/menus'
+		url: '/api/user/menus'
     });
     //渲染navbar
     navbar.render();

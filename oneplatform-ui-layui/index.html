@@ -1,132 +1,138 @@
-<!DOCTYPE html>
-
-<html>
+<!doctype html>
+<html lang="en">
 
 	<head>
-		<meta charset="utf-8">
-		<title>OnePlatform</title>
-		<meta name="renderer" content="webkit">
+		<meta charset="UTF-8">
+		<title>Oneplatform企业级开发平台</title>
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="format-detection" content="telephone=no">
-
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="./assets/css/font.css">
+		<link rel="stylesheet" href="./assets/css/admin.css">
 		<link rel="stylesheet" href="assets/js/layui/css/layui.css" media="all" />
-		<link rel="stylesheet" href="assets/css/global.css" media="all">
-		<link rel="stylesheet" href="assets/js/font-awesome/css/font-awesome.min.css">
-
 	</head>
 
 	<body>
-		<div class="layui-layout layui-layout-admin" style="border-bottom: solid 5px #1aa094;">
-			<div class="layui-header header header-demo">
-				<div class="layui-main">
-					<div class="admin-login-box">
-						<a class="logo" style="left: 0;" href="http://beginner.zhengjinfan.cn/demo/beginner_admin/">
-							<span style="font-size: 22px;">OnePlatform</span>
-						</a>
-						<div class="admin-side-toggle">
-							<i class="fa fa-bars" aria-hidden="true"></i>
-						</div>
-						<div class="admin-side-full">
-							<i class="fa fa-life-bouy" aria-hidden="true"></i>
-						</div>
-					</div>
-					<ul class="layui-nav admin-header-item">
-						<li class="layui-nav-item">
-							<a href="http://git.oschina.net/vakinge/oneplatform" target="_blank">osc</a>
-						</li>
-						<li class="layui-nav-item">
-							<a href="javascript:;" class="admin-header-user">
-								<img src="assets/images/head.jpg" />
-								<span id="userName">admin</span>
-							</a>
-							<dl class="layui-nav-child">
-								<dd>
-									<a href="javascript:;" id="btn_edit_myinfo"><i class="fa fa-gear" aria-hidden="true"></i>编辑资料</a>
-								</dd>
-								<dd>
-									<a href="/api/user/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
-								</dd>
-							</dl>
-						</li>
-					</ul>
-				</div>
+		<!-- 顶部开始 -->
+		<div class="container">
+			<div class="logo">
+				<a href="./index.html">Oneplatform</a>
 			</div>
-			<div class="layui-side layui-bg-black" id="admin-side">
-				<div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side"></div>
+			<div class="left_open">
+				<i title="展开左侧栏" class="iconfont">&#xe699;</i>
 			</div>
-			<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
-				<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
-					<ul class="layui-tab-title">
-						<li class="layui-this">
-							<i class="fa fa-dashboard" aria-hidden="true"></i>
-							<cite>控制面板</cite>
-						</li>
-					</ul>
-					<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
-						<div class="layui-tab-item layui-show">
-							<iframe id="iframe_cont" name="iframe_cont" src="main.html"></iframe>
-						</div>
+			<ul class="layui-nav right" lay-filter="">
+				<li class="layui-nav-item">
+					<a href="javascript:;"><span id='userName'></span></a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="javascript:;" id="btn_edit_myinfo">个人信息</a>
+						</dd>
+						<dd>
+							<a class="loginout" href="/api/user/logout">退出</a>
+						</dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item to-index">
+					<a href="/">前台首页</a>
+				</li>
+			</ul>
+
+		</div>
+		<!-- 顶部结束 -->
+		<!-- 中部开始 -->
+		<!-- 左侧菜单开始 -->
+		<div class="left-nav">
+			<div id="side-nav">
+				<ul id="nav"></ul>
+			</div>
+		</div>
+		<!-- <div class="x-slide_left"></div> -->
+		<!-- 左侧菜单结束 -->
+		<!-- 右侧主体开始 -->
+		<div class="page-content">
+			<div class="layui-tab tab" lay-filter="wenav_tab" id="WeTabTip" lay-allowclose="true">
+				<ul class="layui-tab-title" id="tabName">
+					<li>我的桌面</li>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show">
+						<iframe src='./main.html' frameborder="0" scrolling="yes" class="weIframe"></iframe>
 					</div>
 				</div>
 			</div>
-			<div class="layui-footer footer footer-demo" id="admin-footer">
-				<div class="layui-main">
-					<p>2016 &copy;
-						<a href="http://www.jeesuite.com">jeesuite.com</a>
-					</p>
-				</div>
-			</div>
-			<div class="site-tree-mobile layui-hide">
-				<i class="layui-icon">&#xe602;</i>
-			</div>
-			<div class="site-mobile-shade"></div>
-			
-			<!--锁屏模板 start-->
-			<script type="text/template" id="lock-temp">
-				<div class="admin-header-lock" id="lock-box">
-					<div class="admin-header-lock-img">
-						<img src="images/0.jpg"/>
-					</div>
-					<div class="admin-header-lock-name" id="lockUserName">beginner</div>
-					<input type="text" class="admin-header-lock-input" value="输入密码解锁.." name="lockPwd" id="lockPwd" />
-					<button class="layui-btn layui-btn-small" id="unlock">解锁</button>
-				</div>
-			</script>
-			<!--锁屏模板 end -->
-			
-			<script type="text/javascript" src="assets/js/layui/layui.js"></script>
-			<script type="text/javascript" src="assets/js/layui/lay/modules/jquery.js"></script>
-			<script src="assets/js/index.js"></script>
-			<script>
-			layui.use('layer', function() {
-				var $ = layui.jquery,
-					layer = layui.layer,
-					id = '';
-				$(function(){
-					 $.getJSON('/api/user/profile',function(data){
-                   	　if(data.code == 200){
-                   		$("#userName").html(data.data.username);
-                   		id = data.data.id;
-                   	　}else{
-                   		location.href='login.html';
-                   	　}
-                   });
-				});
-				//
-				$('#btn_edit_myinfo').on('click',function(){
-					layer.open({
-						  type: 2, 
-						  title:'编辑资料',
-						  content: '/modules/account/edit.html?id=' + id,
-						  area: ['500px', '400px']
-					}); 
+		</div>
+		<div class="page-content-bg"></div>
+		<!-- 右侧主体结束 -->
+		<!-- 中部结束 -->
+		<!-- 底部开始 -->
+		<div class="footer">
+			<div class="copyright">Copyright ©2018 Oneplatform All Rights Reserved</div>
+		</div>
+		<!-- 底部结束 -->
+		<!--Tab菜单右键弹出菜单-->
+	    <ul class="rightMenu" id="rightMenu">
+          <li data-type="fresh">刷新</li>
+          <li data-type="current">关闭当前</li>
+          <li data-type="other">关闭其它</li>
+          <li data-type="all">关闭所有</li>
+       </ul>
+	</body>
+    <script id="menuTpl" type="text/html">
+     {{#  layui.each(d, function(index, item){ }}
+        <li>
+		  <a href="javascript:;">
+			 <i class="iconfont">&#xe723;</i>
+			 <cite>{{ item.name }}</cite>
+			 <i class="iconfont nav_right">&#xe697;</i>
+		 </a>
+        {{#  if(item.children !== undefined && item.children.length > 0){ }}
+		<ul class="sub-menu">
+          {{#  layui.each(item.children, function(index1, item1){ }}
+		  <li>
+			 <a _href="{{ item1.code }}"><i class="iconfont">&#xe6a7;</i><cite>{{ item1.name }}</cite></a>
+		  </li>
+          {{#  }); }}
+		</ul>
+        {{#  } }} 
+	  </li>
+     {{#  }); }}
+  </script>
+    
+    <script type="text/javascript" src="assets/js/layui/layui.js"></script>
+	<script type="text/javascript">
+	  layui.config({
+	     base: './assets/js/'
+		 ,version: '101100'
+	  }).use(['laytpl','admin'], function() {
+			var $ = layui.jquery,laytpl = layui.laytpl,id;
+			$.getJSON('/api/user/menus',function(data){
+				if(data.code && data.code==401){top.location.href = "/login.html";return;}
+				var tpl = $('#menuTpl').html();
+				laytpl(tpl).render(data.data, function(html){
+					$('#nav').html(html);
 				});
 			});
-			</script>
-		</div>
-	</body>
+		    $.getJSON('/api/user/profile',function(data){
+              if(data.code == 200){
+               	 $("#userName").html(data.data.username);
+               	 id = data.data.id;
+              }else{
+               	location.href='login.html';
+              }
+		   });
+		    
+		    $('#btn_edit_myinfo').on('click',function(){
+				layer.open({
+					  type: 2, 
+					  title:'编辑资料',
+					  content: '/modules/account/edit.html?id=' + id,
+					  area: ['500px', '400px']
+				}); 
+			});
+	  });
+	</script>
 
 </html>

@@ -100,6 +100,12 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 		
 		for (String serviceId : hisModules.keySet()) {
 			moduleEntity = hisModules.get(serviceId);
+			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(serviceId)){
+				if(!activeModulesCache.containsKey(serviceId)){
+					activeModulesCache.put(serviceId, moduleEntity);
+				}
+				continue;
+			}
 			if(activeModules.containsKey(serviceId)){
 				activeModulesCache.put(serviceId, moduleEntity);
 				moduleEntity.setServiceInstances(activeModules.get(serviceId).getServiceInstances());
@@ -159,6 +165,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
     
     private ModuleMetadata fetchModuleMetadata(String serviceId){
        try {
+    	   
 			ParameterizedTypeReference<ModuleMetadata> arearesponseType = new ParameterizedTypeReference<ModuleMetadata>() {};
 			ModuleMetadata metadata = restTemplate.exchange("http://"+serviceId.toUpperCase()+"/metadata", HttpMethod.GET, null, arearesponseType).getBody();
 			return metadata;

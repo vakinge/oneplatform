@@ -14,6 +14,7 @@ public enum ExceptionCode {
 	
 	OPTER_NOT_ALLOW(5100,"不允许操作"),
 
+	DB_ERROR(9001,"数据库异常"),
 	SYSTEM_ERROR(9999,"系统异常");
 	
 	
