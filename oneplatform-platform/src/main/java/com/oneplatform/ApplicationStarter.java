@@ -27,9 +27,9 @@ import com.oneplatform.base.BaseApplicationStarter;
 @EnableJeesuiteKafkaProducer
 @EnableJeesuiteKafkaConsumer
 @EnableJeesuiteSchedule
-@MapperScan(basePackages = "com.oneplatform.system.dao.mapper")
+@MapperScan(basePackages = {"com.oneplatform.system.dao.mapper","com.oneplatform.smartapi.dao.mapper"})
 @ComponentScan(value = {"com.oneplatform"})
-@ServletComponentScan({ "com.oneplatform.base.servlet" })
+@ServletComponentScan({ "com.oneplatform" })
 public class ApplicationStarter extends BaseApplicationStarter{
 
 	public static void main(String[] args) {
