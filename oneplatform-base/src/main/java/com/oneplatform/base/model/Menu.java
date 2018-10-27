@@ -1,11 +1,14 @@
 package com.oneplatform.base.model;
 
+import java.util.List;
+
 public class Menu {
 
 	private String uri;
 	private String text;
 	private String icon;
 	private int  sort;
+	private List<Menu> children;
 	
 	public String getUri() {
 		return uri;
@@ -31,6 +34,13 @@ public class Menu {
 	public void setSort(int sort) {
 		this.sort = sort;
 	}
+	public List<Menu> getChildren() {
+		return children;
+	}
+	public void setChildren(List<Menu> children) {
+		this.children = children;
+	}
+	
 	
 	
 }

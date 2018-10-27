@@ -6,6 +6,8 @@ package com.oneplatform.base.servlet;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.io.CharStreams;
 import com.jeesuite.springweb.utils.WebUtils;
+import com.oneplatform.base.model.Menu;
 import com.oneplatform.base.util.ApiInfoHolder;
 
 /**
@@ -42,12 +45,33 @@ public class ModuleMetadataServlet extends HttpServlet {
 		JSONObject metadataJSON = new JSONObject();
 		metadataJSON.put("apis", ApiInfoHolder.getApiInfos());
 		try {
-			Resource resource = ResourcePatternUtils.getResourcePatternResolver(new DefaultResourceLoader()).getResource("classpath:metadata.json");
-			String contents = CharStreams.toString(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
-			JSONObject jsonObject = JSON.parseObject(contents);
-			jsonObject.keySet().forEach(key -> {
-				metadataJSON.put(key, jsonObject.get(key));
-			});
+			DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+			Resource resource = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResource("classpath:metadata.json");
+			if(resource != null){
+				String contents = CharStreams.toString(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
+				JSONObject jsonObject = JSON.parseObject(contents);
+				jsonObject.keySet().forEach(key -> {
+					metadataJSON.put(key, jsonObject.get(key));
+				});
+			}else{
+				Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("classpath*:metadata.json");
+				List<Menu> menus = new ArrayList<>();
+				for (Resource resource2 : resources) {
+					String contents = CharStreams.toString(new InputStreamReader(resource2.getInputStream(), StandardCharsets.UTF_8));
+					JSONObject jsonObject = JSON.parseObject(contents);
+					if(jsonObject.containsKey("menus")){
+						Menu menu = new Menu();
+						menu.setText(jsonObject.getString("name"));
+						menu.setIcon(jsonObject.getString("icon"));
+						List<Menu> subMenus = JSON.parseArray(jsonObject.getString("menus"), Menu.class);
+						menu.setChildren(subMenus);
+						menus.add(menu);
+					}
+				}
+				if(!menus.isEmpty()){
+					metadataJSON.put("menus", menus);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

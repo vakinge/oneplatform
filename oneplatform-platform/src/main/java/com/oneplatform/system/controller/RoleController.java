@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
+import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.ResourceEntity;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.RoleEntityMapper;
 import com.oneplatform.system.dto.param.AssignmentParam;
 import com.oneplatform.system.dto.param.RoleParam;
-import com.oneplatform.system.dto.param.SwitchParam;
 import com.oneplatform.system.service.ResourcesService;
 import com.oneplatform.system.service.RoleService;
 

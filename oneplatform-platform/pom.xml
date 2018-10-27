@@ -196,23 +196,28 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>addons</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/addons</directory>
+						<targetPath>BOOT-INF/lib/</targetPath>
+						<includes>
+							<include>*.jar</include>
+						</includes>
+					</resource>
+					<resource>
+						<directory>src/main/resources</directory>
+						<targetPath>BOOT-INF/classes/</targetPath>
+					</resource>
+				</resources>
+			</build>
+		</profile>
 	</profiles>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		<resources>
-			<resource>
-				<directory>src/addons</directory>
-				<targetPath>BOOT-INF/lib/</targetPath>
-				<includes>
-					<include>*.jar</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<targetPath>BOOT-INF/classes/</targetPath>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

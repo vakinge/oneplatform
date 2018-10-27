@@ -6,6 +6,7 @@ package com.oneplatform.system.mq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.eventbus.Subscribe;
 import com.jeesuite.kafka.annotation.ConsumerHandler;
 import com.jeesuite.kafka.handler.MessageHandler;
 import com.jeesuite.kafka.message.DefaultMessage;
@@ -30,6 +31,7 @@ public class SysLogMessageHandler implements MessageHandler {
 	public void p1Process(DefaultMessage message) {}
 
 	@Override
+	@Subscribe
 	public void p2Process(DefaultMessage message) {
 		LogObject body = (LogObject) message.getBody();
 		SysLogEntity logEntity = new SysLogEntity(body);

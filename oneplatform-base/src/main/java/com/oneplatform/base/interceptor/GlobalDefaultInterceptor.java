@@ -10,7 +10,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.oneplatform.base.kit.KafkaProduceClient;
+import com.oneplatform.base.kit.AsyncTaskProduceClient;
 import com.oneplatform.base.log.LogContext;
 import com.oneplatform.base.log.LogContext.LogObject;
 import com.oneplatform.base.log.LogOption;
@@ -53,7 +53,7 @@ public class GlobalDefaultInterceptor implements HandlerInterceptor {
 							if(annotation!= null)logObject.setActionName(annotation.value());
 						}
 						LogContext.end(String.valueOf(200), null);
-						KafkaProduceClient.send(LogContext.SYS_LOG_TOPIC, logObject);
+						AsyncTaskProduceClient.send(LogContext.SYS_LOG_TOPIC, logObject);
 					}
 				}
 			}

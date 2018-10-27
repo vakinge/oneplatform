@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
+import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ResourceEntity;
 import com.oneplatform.system.dto.ModuleRoleResource;
 import com.oneplatform.system.dto.param.ResourceParam;
-import com.oneplatform.system.dto.param.SwitchParam;
 import com.oneplatform.system.service.ResourcesService;
 
 import io.swagger.annotations.Api;

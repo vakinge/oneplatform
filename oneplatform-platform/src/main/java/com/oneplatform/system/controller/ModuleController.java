@@ -15,9 +15,9 @@ import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.SelectOption;
+import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dto.param.ModuleParam;
-import com.oneplatform.system.dto.param.SwitchParam;
 import com.oneplatform.system.service.ModuleService;
 
 import io.swagger.annotations.Api;

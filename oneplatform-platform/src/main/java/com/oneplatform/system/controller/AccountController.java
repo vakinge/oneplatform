@@ -13,12 +13,12 @@ import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.PageResult;
+import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.AccountEntity;
 import com.oneplatform.system.dto.param.AccountParam;
 import com.oneplatform.system.dto.param.AccountQueryParam;
 import com.oneplatform.system.dto.param.AssignmentParam;
-import com.oneplatform.system.dto.param.SwitchParam;
 import com.oneplatform.system.dto.param.UpdatepasswordParam;
 import com.oneplatform.system.service.AccountService;
 

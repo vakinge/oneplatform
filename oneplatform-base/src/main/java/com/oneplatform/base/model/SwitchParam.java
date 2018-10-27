@@ -1,4 +1,4 @@
-package com.oneplatform.system.dto.param;
+package com.oneplatform.base.model;
 
 public class SwitchParam {
 
