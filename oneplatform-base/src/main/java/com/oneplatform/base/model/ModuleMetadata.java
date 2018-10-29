@@ -4,12 +4,19 @@ import java.util.List;
 
 public class ModuleMetadata {
 
+	private String type;
 	private String name;
 	private String routePath;
 	private List<ApiInfo> apis;
 	private List<Menu> menus;
 	
 	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String getName() {
 		return name;
 	}

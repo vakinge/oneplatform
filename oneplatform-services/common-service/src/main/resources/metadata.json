@@ -1,4 +1,5 @@
 {
+    "type": "service",
     "name": "通用服务",
 	"routePath": "common",
 	"menus": [{

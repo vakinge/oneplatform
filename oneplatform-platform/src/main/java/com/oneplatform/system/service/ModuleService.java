@@ -1,17 +1,18 @@
 package com.oneplatform.system.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jeesuite.common.JeesuiteBaseException;
+import com.oneplatform.base.GlobalContants.ModuleType;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
@@ -35,12 +36,18 @@ public class ModuleService  {
 	private @Autowired ModuleEntityMapper moduleMapper;
 	private @Autowired ResourceEntityMapper resourceMapper;
 	
-	public List<ModuleEntity> findAllModules(){
-		return new ArrayList<>(ModuleMetadataUpdateTask.getActiveModules().values());
+	public List<ModuleEntity> findAllServiceModules(){
+		return ModuleMetadataUpdateTask.getActiveModules().values()
+		        .stream()
+		        .filter( e -> e.getModuleType().equals(ModuleType.service.name()))
+		        .collect(Collectors.toList());
 	}
 	
 	public ModuleEntity getmoduleDetails(int moduleId){
-		Optional<ModuleEntity> optional = ModuleMetadataUpdateTask.getActiveModules().values().stream().filter(m -> (m.getId().intValue() == moduleId)).findFirst();
+		Optional<ModuleEntity> optional = ModuleMetadataUpdateTask.getActiveModules().values()
+				.stream()
+				.filter(m -> (m.getId().intValue() == moduleId))
+				.findFirst();
 		if(!optional.isPresent())throw new JeesuiteBaseException(ExceptionCode.RECORD_NOT_EXIST.code, "模块不存在或者未运行");
     	return optional.get();
 	}

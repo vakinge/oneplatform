@@ -40,6 +40,9 @@ public class ModuleEntity extends BaseEntity {
     
     @Column(name = "apidoc_url")
     private String apidocUrl;
+    
+    @Column(name = "module_type")
+    private String moduleType;
 
     /**
      * 是否内部服务模块
@@ -237,6 +240,14 @@ public class ModuleEntity extends BaseEntity {
 
 	public void setApidocUrl(String apidocUrl) {
 		this.apidocUrl = apidocUrl;
+	}
+	
+	public String getModuleType() {
+		return moduleType;
+	}
+
+	public void setModuleType(String moduleType) {
+		this.moduleType = moduleType;
 	}
 
 	public int getInstanceNums() {

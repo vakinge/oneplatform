@@ -93,6 +93,7 @@ CREATE TABLE `sys_module` (
   `internal` tinyint(1) DEFAULT 0  COMMENT '是否内部服务模块',
   `enabled` tinyint(1) DEFAULT 1,
   `apidoc_url` varchar(100) DEFAULT NULL,
+  `module_type` ENUM('plugin', 'service') DEFAULT 'service' COMMENT '模块类型',
   `created_at` datetime DEFAULT NULL,
   `created_by` int(10) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,

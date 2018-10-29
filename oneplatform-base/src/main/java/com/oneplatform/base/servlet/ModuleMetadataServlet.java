@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.io.CharStreams;
 import com.jeesuite.springweb.utils.WebUtils;
+import com.oneplatform.base.GlobalContants;
 import com.oneplatform.base.model.Menu;
 import com.oneplatform.base.util.ApiInfoHolder;
 
@@ -46,8 +47,8 @@ public class ModuleMetadataServlet extends HttpServlet {
 		metadataJSON.put("apis", ApiInfoHolder.getApiInfos());
 		try {
 			DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
-			Resource resource = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResource("classpath:metadata.json");
-			if(resource != null){
+			if(!GlobalContants.MODULE_NAME.equalsIgnoreCase("oneplatform")){
+				Resource resource = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResource("classpath:metadata.json");
 				String contents = CharStreams.toString(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
 				JSONObject jsonObject = JSON.parseObject(contents);
 				jsonObject.keySet().forEach(key -> {

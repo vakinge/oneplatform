@@ -181,6 +181,12 @@
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka_2.11</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.jeesuite.oneplatform</groupId>
+			<artifactId>smartapi-core</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 
 	</dependencies>
 

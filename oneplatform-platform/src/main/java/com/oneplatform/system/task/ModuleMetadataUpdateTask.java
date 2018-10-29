@@ -86,6 +86,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				moduleEntity.setName(metadata.getName());
 				moduleEntity.setRouteName(metadata.getRoutePath());
 				moduleEntity.setServiceId(serviceId);
+				moduleEntity.setModuleType(metadata.getType());
 				moduleEntity.setApidocUrl(String.format("/api/%s/swagger-ui.html", moduleEntity.getRouteName()));
 				moduleEntity.setEnabled(true);
 				moduleEntity.setCreatedAt(new Date());
@@ -165,7 +166,6 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
     
     private ModuleMetadata fetchModuleMetadata(String serviceId){
        try {
-    	   
 			ParameterizedTypeReference<ModuleMetadata> arearesponseType = new ParameterizedTypeReference<ModuleMetadata>() {};
 			ModuleMetadata metadata = restTemplate.exchange("http://"+serviceId.toUpperCase()+"/metadata", HttpMethod.GET, null, arearesponseType).getBody();
 			return metadata;
