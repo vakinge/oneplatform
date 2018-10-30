@@ -17,6 +17,7 @@ import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.util.ModuleMetadataHolder;
+import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
 import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
@@ -122,7 +123,7 @@ public class ModuleService  {
 	
 	public List<ApiInfo> findNotPermModuleApis(int moduleId){
 		List<ApiInfo> apis = findModuleApis(moduleId);
-		List<String> permCodes = resourceMapper.findPermCodeByModule(moduleId);
+		List<String> permCodes = resourceMapper.findResourceFieldByModule(moduleId,ResourceType.uri.name());
 		
 		if(permCodes.isEmpty()){
 			return apis;

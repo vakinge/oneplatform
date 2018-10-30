@@ -26,7 +26,7 @@ public class ModuleEntity extends BaseEntity {
 
     private String name;
 
-    @Column(name = "service_id")
+    @Column(name = "service_id",updatable = false)
     private String serviceId;
 
     @Column(name = "route_name")
@@ -51,10 +51,10 @@ public class ModuleEntity extends BaseEntity {
 
     private Boolean enabled = true;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at",updatable = false)
     private Date createdAt;
 
-    @Column(name = "created_by")
+    @Column(name = "created_by",updatable = false)
     private Integer createdBy;
 
     @Column(name = "updated_at")

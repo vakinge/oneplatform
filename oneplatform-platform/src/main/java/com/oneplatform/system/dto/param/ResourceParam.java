@@ -6,7 +6,7 @@ public class ResourceParam {
     private Integer parentId;
     private Integer moduleId;
     private String name;
-    private String code;
+    private String resource;
     private String type;
     private String icon;
     private Integer sort;
@@ -34,11 +34,12 @@ public class ResourceParam {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getCode() {
-		return code;
+	
+	public String getResource() {
+		return resource;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setResource(String resource) {
+		this.resource = resource;
 	}
 	public String getType() {
 		return type;

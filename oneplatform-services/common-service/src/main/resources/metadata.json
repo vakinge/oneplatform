@@ -4,8 +4,10 @@
     "menuIcon":"",
 	"identifier": "common",
 	"menus": [{
+	    "key": "file-list",
 		"uri": "/modules/common/files.html",
 		"text": "文件管理",
+		"icon": "",
 		"sort": 1
 	}]
 }

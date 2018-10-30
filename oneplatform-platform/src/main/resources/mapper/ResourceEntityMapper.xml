@@ -10,6 +10,7 @@
     <result column="module_id" property="moduleId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="resource" property="resource" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="CHAR" />
     <result column="icon" property="icon" jdbcType="VARCHAR" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
@@ -21,20 +22,20 @@
   </resultMap>
   
   <select id="findAllResources" parameterType="String"  resultMap="BaseResultMap">
-	  SELECT  r.id,r.parent_id,r.module_id,r.name,r.code,r.type,r.icon,r.enabled,r.sort
+	  SELECT  r.*
 	  FROM sys_resources r 
 	  order by r.sort
    </select>
   
   <select id="findRoleResources" parameterType="map"  resultMap="BaseResultMap">
-	  SELECT  r.id,r.parent_id,r.module_id,r.name,r.code,r.type,r.icon,r.enabled,r.sort
+	  SELECT  r.*
 	  FROM sys_resources r,sys_role_resources rr where r.id=rr.resource_id and rr.role_id=#{roleId}
 	  <if test="type != 'all'">and r.type=#{type}</if>
 	  order by r.sort
    </select>
    
    <select id="findUserResources" parameterType="map"  resultMap="BaseResultMap">
-	  SELECT  r.id,r.parent_id,r.module_id,r.name,r.code,r.type,r.icon,r.enabled,r.sort
+	  SELECT  r.*
 	  FROM sys_resources r,sys_role_resources rr where r.type=#{type} and r.id=rr.resource_id and rr.role_id IN (
 	      SELECT  r.id FROM sys_role r,sys_account_roles ar where r.id=ar.role_id and ar.account_id=#{accountId}
 	  )
@@ -42,28 +43,28 @@
    </select>
    
    <select id="findLeafResources" parameterType="String"  resultMap="BaseResultMap">
-	  SELECT  r.id,r.parent_id,r.module_id,r.name,r.code,r.type,r.icon,r.enabled,r.sort
+	  SELECT  r.*
 	  FROM sys_resources r where r.code is not null
 	  <if test="type != 'all'">and r.type=#{type}</if>
 	  order by r.sort
    </select>
   
   <select id="findNotLeafResources" parameterType="String"  resultMap="BaseResultMap">
-	  SELECT  r.id,r.parent_id,r.module_id,r.name,r.code,r.type,r.icon,r.enabled,r.sort
+	  SELECT  r.*
 	  FROM sys_resources r where r.code is null
 	  <if test="type != 'all'">and r.type=#{type}</if>
 	  order by r.sort
    </select>
    
     <select id="findResources" parameterType="String"  resultMap="BaseResultMap">
-	  SELECT  r.id,r.parent_id,r.module_id,r.name,r.code,r.type,r.icon,r.enabled,r.sort
+	  SELECT  r.*
 	  FROM sys_resources r where 1=1
 	  <if test="type != 'all'">and r.type=#{type}</if>
 	  order by r.sort
    </select>
    
    <select id="findAllNotMenuResources" resultMap="BaseResultMap">
-	  SELECT  r.id,r.parent_id,r.module_id,r.name,r.code,r.type,r.icon,r.enabled,r.sort
+	  SELECT  r.*
 	  FROM sys_resources r where r.type <![CDATA[<> 'menu']]>
 	  order by r.sort
    </select>

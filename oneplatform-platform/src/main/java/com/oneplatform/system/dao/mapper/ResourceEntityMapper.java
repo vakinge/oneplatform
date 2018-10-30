@@ -16,13 +16,17 @@ public interface ResourceEntityMapper extends CustomBaseMapper<ResourceEntity> {
 	@ResultMap("BaseResultMap")
 	ResourceEntity findByModuleAndCode(@Param("moduleId") int moduleId,@Param("code") String code);
 	
+	@Select("select * from sys_resources where module_id = #{moduleId} and resource = #{resource} limit 1")
+	@ResultMap("BaseResultMap")
+	ResourceEntity findByModuleAndResource(@Param("moduleId") int moduleId,@Param("resource") String resource);
+	
 	@Select("select * from sys_resources where module_id = #{moduleId} and parent_id=1 limit 1")
 	@ResultMap("BaseResultMap")
 	ResourceEntity findModuleParent(int moduleId);
 	
-	@Select("select code from sys_resources where module_id = #{moduleId} and type='uri'")
+	@Select("select resource from sys_resources where module_id = #{moduleId} and type=#{type}")
 	@ResultType(String.class)
-	List<String> findPermCodeByModule(@Param("moduleId") int moduleId);
+	List<String> findResourceFieldByModule(@Param("moduleId") int moduleId,@Param("type") String type);
 	
 	List<ResourceEntity> findAllResources();
 	

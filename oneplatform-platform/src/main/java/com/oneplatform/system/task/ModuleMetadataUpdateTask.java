@@ -199,12 +199,14 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
     	}
     	ResourceEntity child;
 		for (Menu menu : metadata.getMenus()) {
-			child = resourceMapper.findByModuleAndCode(moduleEntity.getId(), menu.getUri());
+			
+			child = resourceMapper.findByModuleAndCode(moduleEntity.getId(), menu.getKey());
 			if(child == null){
 				child = new ResourceEntity();
 				child.setModuleId(moduleEntity.getId());
 				child.setName(menu.getText());
-				child.setCode(menu.getUri());
+				child.setCode(menu.getKey());
+				child.setResource(menu.getUri());
 				child.setIcon(menu.getIcon());
 				child.setType(ResourceType.menu.name());
 				child.setParentId(parent.getId());

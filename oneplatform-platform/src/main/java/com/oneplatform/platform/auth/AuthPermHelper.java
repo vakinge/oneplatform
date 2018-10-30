@@ -104,18 +104,18 @@ public class AuthPermHelper {
 		String fullUri = null;
 		for (ResourceEntity resource : resources) {
 			if(resource.getModuleId() == 0){
-				fullUri = contextPath + resource.getCode();
+				fullUri = contextPath + resource.getResource();
 			}else{ 
 				ModuleEntity module = modulesAsmap.get(resource.getModuleId());
 				if(module == null)continue;
-				fullUri = contextPath + "/" + module.getRouteName() + resource.getCode();
+				fullUri = contextPath + "/" + module.getRouteName() + resource.getResource();
 			}
 			
-			if(resource.getCode().contains(WILDCARD_START)){
+			if(resource.getResource().contains(WILDCARD_START)){
 				String regex = fullUri.replaceAll("\\{.*?(?=})", ".*").replaceAll("\\}", "");
-				wildcardUriPermPatterns.put(Pattern.compile(regex),resource.getCode());
+				wildcardUriPermPatterns.put(Pattern.compile(regex),resource.getResource());
 			}else{
-				nonWildcardUriPerms.put(fullUri, resource.getCode());
+				nonWildcardUriPerms.put(fullUri, resource.getResource());
 			}
 		}
 

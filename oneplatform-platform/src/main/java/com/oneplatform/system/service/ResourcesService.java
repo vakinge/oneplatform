@@ -65,7 +65,7 @@ public class ResourcesService {
 		for (RoleEntity role : roles) {
 			resources = resourceMapper.findRoleResources(role.getId(), ResourceType.uri.name());
 			for (ResourceEntity resourceEntity : resources) {
-				result.add(resourceEntity.getCode());
+				result.add(resourceEntity.getResource());
 			}
 		}
 		return result;
@@ -161,11 +161,11 @@ public class ResourcesService {
 		TreeModel model;
 		for (ResourceEntity resource : resources) {
 			if(resource.getModuleId() > 0 && !modules.containsKey(resource.getModuleId()))continue;
-			models.add(new TreeModel(resource.getId(), resource.getName(),resource.getCode(), resource.getIcon(), resource.getParentId(), true));
+			models.add(new TreeModel(resource.getId(), resource.getName(),resource.getResource(), resource.getIcon(), resource.getParentId(), true));
 			current = resource;
 			while(current.hasChildren()){
 				current = resourceMap.get(current.getParentId());
-				model = new TreeModel(current.getId(), current.getName(),current.getCode(), current.getIcon(), current.getParentId(), false);
+				model = new TreeModel(current.getId(), current.getName(),current.getResource(), current.getIcon(), current.getParentId(), false);
 				if(!models.contains(model)){
 					models.add(model);
 				}
@@ -181,7 +181,7 @@ public class ResourcesService {
 		List<TreeModel> models = new ArrayList<>();
 		for (ResourceEntity resource : resources) {
 			if(!modules.containsKey(resource.getModuleId()))continue;
-			treeModel = new TreeModel(resource.getId(), resource.getName(),resource.getCode(), resource.getIcon(), resource.getParentId(), resource.isLeaf());
+			treeModel = new TreeModel(resource.getId(), resource.getName(),resource.getResource(), resource.getIcon(), resource.getParentId(), resource.isLeaf());
 			moduleName = modules.get(resource.getModuleId()).getName();
 			treeModel.setExtraAttr(moduleName);
 			models.add(treeModel);
@@ -200,7 +200,7 @@ public class ResourcesService {
 			ResourceEntity parent = resourceMapper.selectByPrimaryKey(param.getParentId());
 			param.setModuleId(parent.getModuleId());
 		}
-		AssertUtil.isNull(resourceMapper.findByModuleAndCode(param.getModuleId(), param.getCode()), "uri或编码重复");
+		AssertUtil.isNull(resourceMapper.findByModuleAndResource(param.getModuleId(), param.getResource()), "uri或编码重复");
 		ResourceEntity entity = BeanUtils.copy(param, ResourceEntity.class);
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(operUserId);
@@ -211,11 +211,11 @@ public class ResourcesService {
 	public void updateResource(int operUserId,ResourceParam param){
 		ResourceEntity entity = resourceMapper.selectByPrimaryKey(param.getId());
 		AssertUtil.notNull(entity);
-		ResourceEntity sameCodeEntity = resourceMapper.findByModuleAndCode(param.getModuleId(), param.getCode());
+		ResourceEntity sameCodeEntity = resourceMapper.findByModuleAndResource(param.getModuleId(), param.getResource());
 		if(sameCodeEntity != null && !sameCodeEntity.getId().equals(entity.getId())){
 			throw new JeesuiteBaseException(ExceptionCode.REQUEST_DUPLICATION.code, "url或者编码重复");
 		}
-		entity.setCode(param.getCode());
+		entity.setResource(param.getResource());
 		entity.setIcon(param.getIcon());
 		entity.setName(param.getName());
 		entity.setSort(param.getSort());

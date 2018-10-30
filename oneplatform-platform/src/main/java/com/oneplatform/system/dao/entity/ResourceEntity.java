@@ -22,21 +22,25 @@ public class ResourceEntity extends BaseEntity {
     /**
      * 父ID，顶级为0
      */
-    @Column(name = "parent_id")
+    @Column(name = "parent_id",updatable = false)
     private Integer parentId;
 
-    @Column(name = "module_id")
+    @Column(name = "module_id",updatable = false)
     private Integer moduleId;
 
     /**
      * 资源名称
      */
     private String name;
+    
+    @Column(name = "code",updatable = false)
+    private String code;
 
     /**
      * 资源编码(url,按钮编码等)
      */
-    private String code;
+    @Column(name = "resource",updatable = false)
+    private String resource;
 
     private String type;
 
@@ -52,10 +56,10 @@ public class ResourceEntity extends BaseEntity {
      */
     private Integer sort;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at",updatable = false)
     private Date createdAt;
 
-    @Column(name = "created_by")
+    @Column(name = "created_by",updatable = false)
     private Integer createdBy;
 
     @Column(name = "updated_at")
@@ -141,25 +145,24 @@ public class ResourceEntity extends BaseEntity {
         this.name = name;
     }
 
-    /**
-     * 获取资源编码(url,按钮编码等)
-     *
-     * @return code - 资源编码(url,按钮编码等)
-     */
+   
     public String getCode() {
-        return code;
-    }
+		return code;
+	}
 
-    /**
-     * 设置资源编码(url,按钮编码等)
-     *
-     * @param code 资源编码(url,按钮编码等)
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    /**
+	public String getResource() {
+		return resource;
+	}
+
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
+	/**
      * @return type
      */
     public String getType() {

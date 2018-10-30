@@ -4,12 +4,20 @@ import java.util.List;
 
 public class Menu {
 
+	private String key;
 	private String uri;
 	private String text;
 	private String icon;
 	private int  sort;
 	private List<Menu> children;
 	
+	
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
 	public String getUri() {
 		return uri;
 	}
