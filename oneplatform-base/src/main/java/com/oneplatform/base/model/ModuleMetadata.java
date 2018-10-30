@@ -1,14 +1,16 @@
 package com.oneplatform.base.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleMetadata {
 
 	private String type;
 	private String name;
-	private String routePath;
-	private List<ApiInfo> apis;
-	private List<Menu> menus;
+	private String identifier;
+	private String menuIcon;
+	private List<ApiInfo> apis = new ArrayList<>();
+	private List<Menu> menus = new ArrayList<>();
 	
 	
 	public String getType() {
@@ -23,11 +25,19 @@ public class ModuleMetadata {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getRoutePath() {
-		return routePath;
+	
+	public String getIdentifier() {
+		return identifier;
 	}
-	public void setRoutePath(String routePath) {
-		this.routePath = routePath;
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+	
+	public String getMenuIcon() {
+		return menuIcon;
+	}
+	public void setMenuIcon(String menuIcon) {
+		this.menuIcon = menuIcon;
 	}
 	public List<ApiInfo> getApis() {
 		return apis;

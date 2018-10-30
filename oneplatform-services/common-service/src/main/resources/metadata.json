@@ -1,10 +1,11 @@
 {
     "type": "service",
     "name": "通用服务",
-	"routePath": "common",
+    "menuIcon":"",
+	"identifier": "common",
 	"menus": [{
-		"uri": "赵二柱",
-		"text": "qqq@163.com",
+		"uri": "/modules/common/files.html",
+		"text": "文件管理",
 		"sort": 1
 	}]
 }

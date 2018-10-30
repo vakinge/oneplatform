@@ -109,7 +109,7 @@ public class ResourcesService {
 	public List<ModuleRoleResource> findAllModuleRoleResources(int roleId){
 		Map<Integer, ModuleRoleResource> moduleRoleResources = new HashMap<>();
 		//全部模块
-		Map<Integer, ModuleEntity> modules = moduleService.getAllModules(true);
+		Map<Integer, ModuleEntity> modules = moduleService.getAllModules();
 		//全部资源
 		List<ResourceEntity> resources = resourceMapper.findLeafResources(ResourceType.all.name());
 		//角色已分配的资源
@@ -150,11 +150,9 @@ public class ResourcesService {
 	public List<TreeModel> findUserMenus(int accountId){
 		//
 		Map<Integer, ModuleEntity> modules = ModuleMetadataUpdateTask.getActiveModules().values().stream().collect(Collectors.toMap(ModuleEntity::getId, module -> module));
-		Map<Integer, ResourceEntity> resourceMap = new HashMap<>();
+		
 		List<ResourceEntity> resources = resourceMapper.findNotLeafResources(ResourceType.menu.name());
-		for (ResourceEntity resource : resources) {
-			resourceMap.put(resource.getId(), resource);
-		}
+		Map<Integer, ResourceEntity> resourceMap = resources.stream().collect(Collectors.toMap(ResourceEntity::getId, entity -> entity));
 		
 		resources = resourceMapper.findUserResources(accountId, ResourceType.menu.name());
 		
@@ -178,7 +176,7 @@ public class ResourcesService {
 	
 	private List<TreeModel> buildResourceTree(List<ResourceEntity> resources) {
 		
-		Map<Integer, ModuleEntity> modules = moduleService.getAllModules(true);
+		Map<Integer, ModuleEntity> modules = moduleService.getAllModules();
 		TreeModel treeModel;String moduleName;
 		List<TreeModel> models = new ArrayList<>();
 		for (ResourceEntity resource : resources) {

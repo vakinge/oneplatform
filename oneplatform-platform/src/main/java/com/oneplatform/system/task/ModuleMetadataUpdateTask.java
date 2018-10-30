@@ -27,11 +27,17 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import com.oneplatform.base.GlobalContants;
+import com.oneplatform.base.GlobalContants.ModuleType;
+import com.oneplatform.base.model.Menu;
 import com.oneplatform.base.model.ModuleMetadata;
+import com.oneplatform.base.util.ModuleMetadataHolder;
 import com.oneplatform.platform.zuul.CustomRouteLocator;
+import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
+import com.oneplatform.system.dao.entity.ResourceEntity;
 import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
+import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 
 /**
  * 
@@ -46,10 +52,13 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 	private final static Logger logger = LoggerFactory.getLogger("com.oneplatform.system.task");
 	
 	private @Autowired ModuleEntityMapper moduleMapper;
+	private @Autowired ResourceEntityMapper resourceMapper;
 	private @Autowired(required=false) CustomRouteLocator routeLocator; 
 	private @Autowired RestTemplate restTemplate;
 	private @Autowired(required=false) EurekaClient eurekaClient;
-	
+	//已经入库的模块信息
+	Map<String, ModuleEntity> historyModules;
+	//注册中心当前可用的模块信息
 	private static Map<String, ModuleEntity> activeModulesCache = new HashMap<>();
 	
 	
@@ -59,7 +68,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 
 	@Override
 	public void doJob(JobContext context) throws Exception {
-		updateModules();
+		updateModulesFromEureka();
 	}
 
 	@Override
@@ -67,9 +76,8 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 		return true;
 	}
 	
-	private void updateModules(){
-		//数据库已经存在的模块
-		Map<String, ModuleEntity> hisModules = moduleMapper.findAll().stream().collect(Collectors.toMap((ModuleEntity::getServiceId), module -> module));
+	private void updateModulesFromEureka(){
+		if(historyModules == null)return;
         //
 		Map<String, ModuleEntity> activeModules = getActiveModulesFromEureka();
 		
@@ -78,13 +86,13 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 		ModuleEntity moduleEntity;
 		ModuleMetadata metadata;
 		for (String serviceId : activeModules.keySet()) {
-			if(!hisModules.containsKey(serviceId)){
-				if(GlobalContants.MODULE_NAME.equalsIgnoreCase(serviceId))continue;
+			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(serviceId))continue;
+			if(!historyModules.containsKey(serviceId)){
 				metadata = fetchModuleMetadata(serviceId);
 				if(metadata == null)continue;
 				moduleEntity = activeModules.get(serviceId);
 				moduleEntity.setName(metadata.getName());
-				moduleEntity.setRouteName(metadata.getRoutePath());
+				moduleEntity.setRouteName(metadata.getIdentifier());
 				moduleEntity.setServiceId(serviceId);
 				moduleEntity.setModuleType(metadata.getType());
 				moduleEntity.setApidocUrl(String.format("/api/%s/swagger-ui.html", moduleEntity.getRouteName()));
@@ -93,26 +101,26 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				moduleEntity.setMetadata(metadata);
 				moduleMapper.insertSelective(moduleEntity);
 				//
+				historyModules.put(serviceId, moduleEntity);
 				activeModulesCache.put(serviceId, moduleEntity);
+				//创建菜单
+				createModuleMenusIfNotExist(moduleEntity);
 				refreshRequired = true;
 			}
 		}
 		
 		
-		for (String serviceId : hisModules.keySet()) {
-			moduleEntity = hisModules.get(serviceId);
-			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(serviceId)){
-				if(!activeModulesCache.containsKey(serviceId)){
-					activeModulesCache.put(serviceId, moduleEntity);
-				}
-				continue;
-			}
+		for (String serviceId : historyModules.keySet()) {
+			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(serviceId))continue;
+			moduleEntity = historyModules.get(serviceId);
 			if(activeModules.containsKey(serviceId)){
 				activeModulesCache.put(serviceId, moduleEntity);
 				moduleEntity.setServiceInstances(activeModules.get(serviceId).getServiceInstances());
 				if(DateUtils.getDiffMinutes(new Date(), moduleEntity.getFetchMetaDataTime()) > 15){					
 					moduleEntity.setMetadata(fetchModuleMetadata(serviceId));
 					moduleEntity.setFetchMetaDataTime(new Date());
+					//创建菜单
+					createModuleMenusIfNotExist(moduleEntity);
 				}
 				continue;
 			}
@@ -173,10 +181,69 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 			return null;
 		}
     }
+    
+    private void createModuleMenusIfNotExist(ModuleEntity moduleEntity){
+    	ModuleMetadata metadata = moduleEntity.getMetadata();
+    	if(metadata.getMenus() == null || metadata.getMenus().isEmpty())return;
+    	ResourceEntity parent = resourceMapper.findModuleParent(moduleEntity.getId());
+    	if(parent == null){
+    		parent = new ResourceEntity();
+    		parent.setModuleId(moduleEntity.getId());
+    		parent.setName(metadata.getName());
+    		parent.setIcon(metadata.getMenuIcon());
+    		parent.setType(ResourceType.menu.name());
+    		parent.setParentId(0);
+    		parent.setEnabled(true);
+    		parent.setCreatedAt(new Date());
+    		resourceMapper.insertSelective(parent);
+    	}
+    	ResourceEntity child;
+		for (Menu menu : metadata.getMenus()) {
+			child = resourceMapper.findByModuleAndCode(moduleEntity.getId(), menu.getUri());
+			if(child == null){
+				child = new ResourceEntity();
+				child.setModuleId(moduleEntity.getId());
+				child.setName(menu.getText());
+				child.setCode(menu.getUri());
+				child.setIcon(menu.getIcon());
+				child.setType(ResourceType.menu.name());
+				child.setParentId(parent.getId());
+				child.setEnabled(true);
+				child.setCreatedAt(new Date());
+				resourceMapper.insertSelective(child);
+			}
+		}
+    }
 
 	@Override
 	public void onApplicationStarted(ApplicationContext applicationContext) {
-		updateModules();
+		List<ModuleMetadata> metadatas = ModuleMetadataHolder.getMetadatas();
+		
+		ModuleEntity moduleEntity;
+		for (ModuleMetadata metadata : metadatas) {
+			if(ModuleType.plugin.name().equals(metadata.getType())){
+				moduleEntity = moduleMapper.findByServiceId(metadata.getIdentifier().toUpperCase());
+				if(moduleEntity == null){
+					moduleEntity = new ModuleEntity();
+					moduleEntity.setModuleType(metadata.getName());
+					moduleEntity.setName(metadata.getName());
+					moduleEntity.setServiceId(metadata.getIdentifier());
+					moduleEntity.setModuleType(metadata.getType());
+					moduleEntity.setMetadata(metadata);
+					moduleMapper.insertSelective(moduleEntity);
+				}
+				//
+				createModuleMenusIfNotExist(moduleEntity);
+				
+				activeModulesCache.put(String.valueOf(moduleEntity.getId()), moduleEntity);
+			}
+		}
+		//
+		historyModules = moduleMapper.findAll().stream().collect(Collectors.toMap((ModuleEntity::getServiceId), module -> module));
+		ModuleEntity platform = historyModules.get(GlobalContants.MODULE_NAME.toUpperCase());
+		activeModulesCache.put(platform.getId().toString(), platform);
+		//
+		updateModulesFromEureka();
 	}
 
 }

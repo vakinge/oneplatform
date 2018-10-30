@@ -16,13 +16,18 @@
  */
 package com.oneplatform.base.util;
 
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
@@ -31,7 +36,12 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.io.CharStreams;
+import com.oneplatform.base.GlobalContants;
+import com.oneplatform.base.GlobalContants.ModuleType;
 import com.oneplatform.base.model.ApiInfo;
+import com.oneplatform.base.model.ModuleMetadata;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -40,17 +50,17 @@ import io.swagger.annotations.ApiOperation;
  * @author <a href="mailto:vakinge@gmail.com">vakin</a>
  * @date 2018年4月17日
  */
-public class ApiInfoHolder {
+public class ModuleMetadataHolder {
 
-	private static List<ApiInfo> apiInfos = new ArrayList<>();
+	private static List<ModuleMetadata> metadatas = new ArrayList<>();
 	
-	private synchronized static void scanApiInfos() {
+	private synchronized static void scanApiInfos(ModuleMetadata metadata) {
 
-		if (!apiInfos.isEmpty())
+		if (!metadata.getApis().isEmpty())
 			return;
 
 		String classPattern = "/**/*.class";
-		String[] parts = StringUtils.split(ApiInfoHolder.class.getPackage().getName(),".");
+		String[] parts = StringUtils.split(ModuleMetadataHolder.class.getPackage().getName(),".");
 		String scanBasePackage = System.getProperty("controller.base-package", parts[0] + "." + parts[1]);
 		ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
@@ -100,7 +110,7 @@ public class ApiInfoHolder {
 							
 							apiInfo.setKey(clazz.getName() + "." + method.getName());
 
-							apiInfos.add(apiInfo);
+							metadata.getApis().add(apiInfo);
 						}
 					}
 				}
@@ -109,12 +119,40 @@ public class ApiInfoHolder {
 		}
 
 	}
-	
-	public static List<ApiInfo> getApiInfos() {
-		if (apiInfos.isEmpty()) {
-			scanApiInfos();
+
+
+	private static void loadModuleInfo() {
+		try {
+			if(GlobalContants.MODULE_NAME.equalsIgnoreCase("oneplatform")){
+				ModuleMetadata metadata = new ModuleMetadata();
+				metadata.setType(ModuleType.service.name());
+				metadata.setIdentifier(GlobalContants.MODULE_NAME);
+				scanApiInfos(metadata);
+				metadatas.add(metadata);
+			}
+			DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+			Resource[] resources = ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("classpath*:metadata.json");
+			if(resources == null)return;
+			for (Resource resource : resources) {
+				String contents = CharStreams.toString(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
+				ModuleMetadata metadata = JSON.parseObject(contents, ModuleMetadata.class);
+				if(ModuleType.service.name().equals(metadata.getType())){
+					scanApiInfos(metadata);
+				}
+				metadatas.add(metadata);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return apiInfos;
+	}
+	
+	public static List<ModuleMetadata> getMetadatas() {
+		if(!metadatas.isEmpty())return metadatas;
+		synchronized (ModuleMetadataHolder.class) {
+			if(!metadatas.isEmpty())return metadatas;
+			loadModuleInfo();
+		}
+     return metadatas;
 	}
 
 }
