@@ -231,9 +231,9 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 					moduleEntity.setName(metadata.getName());
 					moduleEntity.setServiceId(metadata.getIdentifier());
 					moduleEntity.setModuleType(metadata.getType());
-					moduleEntity.setMetadata(metadata);
 					moduleMapper.insertSelective(moduleEntity);
 				}
+				moduleEntity.setMetadata(metadata);
 				//
 				createModuleMenusIfNotExist(moduleEntity);
 				

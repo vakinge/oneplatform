@@ -20,7 +20,7 @@ public interface ResourceEntityMapper extends CustomBaseMapper<ResourceEntity> {
 	@ResultMap("BaseResultMap")
 	ResourceEntity findByModuleAndResource(@Param("moduleId") int moduleId,@Param("resource") String resource);
 	
-	@Select("select * from sys_resources where module_id = #{moduleId} and parent_id=1 limit 1")
+	@Select("select * from sys_resources where module_id = #{moduleId} and parent_id=0 limit 1")
 	@ResultMap("BaseResultMap")
 	ResourceEntity findModuleParent(int moduleId);
 	
