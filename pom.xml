@@ -36,6 +36,7 @@
 		<module>oneplatform-services</module>
 		<module>springcloud-eureka</module>
 		<module>springcloud-admin</module>
+		<module>oneplatform-plugins</module>
 	</modules>
 
 	<properties>
