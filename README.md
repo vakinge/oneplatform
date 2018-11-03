@@ -20,7 +20,7 @@ http://oneplatform.jeesuite.com/
  - 自研轻量级业务流程引擎，代码简洁定制化高（内测中）
 
 #### 功能列表
-:white_check_mark:表示已经开发完成,:recycle:表示内测中:clock130:表示规划中
+ 状态说明: :white_check_mark:表示已经开发完成 :recycle:表示内测中 :clock130:表示规划中
  - 服务网关
    - 服务分发:white_check_mark:
    - 动态路由:white_check_mark:
