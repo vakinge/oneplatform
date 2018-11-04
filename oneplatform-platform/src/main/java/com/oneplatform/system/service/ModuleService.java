@@ -40,7 +40,7 @@ public class ModuleService  {
 	public List<ModuleEntity> findAllServiceModules(){
 		return ModuleMetadataUpdateTask.getActiveModules().values()
 		        .stream()
-		        .filter( e -> e.getModuleType().equals(ModuleType.service.name()))
+		        .filter( e -> ModuleType.service.name().equals(e.getModuleType()))
 		        .collect(Collectors.toList());
 	}
 	

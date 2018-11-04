@@ -52,8 +52,8 @@
  </head>  
  <body class="childrenBody"> 
   <div class="admin-main"> 
-   <blockquote class="layui-elem-quote"> 
-    <a class="layui-btn layui-btn-small J_iframe_dialog" href="javascript:;" data-url="/modules/resource/menu-add.html" data-title="新增菜单"> 
+   <blockquote class="layui-elem-quote layui-quote-nm"> 
+    <a class="layui-btn layui-btn-small  layui-btn-normal J_iframe_dialog" href="javascript:;" data-url="/modules/resource/menu-add.html" data-title="新增菜单"> 
       <i class="layui-icon">&#xe608;</i> 新增菜单 
     </a> 
    </blockquote> 
@@ -92,7 +92,7 @@
        </div> 
        <div class="layui-form-item"> 
         <div class="layui-input-block"> 
-         <input type="button" class="layui-btn J_ajaxSubmit" onsuccesscallback="reloadTree" value="保存" /> 
+         <input type="button" class="layui-btn layui-btn-normal J_ajaxSubmit" onsuccesscallback="reloadTree" value="保存" /> 
          <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/resource/delete/{id}" ajax-method="POST" onsuccesscallback="reloadTree" value="删除" /> 
         </div> 
        </div> 

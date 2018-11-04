@@ -41,7 +41,7 @@ public class ModuleEntity extends BaseEntity {
     @Column(name = "apidoc_url")
     private String apidocUrl;
     
-    @Column(name = "module_type")
+    @Column(name = "module_type",updatable = false)
     private String moduleType;
 
     /**
