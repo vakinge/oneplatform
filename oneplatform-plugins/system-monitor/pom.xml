@@ -5,5 +5,5 @@
     <artifactId>oneplatform-plugins</artifactId>
     <version>1.0.0</version>
   </parent>
-  <artifactId>service-monitor</artifactId>
+  <artifactId>system-monitor</artifactId>
 </project>

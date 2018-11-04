@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>接口明细</title> 
+  <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="/assets/css/global.css" media="all">
+  <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main" dataLoad="/api/apiconfig/details/{id}" onFinishCallback="onDataLoadedCallback">  
+  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+     <legend>基本信息</legend>
+  </fieldset>
+  <form class="layui-form">  
+   <input type="hidden" name="id" bindAttr="id" />
+    <div class="layui-form-item">
+		<label class="layui-form-label">接口名称</label>
+		<div class="layui-input-block">
+           <input type="text" bindAttr="name" class="layui-input" style="background-color: #E8E8E8" disabled>
+		</div>
+	</div> 
+	<div class="layui-form-item">
+		<label class="layui-form-label">请求方法</label>
+		<div class="layui-input-block">
+           <input type="text" bindAttr="httpType" class="layui-input" style="background-color: #E8E8E8" disabled>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">请求uri</label>
+		<div class="layui-input-block">
+           <input type="text" bindAttr="uri" class="layui-input" style="background-color: #E8E8E8" disabled>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">关联数据库</label>
+		<div class="layui-input-block">
+           <input type="text" bindAttr="datasource" class="layui-input" style="background-color: #E8E8E8" disabled>
+		</div>
+	</div>
+   </form> 
+  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+     <legend>操作集</legend>
+  </fieldset>
+  <table class="layui-table" lay-size="sm" style="margin-left: 20px;width: 98%;">
+  <thead>
+    <tr>
+      <th width="100">步骤名</th>
+      <th>执行SQL</th>
+      <th width="100">结果属性名</th>
+      <th width="100">期望结果</th>
+      <th width="120">错误提示</th>
+    </tr> 
+  </thead>
+  <tbody>
+    <tr>
+      <td>贤心</td>
+      <td>
+        INSERT INTO users (name, password, mobile, email, type, status, created_at) VALUES (${name}, ${password}, ${mobile}, ${email}, ${type}, ${status}, ${currentTime})
+      </td>
+      <td>人生行</td>
+      <td>人生行</td>
+      <td>人生行</td>
+    </tr>
+  </tbody>
+</table>
+  
+  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+     <legend>请求参数</legend>
+  </fieldset>
+  <form class="layui-form">
+  <table class="layui-table" lay-size="sm" style="margin-left: 20px;width: 98%;">
+  <thead>
+    <tr>
+      <th width="100">参数名</th>
+      <th width="100">参数类型</th>
+      <th width="100">是否必填</th>
+      <th width="120">默认值</th>
+    </tr> 
+  </thead>
+  <tbody>
+    <tr>
+      <td>贤心</td>
+      <td>人生行</td>
+      <td><input type="checkbox" name="yyy" lay-skin="switch" lay-text="ON|OFF" checked></td>
+      <td>无</td>
+    </tr>
+  </tbody>
+</table>
+</form>
+  
+  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+     <legend>响应实例</legend>
+  </fieldset>
+    <pre class="layui-code" lay-title="JSON" lay-skin="notepad">//代码区域
+    {
+      "discountRate": "",
+      "fixFee": 0,
+      "secondType": "real",
+      "serviceFeeRate": "5.00",
+      "serviceFeeType": "ratio"
+    }
+      </pre>
+      
+  </div> 
+  
+  <div id="configdialog" style="display:none;">
+  <form id="configForm" class="layui-form" action="" style="padding: 20px;" lay-filter="configForm"></form>
+  </div>
+ </body>
+ <script type="text/javascript" src="/assets/js/layui/layui.js"></script>  
+<script>
+	var tables = {};
+	layui.config({
+		version : "1.0.0",
+		base : '/assets/js/modules/'
+	}).use('smartapi');
+	
+	function onDataLoadedCallback(data){
+		
+	}
+</script>
+</html>

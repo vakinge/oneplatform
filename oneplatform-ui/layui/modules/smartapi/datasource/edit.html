@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>新增数据源</title> 
+  <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="/assets/css/global.css" media="all">
+  <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main" dataLoad="/api/dsconfig/details/{id}">  
+   <form class="layui-form" action="/api/dsconfig/update">  
+   <input type="hidden" name="id" bindAttr="id" />
+    <div class="layui-form-item">
+		<label class="layui-form-label">数据库名称</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="name" name="name" placeholder="数据库名称" lay-verify="required" class="layui-input">
+		</div>
+	</div> 
+    <div class="layui-form-item">
+		<label class="layui-form-label">数据库类型</label>
+		<div class="layui-input-block">
+           <input type="text" bindAttr="dbType" lay-verify="required" class="layui-input" style="background-color: #E8E8E8" disabled>
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">数据库url</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="connUrl" class="layui-input" style="background-color: #E8E8E8" disabled>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">数据库用户</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="connUsername" class="layui-input" style="background-color: #E8E8E8" disabled>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">可选数据表</label>
+		<div class="layui-input-block">
+		    <textarea name="includeTables" bindAttr="includeTables" placeholder="默认为全部表,多个使用,隔开" class="layui-textarea"></textarea>
+		</div>
+	</div>
+		     
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+ <script type="text/javascript" src="/assets/js/layui/layui.js"></script>
+<script>
+	layui.config({
+		version : "1.0.0",
+		base : '/assets/js/modules/'
+	}).use('smartapi');
+</script>
+</html>

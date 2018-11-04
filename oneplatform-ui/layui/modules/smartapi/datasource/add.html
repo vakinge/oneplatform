@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>新增数据源</title> 
+  <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="/assets/css/global.css" media="all">
+  <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main">  
+   <form class="layui-form" action="/api/dsconfig/add">  
+    <div class="layui-form-item">
+		<label class="layui-form-label">数据库名称</label>
+		<div class="layui-input-block">
+		   <input type="text" name="name" placeholder="数据库名称" lay-verify="required" class="layui-input">
+		</div>
+	</div> 
+    <div class="layui-form-item">
+		<label class="layui-form-label">数据库类型</label>
+		<div class="layui-input-block">
+		   <select name="dbType" lay-filter="dbType">
+           <option value="Mysql">Mysql</option>
+           <option value="Oracle">Oracle</option>
+           <option value="SqlServer">SqlServer</option>
+           <option value="PostgreSql">PostgreSql</option>
+           </select>
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">数据库url</label>
+		<div class="layui-input-block">
+		   <input type="text" name="connUrl" placeholder="数据库url" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">数据库用户</label>
+		<div class="layui-input-block">
+		   <input type="text" name="connUsername" placeholder="数据库用户名" class="layui-input">
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label">数据库密码</label>
+		<div class="layui-input-block">
+		   <input type="password" name="connPassword" placeholder="数据库密码" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">可选数据表</label>
+		<div class="layui-input-block">
+		    <textarea name="includeTables" placeholder="默认为全部表,多个使用,隔开" class="layui-textarea"></textarea>
+		</div>
+	</div>
+		     
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+ <script type="text/javascript" src="/assets/js/layui/layui.js"></script>
+<script>
+	layui.config({
+		version : "1.0.0",
+		base : '/assets/js/modules/'
+	}).use('smartapi');
+</script>
+</html>

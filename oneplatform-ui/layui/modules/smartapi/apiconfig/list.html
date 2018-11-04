@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Table</title>
+<title>新增数据源</title>
 <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" />
 <link rel="stylesheet" href="/assets/css/global.css" media="all">
 <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css">
@@ -11,30 +11,40 @@
 
 <body>
 	<div class="admin-main">
-		<blockquote class="layui-elem-quote">
-			<a class="layui-btn layui-btn-normal" href="./add.html" data-title="新增接口"> 
+		<blockquote class="layui-elem-quote layui-quote-nm">
+			<a class="layui-btn layui-btn-normal J_iframe_dialog" href="javascript:;" data-url="./add.html" data-title="新增接口"> 
 			  <i class="layui-icon">&#xe608;</i> 新增接口
 			</a>
 		</blockquote>
 		<fieldset class="layui-elem-field">
-			<legend>用户列表</legend>
+			<legend>接口列表</legend>
 			<div class="layui-field-box layui-form">
-				<table class="layui-hide" id="tablecont" lay-filter="table"></table>
+				<table class="layui-hide" id="api_tablecont" lay-filter="apitable"></table>
 			</div>
 		</fieldset>
 	</div>
 	<script type="text/html" id="enabledTpl">
       <input type="checkbox" data-id="{{d.id}}" value="{{d.enabled}}" lay-skin="switch" lay-text="是|否" {{ d.enabled ? 'checked' : '' }} disabled>          
-    </script>    
+    </script>   
+    <script type="text/html" id="publishedTpl">
+      <input type="checkbox" data-id="{{d.id}}" value="{{d.published}}" lay-skin="switch" lay-text="是|否" {{ d.published ? 'checked' : '' }} disabled>          
+    </script>  
 	<script type="text/html" id="toolBar">
       <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="switch">{{#  if(d.enabled){ }}禁用{{#  } else { }}启用{{#  } }} </a>
-      <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+      <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="details">详情</a>
+      {{#  if(d.published){ }}
+      <a class="layui-btn layui-btn-disabled layui-btn-xs">编辑</a>
+      <a class="layui-btn layui-btn-disabled layui-btn-xs">发布</a>
+      <a class="layui-btn layui-btn-disabled layui-btn-xs">删除</a>
+      {{#  } else { }}
+      <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+      <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="publish">发布</a>
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+      {{#  } }}
     </script>
 </body>
 <script type="text/javascript" src="/assets/js/layui/layui.js"></script>
 <script>
-	var tables = {};
 	layui.config({
 		version : "1.0.0",
 		base : '/assets/js/modules/'

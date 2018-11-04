@@ -72,13 +72,14 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 		        });
 		    },
 		    success: function(msg) {
-				layer.msg(msg || '操作成功', {icon: 5});
+				layer.msg(msg || '操作成功', {icon: 6});
 				return;
 			},
 			error: function(msg) {
-				layer.msg(msg, {shift: 6});
+				layer.msg(msg, {shift: 5});
 			},
-			iframeDialog(title,url){
+			iframeDialog(title,url,scrollDisabled){
+				if(scrollDisabled)url = [url, 'no'];
 				var index = layer.open({
 					  type: 2,
 					  title: title,
@@ -86,7 +87,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 					  shade: 0.8,
 					  area: ['893px', '600px'],
 					  maxmin: false,
-					  content: [url, 'no']
+					  content: url
 					}); 
 				layer.full(index);
 			},
@@ -314,13 +315,14 @@ exports('oneplatform', oneplatform);
 		var self = $(this),
 	     url = self.attr('data-url'),
 	     title = self.attr('data-title') || '弹窗';
+		if(self.attr('data-scroll') === '0')url = [url, 'no'];
 		 var index = layer.open({
 			  type: 2,
 			  title: title,
 			  shadeClose: true,
 			  shade: 0.8,
 			  area: ['893px', '600px'],
-			  content: [url, 'no']
+			  content: url
 			}); 
 		 layer.full(index);
 	});
