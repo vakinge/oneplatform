@@ -19,7 +19,8 @@ http://oneplatform.jeesuite.com/
  - 智能表单+智能接口通过配置方式搞定60%的接口(注：不是代码生成器，我们追求的是所见即所得)
  - 自研轻量级业务流程引擎，代码简洁定制化高（内测中）
 
-#### 功能列表(:white_check_mark:表示已经开发完成,:clock130:表示规划中)
+#### 功能列表
+ 状态说明: :white_check_mark:表示已经开发完成 :recycle:表示内测中 :clock130:表示规划中
  - 服务网关
    - 服务分发:white_check_mark:
    - 动态路由:white_check_mark:
@@ -61,7 +62,7 @@ http://oneplatform.jeesuite.com/
    - 自动缓存、二级缓存(jeesuite-libs提供):white_check_mark:
    - 分布式锁(jeesuite-libs提供):white_check_mark:
    - 分布式定时任务(jeesuite-libs提供):white_check_mark:
-   - 智能API:white_check_mark:
+   - 智能API:recycle:
    - 智能表单:clock130:
    - 通用查询:clock130:
    - 项目初始化工具:clock130:
