@@ -52,16 +52,18 @@
       <th width="120">错误提示</th>
     </tr> 
   </thead>
-  <tbody>
-    <tr>
-      <td>贤心</td>
-      <td>
-        INSERT INTO users (name, password, mobile, email, type, status, created_at) VALUES (${name}, ${password}, ${mobile}, ${email}, ${type}, ${status}, ${currentTime})
-      </td>
-      <td>人生行</td>
-      <td>人生行</td>
-      <td>人生行</td>
-    </tr>
+  <tbody bindAttr="template:actions_tpl">
+     <script type="text/html" id="actions_tpl">
+     {{# layui.each(d.actions, function(index, item){ }}
+     <tr>
+       <td>{{ item.comment ? item.comment : ('步骤' + (index+1))}}</td>
+       <td>{{ item.dbOperateSql }}</td>
+       <td>{{ item.resultName ? item.resultName : '无'}}</td>
+       <td>{{ item.expectResult ? item.expectResult : '无'}}</td>
+       <td>{{ item.unexpectMsg ? item.unexpectMsg : '无'}}</td>
+     </tr>
+    {{# }); }}
+ </script>
   </tbody>
 </table>
   
@@ -74,17 +76,23 @@
     <tr>
       <th width="100">参数名</th>
       <th width="100">参数类型</th>
+      <th width="100">参数格式</th>
       <th width="100">是否必填</th>
       <th width="120">默认值</th>
     </tr> 
   </thead>
-  <tbody>
-    <tr>
-      <td>贤心</td>
-      <td>人生行</td>
-      <td><input type="checkbox" name="yyy" lay-skin="switch" lay-text="ON|OFF" checked></td>
-      <td>无</td>
+  <tbody bindAttr="template:parameters_tpl">
+    <script type="text/html" id="parameters_tpl">
+     {{# layui.each(d.parameters, function(index, item){ }}
+     <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.dataType ? item.dataType : 'string'}}</td>
+      <td>{{ item.paramType }}</td>
+      <td><input type="checkbox" lay-skin="switch" lay-text="是|否" {{ d.required ? 'checked' : '' }} disabled /></td>
+      <td>{{ item.defaultValue ? item.defaultValue : ''}}</td>
     </tr>
+    {{# }); }}
+ </script>
   </tbody>
 </table>
 </form>
@@ -92,13 +100,11 @@
   <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
      <legend>响应实例</legend>
   </fieldset>
-    <pre class="layui-code" lay-title="JSON" lay-skin="notepad">//代码区域
+    <pre class="layui-code" lay-title="JSON" lay-skin="notepad">
     {
-      "discountRate": "",
-      "fixFee": 0,
-      "secondType": "real",
-      "serviceFeeRate": "5.00",
-      "serviceFeeType": "ratio"
+      "code": 200,
+      "msg": "OK",
+      "data": {}
     }
       </pre>
       

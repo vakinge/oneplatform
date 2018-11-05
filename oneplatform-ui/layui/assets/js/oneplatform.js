@@ -105,8 +105,10 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 						self.attr('data',JSON.stringify( jsonObj ));
 					}else if(bindAttr.indexOf('template:')==0){
 						var templateId = bindAttr.replace(/template:/, '');
-						var html = template(templateId, data);
-						self.html(html);
+						laytpl($('#'+templateId).html()).render(data, function(html){
+							self.html(html);
+							form.render();
+						});
 					}else{
 						try{value = eval('data.'+bindAttr);}catch(e){}
 						if(!value)return;
