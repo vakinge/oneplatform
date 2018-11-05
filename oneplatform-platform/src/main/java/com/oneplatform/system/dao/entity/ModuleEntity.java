@@ -278,5 +278,11 @@ public class ModuleEntity extends BaseEntity {
 		this.fetchMetaDataTime = fetchMetaDataTime;
 	}
 
+	@Override
+	public String toString() {
+		return "ModuleEntity [id=" + id + ", name=" + name + ", serviceId=" + serviceId + ", routeName=" + routeName
+				+ ", moduleType=" + moduleType + "]";
+	}
+
 	
 }

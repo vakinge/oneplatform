@@ -13,7 +13,7 @@ layui.define(['oneplatform', 'table'], function(exports){
   
   table.render({
     elem: '#tablecont'
-    ,height: 332
+    ,height: 430
     ,width:760
     ,url: '/api/account/list'
     ,method: 'POST'

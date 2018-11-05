@@ -211,7 +211,7 @@ public class ResourcesService {
 	public void updateResource(int operUserId,ResourceParam param){
 		ResourceEntity entity = resourceMapper.selectByPrimaryKey(param.getId());
 		AssertUtil.notNull(entity);
-		ResourceEntity sameCodeEntity = resourceMapper.findByModuleAndResource(param.getModuleId(), param.getResource());
+		ResourceEntity sameCodeEntity = resourceMapper.findByModuleAndResource(entity.getModuleId(), param.getResource());
 		if(sameCodeEntity != null && !sameCodeEntity.getId().equals(entity.getId())){
 			throw new JeesuiteBaseException(ExceptionCode.REQUEST_DUPLICATION.code, "url或者编码重复");
 		}
@@ -222,11 +222,16 @@ public class ResourcesService {
 		entity.setUpdatedAt(new Date());
 		entity.setUpdatedBy(operUserId);
 		
-		resourceMapper.insertSelective(entity);
+		resourceMapper.updateByPrimaryKeySelective(entity);
 	}
 	
 	@Transactional
 	public void deleteResource(int operUserId,int id){
+		ResourceEntity entity = resourceMapper.selectByPrimaryKey(id);
+		AssertUtil.notNull(entity);
+		if(ResourceType.menu.name().equals(entity.getType())){
+			throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "菜单不允许删除");
+		}
 		resourceMapper.deleteResourceRalations(id);
 		resourceMapper.deleteByPrimaryKey(id);
 	}

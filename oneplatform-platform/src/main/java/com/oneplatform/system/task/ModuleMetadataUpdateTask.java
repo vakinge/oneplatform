@@ -113,6 +113,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 		for (String serviceId : historyModules.keySet()) {
 			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(serviceId))continue;
 			moduleEntity = historyModules.get(serviceId);
+			if(ModuleType.plugin.name().equals(moduleEntity.getModuleType()))continue;
 			if(activeModules.containsKey(serviceId)){
 				activeModulesCache.put(serviceId, moduleEntity);
 				moduleEntity.setServiceInstances(activeModules.get(serviceId).getServiceInstances());
@@ -237,13 +238,13 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				//
 				createModuleMenusIfNotExist(moduleEntity);
 				
-				activeModulesCache.put(String.valueOf(moduleEntity.getId()), moduleEntity);
+				activeModulesCache.put(moduleEntity.getServiceId(), moduleEntity);
 			}
 		}
 		//
 		historyModules = moduleMapper.findAll().stream().collect(Collectors.toMap((ModuleEntity::getServiceId), module -> module));
 		ModuleEntity platform = historyModules.get(GlobalContants.MODULE_NAME.toUpperCase());
-		activeModulesCache.put(platform.getId().toString(), platform);
+		activeModulesCache.put(platform.getServiceId(), platform);
 		//
 		updateModulesFromEureka();
 	}

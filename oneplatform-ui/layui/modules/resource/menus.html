@@ -87,13 +87,13 @@
        <div class="layui-form-item leaf-filter"> 
         <label class="layui-form-label">菜单链接</label> 
         <div class="layui-input-block"> 
-         <input type="text" class="layui-input" bindattr="code" name="code" lay-verify="required" /> 
+         <input type="text" class="layui-input" bindattr="value" name="resource" lay-verify="required" /> 
         </div> 
        </div> 
        <div class="layui-form-item"> 
         <div class="layui-input-block"> 
          <input type="button" class="layui-btn layui-btn-normal J_ajaxSubmit" onsuccesscallback="reloadTree" value="保存" /> 
-         <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/resource/delete/{id}" ajax-method="POST" onsuccesscallback="reloadTree" value="删除" /> 
+         <!-- <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/resource/delete/{id}" ajax-method="POST" onsuccesscallback="reloadTree" value="删除" />  -->
         </div> 
        </div> 
       </form> 

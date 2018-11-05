@@ -40,7 +40,7 @@ CREATE TABLE `sys_resources` (
   `type` ENUM('menu', 'uri','button') DEFAULT NULL,
   `icon` varchar(50) DEFAULT NULL COMMENT '资源图标',
   `enabled` tinyint(1) DEFAULT 1,
-  `sort` int(10) DEFAULT NULL COMMENT '排序',
+  `sort` int(2) DEFAULT 99 COMMENT '排序',
   `created_at` datetime DEFAULT NULL,
   `created_by` int(10) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,

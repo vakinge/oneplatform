@@ -290,6 +290,6 @@ public class ResourceEntity extends BaseEntity {
     }
     
     public boolean isLeaf(){
-    	return StringUtils.isNotBlank(code);
+    	return StringUtils.isNotBlank(resource);
     }
 }

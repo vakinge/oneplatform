@@ -20,13 +20,11 @@
     <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
   </resultMap>
   
-  <sql id="baseColumn">id,name,service_id,route_name,cors_uris,internal,apidoc_url</sql>
-  
   <select id="findAll" resultMap="BaseResultMap">
-     SELECT <include refid="baseColumn"></include> FROM sys_module;
+     SELECT * FROM sys_module;
   </select>
   
    <select id="findAllEnabled" resultMap="BaseResultMap">
-     SELECT <include refid="baseColumn"></include> FROM sys_module WHERE enabled=1;
+     SELECT * FROM sys_module WHERE enabled=1;
   </select>
 </mapper>

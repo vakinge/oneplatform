@@ -14,7 +14,7 @@ public class TreeModel {
 
 	private Integer id;
 	private String name;
-	private String code;
+	private String value;
 	private String icon;
 	private Integer pid;
 	private String pName;
@@ -27,10 +27,10 @@ public class TreeModel {
 	public TreeModel() {}
 	
 	
-	public TreeModel(Integer id, String name,String code, String icon, Integer pid, boolean leaf) {
+	public TreeModel(Integer id, String name,String value, String icon, Integer pid, boolean leaf) {
 		this.id = id;
 		this.name = name;
-		this.code = code;
+		this.value = value;
 		this.icon = icon;
 		this.pid = pid;
 		this.leaf = leaf;
@@ -53,12 +53,14 @@ public class TreeModel {
 		this.name = name;
 	}
 
-	public String getCode() {
-		return code;
+
+	public String getValue() {
+		return value;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 
