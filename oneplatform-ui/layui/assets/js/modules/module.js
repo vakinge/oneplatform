@@ -25,9 +25,9 @@ layui.define(['oneplatform', 'table'], function(exports){
     ,cols: [[ //表头
       {field: 'id', title: 'ID', width:60, sort: true, fixed: 'left'}
       ,{field: 'name', title: '模块名', width:120}
+      ,{field: 'moduleType', title: '模块类型', width:100} 
       ,{field: 'serviceId', title: '模块标识', width:150, sort: true}
       ,{field: 'routeName', title: '模块路由', width:100} 
-      ,{field: 'internal', title: '内部模块', width: 90,templet: '#internalTpl'}
       ,{field: 'enabled', title: '是否启用', width: 90,templet: '#enabledTpl'}
       ,{field: 'runStatus', title: '运行节点信息', width: 300,templet: '#nodesTpl'}
       ,{fixed: 'right', width: 250, align:'center', toolbar: '#toolBar'}

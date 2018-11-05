@@ -3,6 +3,7 @@
     "name": "通用服务",
     "menuIcon":"",
 	"identifier": "common",
+	"apiBasePackages": "com.oneplatform.common.controller",
 	"menus": [{
 	    "key": "file-list",
 		"uri": "/modules/common/files.html",

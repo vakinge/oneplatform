@@ -220,8 +220,12 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 
 	@Override
 	public void onApplicationStarted(ApplicationContext applicationContext) {
-		List<ModuleMetadata> metadatas = ModuleMetadataHolder.getMetadatas();
 		
+		historyModules = moduleMapper.findAll().stream().collect(Collectors.toMap((ModuleEntity::getServiceId), module -> module));
+		ModuleEntity platform = historyModules.get(GlobalContants.MODULE_NAME.toUpperCase());
+		activeModulesCache.put(platform.getServiceId(), platform);
+		
+		List<ModuleMetadata> metadatas = ModuleMetadataHolder.getMetadatas();
 		ModuleEntity moduleEntity;
 		for (ModuleMetadata metadata : metadatas) {
 			if(ModuleType.plugin.name().equals(metadata.getType())){
@@ -239,12 +243,10 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				createModuleMenusIfNotExist(moduleEntity);
 				
 				activeModulesCache.put(moduleEntity.getServiceId(), moduleEntity);
+			}else if(metadata.getIdentifier().equalsIgnoreCase(GlobalContants.MODULE_NAME)){
+				platform.setMetadata(metadata);
 			}
 		}
-		//
-		historyModules = moduleMapper.findAll().stream().collect(Collectors.toMap((ModuleEntity::getServiceId), module -> module));
-		ModuleEntity platform = historyModules.get(GlobalContants.MODULE_NAME.toUpperCase());
-		activeModulesCache.put(platform.getServiceId(), platform);
 		//
 		updateModulesFromEureka();
 	}

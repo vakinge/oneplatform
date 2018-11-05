@@ -58,10 +58,21 @@ public class ModuleMetadataHolder {
 
 		if (!metadata.getApis().isEmpty())
 			return;
+		String scanBasePackage = metadata.getApiBasePackages();
+		
+		if(StringUtils.isBlank(scanBasePackage)){
+			if(GlobalContants.MODULE_NAME.equalsIgnoreCase("oneplatform")){
+				scanBasePackage = "com.oneplatform.system.controller";
+			}else if(ModuleType.service.name().equals(metadata.getType())){
+				String[] parts = StringUtils.split(ModuleMetadataHolder.class.getPackage().getName(),".");
+				scanBasePackage = parts[0] + "." + parts[1];
+			}else{
+				return;
+			}
+		}
+		
 
 		String classPattern = "/**/*.class";
-		String[] parts = StringUtils.split(ModuleMetadataHolder.class.getPackage().getName(),".");
-		String scanBasePackage = System.getProperty("controller.base-package", parts[0] + "." + parts[1]);
 		ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 		try {
@@ -136,9 +147,7 @@ public class ModuleMetadataHolder {
 			for (Resource resource : resources) {
 				String contents = CharStreams.toString(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
 				ModuleMetadata metadata = JSON.parseObject(contents, ModuleMetadata.class);
-				if(ModuleType.service.name().equals(metadata.getType())){
-					scanApiInfos(metadata);
-				}
+				scanApiInfos(metadata);
 				metadatas.add(metadata);
 			}
 		} catch (Exception e) {

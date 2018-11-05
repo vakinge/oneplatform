@@ -26,17 +26,23 @@
         </div> 
        </div>
        <div class="layui-form-item"> 
-        <label class="layui-form-label">权限名称</label> 
+        <label class="layui-form-label">接口</label> 
         <div class="layui-input-block"> 
-         <select id="name_select" name="name" lay-filter="name_select">
-            <option value="">请选择权限</option>
+         <select id="name_select" lay-filter="name_select">
+            <option value="">请选择接口</option>
          </select> 
+        </div> 
+       </div> 
+       <div class="layui-form-item"> 
+        <label id="code_label" class="layui-form-label">权限名称</label> 
+        <div class="layui-input-block"> 
+         <input type="text" id="nameinput" class="layui-input" bindattr="name" name="name" lay-verify="required" placeholder="请输入权限名称" /> 
         </div> 
        </div> 
        <div class="layui-form-item"> 
         <label id="code_label" class="layui-form-label">接口链接</label> 
         <div class="layui-input-block"> 
-         <input type="text" id="codeinput" class="layui-input" bindattr="resource" name="resource" lay-verify="required" placeholder="请输入接口链接或者编码" /> 
+         <input type="text" id="resourceinput" class="layui-input" bindattr="resource" name="resource" lay-verify="required" placeholder="请输入接口链接或者编码" /> 
         </div> 
        </div> 
 		     

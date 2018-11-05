@@ -9,6 +9,7 @@ public class ModuleMetadata {
 	private String name;
 	private String identifier;
 	private String menuIcon;
+	private String apiBasePackages;
 	private List<ApiInfo> apis = new ArrayList<>();
 	private List<Menu> menus = new ArrayList<>();
 	
@@ -38,6 +39,12 @@ public class ModuleMetadata {
 	}
 	public void setMenuIcon(String menuIcon) {
 		this.menuIcon = menuIcon;
+	}
+	public String getApiBasePackages() {
+		return apiBasePackages;
+	}
+	public void setApiBasePackages(String apiBasePackages) {
+		this.apiBasePackages = apiBasePackages;
 	}
 	public List<ApiInfo> getApis() {
 		return apis;

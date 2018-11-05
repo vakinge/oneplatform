@@ -16,7 +16,6 @@ import com.oneplatform.base.GlobalContants.ModuleType;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
-import com.oneplatform.base.util.ModuleMetadataHolder;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
@@ -37,7 +36,14 @@ public class ModuleService  {
 	private @Autowired ModuleEntityMapper moduleMapper;
 	private @Autowired ResourceEntityMapper resourceMapper;
 	
-	public List<ModuleEntity> findAllServiceModules(){
+	
+	public List<ModuleEntity> findActiveModules(){
+		return ModuleMetadataUpdateTask.getActiveModules().values()
+		        .stream()
+		        .collect(Collectors.toList());
+	}
+	
+	public List<ModuleEntity> findActiveServiceModules(){
 		return ModuleMetadataUpdateTask.getActiveModules().values()
 		        .stream()
 		        .filter( e -> ModuleType.service.name().equals(e.getModuleType()))
@@ -111,11 +117,6 @@ public class ModuleService  {
 
 
 	public List<ApiInfo> findModuleApis(int moduleId){
-		if(moduleId == 1){
-			return ModuleMetadataHolder.getMetadatas().stream()
-					      .filter( e -> e.getType().equals(ModuleType.service.name()) )
-					      .findFirst().get().getApis();
-		}
 		Optional<ModuleEntity> optional = ModuleMetadataUpdateTask.getActiveModules().values().stream().filter(m -> (m.getId().intValue() == moduleId)).findFirst();
 		if(!optional.isPresent())throw new JeesuiteBaseException(ExceptionCode.RECORD_NOT_EXIST.code, "模块不存在或者未运行");
 		return optional.get().getMetadata().getApis();

@@ -65,6 +65,7 @@ layui.define(['laypage','form','oneplatform', 'layer', 'tree', 'treeselect','ele
       	}
           var opthtml;
           var data = result.data;
+          $('#name_select').html('<option value="">请选择接口</option>');
           for (var index in data) {
               opthtml = '<option value="'+data[index].name+'" data="'+data[index].url+'" >'+data[index].name+'</option>';
               $('#name_select').append(opthtml);
@@ -73,14 +74,15 @@ layui.define(['laypage','form','oneplatform', 'layer', 'tree', 'treeselect','ele
       });
   });
   
-  $('#name_select').on('change',function(){
-	  var url = $(this).find('option:selected').attr('data');
-  });
+//  $('#name_select').on('change',function(){
+//	  var url = $(this).find('option:selected').attr('data');
+//  });
   
   form.on('select(name_select)',function(data) {
 	  $(data.elem).children().each(function(index,item){
 		  if($(this).val() == data.value){
-			  $('#codeinput').val($(this).attr('data'));
+			  $('#nameinput').val(data.value);
+			  $('#resourceinput').val($(this).attr('data'));
 			  return false;
 		  }
 		 

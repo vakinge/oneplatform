@@ -34,7 +34,7 @@ public class ModuleController {
 	@ApiOperation(value = "查询所有模块")
 	@RequestMapping(value = "list", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<List<ModuleEntity>> getAllModules() {
-		List<ModuleEntity> modules = moduleService.findAllServiceModules();
+		List<ModuleEntity> modules = moduleService.findActiveModules();
 		return new WrapperResponse<>(modules);
 	}
 	
@@ -72,7 +72,7 @@ public class ModuleController {
 	@ApiOperation(value = "查询所有模块（下拉框选项）")
 	@RequestMapping(value = "options", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<List<SelectOption>> getAllModulesAsSelectOption() {
-		List<ModuleEntity> modules = moduleService.findAllServiceModules();
+		List<ModuleEntity> modules = moduleService.findActiveModules();
 		
 		List<SelectOption> options = new ArrayList<>();
 		for (ModuleEntity moduleEntity : modules) {
