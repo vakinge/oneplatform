@@ -46,8 +46,10 @@ layui.define(['oneplatform', 'table'], function(exports){
 		    	});
 		       
 		      });
-	    }else if(layEvent === 'assignment'){
-	    	oneplatform.iframeDialog('分配权限','/modules/role/assignment.html?id='+data.id);
+	    }else if(layEvent === 'assign-menu'){
+	    	oneplatform.iframeDialog('分配菜单','/modules/role/assign-menu.html?id='+data.id);
+	    }else if(layEvent === 'assign-perms'){
+	    	oneplatform.iframeDialog('分配权限','/modules/role/assign-perms.html?id='+data.id);
 	    }else if(layEvent === 'del'){
 	      layer.confirm('确认删除么?', function(index){
 	    	oneplatform.post('/api/role/delete/'+data.id,null,function(data){

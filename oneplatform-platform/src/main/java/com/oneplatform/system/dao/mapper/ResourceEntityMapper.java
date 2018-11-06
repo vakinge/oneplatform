@@ -42,9 +42,9 @@ public interface ResourceEntityMapper extends CustomBaseMapper<ResourceEntity> {
 	
 	List<ResourceEntity> findAllNotMenuResources();
 	
-	@Select("select resource_id from sys_role_resources where role_id = #{roleId}")
+	@Select("select resource_id from sys_role_resources rr join sys_resources r  ON r.id = rr.resource_id WHERE rr.role_id=#{roleId} and r.type=#{type}")
 	@ResultType(Integer.class)
-	List<Integer> findRoleResourceIds(Integer roleId);
+	List<Integer> findRoleResourceIds(@Param("type") String type,@Param("roleId") Integer roleId);
 	
 	int deleteAllRoleResources(Integer roleId);
 	

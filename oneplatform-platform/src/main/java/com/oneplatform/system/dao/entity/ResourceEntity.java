@@ -50,6 +50,9 @@ public class ResourceEntity extends BaseEntity {
     private String icon;
 
     private Boolean enabled = true;
+    
+    @Column(name = "is_default",updatable = false)
+    private Boolean isDefault;
 
     /**
      * 排序
@@ -201,6 +204,14 @@ public class ResourceEntity extends BaseEntity {
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
 	}
 
 	/**

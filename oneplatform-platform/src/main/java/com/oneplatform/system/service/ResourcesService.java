@@ -106,18 +106,14 @@ public class ResourcesService {
 		return buildResourceTree(resources);
 	}
 	
-	public List<ModuleRoleResource> findAllModuleRoleResources(int roleId){
+	public List<ModuleRoleResource> findAllModuleRoleResources(ResourceType type,int roleId){
 		Map<Integer, ModuleRoleResource> moduleRoleResources = new HashMap<>();
 		//全部模块
 		Map<Integer, ModuleEntity> modules = moduleService.getAllModules();
 		//全部资源
-		List<ResourceEntity> resources = resourceMapper.findLeafResources(ResourceType.all.name());
-		//角色已分配的资源
-		List<ResourceEntity> roleResources = resourceMapper.findRoleResources(roleId, ResourceType.all.name());
-		List<Integer> roleResourceIds = new ArrayList<>();
-		for (ResourceEntity resource : roleResources) {
-		   roleResourceIds.add(resource.getId());
-		}
+		List<ResourceEntity> resources = resourceMapper.findLeafResources(type.name());
+		//角色已分配的资源ID
+		List<Integer> roleResourceIds = resourceMapper.findRoleResources(roleId, type.name()).stream().map(e -> e.getId()).collect(Collectors.toList());
 		
 		ModuleRoleResource moduleRoleResource;
 		ModuleEntity module;
@@ -202,6 +198,7 @@ public class ResourcesService {
 		}
 		AssertUtil.isNull(resourceMapper.findByModuleAndResource(param.getModuleId(), param.getResource()), "uri或编码重复");
 		ResourceEntity entity = BeanUtils.copy(param, ResourceEntity.class);
+		entity.setIsDefault(false);
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(operUserId);
 		resourceMapper.insertSelective(entity);
@@ -229,8 +226,8 @@ public class ResourcesService {
 	public void deleteResource(int operUserId,int id){
 		ResourceEntity entity = resourceMapper.selectByPrimaryKey(id);
 		AssertUtil.notNull(entity);
-		if(ResourceType.menu.name().equals(entity.getType())){
-			throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "菜单不允许删除");
+		if(entity.getIsDefault()){
+			throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "默认的不允许删除不允许删除");
 		}
 		resourceMapper.deleteResourceRalations(id);
 		resourceMapper.deleteByPrimaryKey(id);

@@ -14,6 +14,7 @@
     <result column="type" property="type" jdbcType="CHAR" />
     <result column="icon" property="icon" jdbcType="VARCHAR" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="is_default" property="isDefault" jdbcType="BIT" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
     <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
     <result column="created_by" property="createdBy" jdbcType="INTEGER" />
@@ -44,14 +45,14 @@
    
    <select id="findLeafResources" parameterType="String"  resultMap="BaseResultMap">
 	  SELECT  r.*
-	  FROM sys_resources r where r.code is not null
+	  FROM sys_resources r where r.resource is not null
 	  <if test="type != 'all'">and r.type=#{type}</if>
 	  order by r.sort
    </select>
   
   <select id="findNotLeafResources" parameterType="String"  resultMap="BaseResultMap">
 	  SELECT  r.*
-	  FROM sys_resources r where r.code is null
+	  FROM sys_resources r where r.resource is null
 	  <if test="type != 'all'">and r.type=#{type}</if>
 	  order by r.sort
    </select>

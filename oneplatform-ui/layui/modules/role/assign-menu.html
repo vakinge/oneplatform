@@ -15,8 +15,9 @@
 
 <body>
 	<form class="layui-form" action="/api/role/assignment">  
-	   <input type="hidden" name="id" id="idinput" />
-	   <div id="options" dataLoad="/api/resource/role_relations/{id}" template-id="option_tpl" onFinishCallback="onDataLoadFinish">
+	   <input type="hidden" name="roleId" id="idinput" />
+	   <input type="hidden" name="type" value="menu" />
+	   <div id="options" dataLoad="/api/resource/role_relations?type=menu&roleId={id}" template-id="option_tpl" onFinishCallback="onDataLoadFinish">
 	   </div>
 		<div class="layui-form-item"> 
           <div class="layui-input-block" style="padding: right:30px;"> 
@@ -33,7 +34,6 @@
                 {{# layui.each(item.roleResources, function(index, item2){ }}
 				<li>
                   <input type="checkbox" name="assignmentIds" value="{{item2.id}}" lay-skin="primary" title="{{item2.name}}" {{item2.assigned ? 'checked' : ''}}>
-                  {{#  if(item2.type === 'menu'){ }}<span class="layui-badge layui-bg-green">菜单</span>{{#  } }}  
                 </li>
                 {{# }); }}
 			</ul>

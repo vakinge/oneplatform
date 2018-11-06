@@ -33,6 +33,7 @@ import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dao.mapper.RoleEntityMapper;
+import com.oneplatform.system.dto.param.AssignResourceParam;
 import com.oneplatform.system.dto.param.RoleParam;
 
 /**
@@ -95,16 +96,16 @@ public class RoleService {
 	}
 	
 	@Transactional
-	public void  assignmentResources(int operUserId,int roleId,Integer[] resourceIds){
-		List<Integer> newIds = new ArrayList<Integer>(Arrays.asList(resourceIds));
-		List<Integer> assignedIds = resourceMapper.findRoleResourceIds(roleId);
+	public void  assignmentResources(int operUserId,AssignResourceParam param){
+		List<Integer> newIds = Arrays.asList(param.getAssignmentIds());
+		List<Integer> assignedIds = resourceMapper.findRoleResourceIds(param.getType(),param.getRoleId());
 		
 		List<Integer> deleteList = new ArrayList<>(assignedIds);
 		deleteList.removeAll(newIds);
 		
 		boolean acted = false;
 		if(!deleteList.isEmpty()){
-			resourceMapper.deleteRoleResources(roleId, deleteList.toArray(new Integer[0]));
+			resourceMapper.deleteRoleResources(param.getRoleId(), deleteList.toArray(new Integer[0]));
 			acted = true;
 		}
 		
@@ -112,7 +113,7 @@ public class RoleService {
 		addList.removeAll(assignedIds);
 		
 		if(!addList.isEmpty()){
-			resourceMapper.addRoleResources(roleId, addList.toArray(new Integer[0]));
+			resourceMapper.addRoleResources(param.getRoleId(), addList.toArray(new Integer[0]));
 			acted = true;
 		}
 		if(acted){

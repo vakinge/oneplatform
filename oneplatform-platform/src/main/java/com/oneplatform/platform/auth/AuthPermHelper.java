@@ -21,10 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.jeesuite.common.util.PathMatcher;
 import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.spring.InstanceFactory;
+import com.oneplatform.base.GlobalContants;
+import com.oneplatform.base.GlobalContants.ModuleType;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.entity.ResourceEntity;
@@ -93,21 +96,18 @@ public class AuthPermHelper {
 		anonymousUriMatcher = new PathMatcher(contextPath,ResourceUtils.getProperty("anonymous.uris"));
 		
 		ModuleEntityMapper moduleMapper = InstanceFactory.getInstance(ModuleEntityMapper.class);
-		List<ModuleEntity> modules = moduleMapper.findAllEnabled();
-		
-		Map<Integer,ModuleEntity> modulesAsmap = new HashMap<>();
-		for (ModuleEntity module : modules) {
-			modulesAsmap.put(module.getId(), module);
-		}
+		Map<Integer,ModuleEntity> modulesMap = moduleMapper.findAll().stream().collect(Collectors.toMap(ModuleEntity::getId, entity -> entity));
 		ResourceEntityMapper resourceMapper = InstanceFactory.getInstance(ResourceEntityMapper.class);
 		List<ResourceEntity> resources = resourceMapper.findResources(ResourceType.uri.name());
 		String fullUri = null;
+		ModuleEntity module;
 		for (ResourceEntity resource : resources) {
-			if(resource.getModuleId() == 0){
+			module = modulesMap.get(resource.getModuleId());
+			if(module == null)continue;
+			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(module.getServiceId()) 
+					|| ModuleType.plugin.name().equals(module.getModuleType())){
 				fullUri = contextPath + resource.getResource();
 			}else{ 
-				ModuleEntity module = modulesAsmap.get(resource.getModuleId());
-				if(module == null)continue;
 				fullUri = contextPath + "/" + module.getRouteName() + resource.getResource();
 			}
 			

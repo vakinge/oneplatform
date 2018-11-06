@@ -18,7 +18,7 @@ import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.ResourceEntity;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.RoleEntityMapper;
-import com.oneplatform.system.dto.param.AssignmentParam;
+import com.oneplatform.system.dto.param.AssignResourceParam;
 import com.oneplatform.system.dto.param.RoleParam;
 import com.oneplatform.system.service.ResourcesService;
 import com.oneplatform.system.service.RoleService;
@@ -82,8 +82,8 @@ public class RoleController {
 	
 	@ApiOperation(value = "分配资源")
 	@RequestMapping(value = "assignment", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> assignmentRoles(@RequestBody AssignmentParam param) {		
-		roleService.assignmentResources(LoginContext.getLoginUserId(), param.getId(), param.getAssignmentIds());
+    public @ResponseBody WrapperResponse<String> assignmentRoles(@RequestBody AssignResourceParam param) {		
+		roleService.assignmentResources(LoginContext.getLoginUserId(), param);
 		//
 		AuthPermHelper.refreshPermData();
 		return new WrapperResponse<>();

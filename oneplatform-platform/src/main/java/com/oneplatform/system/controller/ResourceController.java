@@ -48,9 +48,9 @@ public class ResourceController {
 	}
 	
 	@ApiOperation(value = "查询所有(可分配/已分配)的角色资源列表")
-	@RequestMapping(value = "role_relations/{roleId}", method = RequestMethod.GET)
-    public @ResponseBody WrapperResponse<List<ModuleRoleResource>> getAllResourcesWithRole(@PathVariable("roleId") int roleId) {
-		List<ModuleRoleResource> list = resourcesService.findAllModuleRoleResources(roleId);
+	@RequestMapping(value = "role_relations", method = RequestMethod.GET)
+    public @ResponseBody WrapperResponse<List<ModuleRoleResource>> getAllResourcesWithRole(@RequestParam("type") String type,@RequestParam("roleId") int roleId) {
+		List<ModuleRoleResource> list = resourcesService.findAllModuleRoleResources(ResourceType.valueOf(type),roleId);
 		return new WrapperResponse<>(list);
 	}
 	
