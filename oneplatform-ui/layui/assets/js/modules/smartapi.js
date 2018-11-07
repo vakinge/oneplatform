@@ -18,7 +18,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
   //数据源列表
   table.render({
 	    elem: '#ds_tablecont'
-	    ,height: 332
+	    ,height: 430
 	    ,width:1000
 	    ,url: '/api/dsconfig/list'
 	    ,method: 'POST'
@@ -72,8 +72,8 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 	  //api列表
 	  table.render({
 		    elem: '#api_tablecont'
-		    ,height: 332
-		    ,width:1120
+		    ,height: 430
+		    ,width:1150
 		    ,url: '/api/apiconfig/list'
 		    ,method: 'POST'
 		    ,page: false 
@@ -84,13 +84,13 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 		    }
 		    ,cols: [[ //表头
 		      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-		      ,{field: 'name', title: '接口名称', width:120, sort: true}
+		      ,{field: 'name', title: '接口名称', width:150, sort: true}
 		      ,{field: 'httpType', title: '请求方法', width:100} 
 		      ,{field: 'uri', title: '请求uri', width: 150}
-		      ,{field: 'datasource', title: '关联数据库', width: 120}
+		      ,{field: 'datasource', title: '关联数据库', width: 220}
 		      ,{field: 'enabled', title: '是否启用', width: 100,templet: '#enabledTpl'}
 		      ,{field: 'published', title: '是否发布', width: 100,templet: '#publishedTpl'}
-		      ,{fixed: 'right', width: 280, align:'center', toolbar: '#toolBar'}
+		      ,{fixed: 'right', width: 250, align:'center', toolbar: '#toolBar'}
 		    ]]
 		  });
 		  
@@ -259,9 +259,9 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 	  var actionData = {};
 	  actionData['comment'] = $('#actionName').val().trim();
 	  actionData['dbOperateSql'] = sql;
-	  actionData['resultName'] = '';
-	  actionData['expectResult'] = '';
-	  actionData['unexpectMsg'] = '';
+	  actionData['resultName'] = $('#resultName').val().trim();
+	  actionData['expectResult'] = $('#expectResult').val().trim();
+	  actionData['unexpectMsg'] = $('#unexpectMsg').val().trim();
 	  var trHtml = '<tr>';
 	  trHtml = trHtml + '<td>'+actionData['comment']+'</td>';
 	  trHtml = trHtml + '<td>'+sql+'</td>';
@@ -272,6 +272,10 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 	  $('#apiActionList').append(trHtml);
 	  
 	  apiActionList.push(actionData);
+	  $sqlEditer.val('');
+	  $('#resultName').val('');
+	  $('#expectResult').val('');
+	  $('#unexpectMsg').val('');
   });
   
   $('#save_btn').click(function(){

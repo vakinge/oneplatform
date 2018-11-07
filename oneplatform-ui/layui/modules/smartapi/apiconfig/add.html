@@ -59,35 +59,46 @@
      </div> 
      <div class="layui-inline" show-on="select" style="display: none;"> 
       <div class="layui-input-inline" style="width: 100px;"> 
-       <input type="button" class="layui-btn" action="selectConfig" value="配置查询字段" /> 
+       <input type="button" class="layui-btn layui-btn-normal" action="selectConfig" value="配置查询字段" /> 
       </div> 
      </div> 
      <div class="layui-inline" show-on="insert" style="display: none;"> 
       <div class="layui-input-inline" style="width: 100px;"> 
-       <input type="button" class="layui-btn" action="insertConfig" value="配置插入字段" /> 
+       <input type="button" class="layui-btn layui-btn-normal" action="insertConfig" value="配置插入字段" /> 
       </div> 
      </div> 
      <div class="layui-inline" show-on="update" style="display: none;"> 
       <div class="layui-input-inline" style="width: 100px;"> 
-       <input type="button" class="layui-btn" action="updateConfig" value="配置更新字段" /> 
+       <input type="button" class="layui-btn layui-btn-normal" action="updateConfig" value="配置更新字段" /> 
       </div> 
      </div> 
      <div class="layui-inline" show-on="select|update|delete" style="display: none;"> 
       <div class="layui-input-inline" style="width: 80px;"> 
-       <input type="button" class="layui-btn" action="whereConfig" value="配置条件" /> 
+       <input type="button" class="layui-btn layui-btn-normal" action="whereConfig" value="配置条件" /> 
       </div> 
-     </div> 
-     <div class="layui-inline" show-on="select" style="display: none;"> 
-      <div class="layui-input-inline" style="width: 100px;"> 
-       <input type="button" class="layui-btn" value="配置结果规则" /> 
-      </div> 
-     </div> 
+     </div>  
      <div class="layui-form-item  layui-form-text"> 
       <div class="layui-inline"> 
        <label class="layui-form-label">SQL表达式</label> 
        <div class="layui-input-inline" style="width: 520px;"> 
         <textarea id="sqlEditer" placeholder="手动输入SQL语句或者通过界面配置" class="layui-textarea"></textarea> 
        </div> 
+       <div class="layui-input-inline" style="width: 100px;"> 
+         <input type="text" id="resultName" placeholder="结果属性名" lay-verify="required" class="layui-input" /> 
+       </div> 
+       <div class="layui-input-inline" style="width: 100px;"> 
+         <select id="expectResult">
+          <option value="">期望结果</option>  
+          <option value="not null">不为空</option> 
+          <option value="null">为空</option> 
+          <option value="gt 0">大于0</option> 
+          <option value="eq 0">等于0</option> 
+          <option value="lt 0">小于0</option>
+        </select> 
+       </div>
+       <div class="layui-input-inline" style="width: 120px;"> 
+         <input type="text" id="unexpectMsg" placeholder="错误提示信息" lay-verify="required" class="layui-input" /> 
+       </div>
        <div class="layui-input-inline" style="width: 60px;"> 
         <input type="button" id="add_action_btn" class="layui-btn layui-btn-warm" value="添加" /> 
        </div> 
@@ -109,7 +120,7 @@
     </div> 
     <div class="layui-form-item"> 
      <div class="layui-input-block"> 
-      <input type="button" id="save_btn" class="layui-btn" value="保存" /> 
+      <input type="button" id="save_btn" class="layui-btn layui-btn-normal" value="保存" /> 
       <input type="reset" class="layui-btn layui-btn-primary" value="重置" /> 
      </div> 
     </div> 

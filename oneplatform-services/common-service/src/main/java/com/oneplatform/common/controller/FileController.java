@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jeesuite.common.JeesuiteBaseException;
+import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.filesystem.FileSystemClient;
 import com.jeesuite.filesystem.UploadTokenParam;
@@ -50,7 +51,6 @@ import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.PageResult;
-import com.oneplatform.base.model.SelectOption;
 import com.oneplatform.base.model.UploadResult;
 import com.oneplatform.common.dao.entity.UploadFileEntity;
 import com.oneplatform.common.dao.mapper.UploadFileEntityMapper;

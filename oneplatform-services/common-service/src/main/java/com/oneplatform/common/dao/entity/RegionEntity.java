@@ -1,7 +1,12 @@
 package com.oneplatform.common.dao.entity;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import com.jeesuite.mybatis.core.BaseEntity;
-import javax.persistence.*;
 
 @Table(name = "static_region")
 public class RegionEntity extends BaseEntity {

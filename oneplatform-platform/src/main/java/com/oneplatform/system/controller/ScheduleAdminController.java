@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.zookeeper.KeeperException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.scheduler.model.JobGroupInfo;
 import com.jeesuite.scheduler.monitor.MonitorCommond;
 import com.jeesuite.scheduler.monitor.SchedulerMonitor;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.model.SelectOption;
 
 
 /**

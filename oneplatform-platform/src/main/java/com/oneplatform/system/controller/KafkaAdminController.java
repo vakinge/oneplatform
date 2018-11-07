@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.kafka.monitor.KafkaMonitor;
 import com.jeesuite.kafka.monitor.model.BrokerInfo;
@@ -20,7 +21,6 @@ import com.jeesuite.kafka.monitor.model.ConsumerGroupInfo;
 import com.jeesuite.kafka.monitor.model.ProducerStat;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.jeesuite.springweb.model.WrapperResponseEntity;
-import com.oneplatform.base.model.SelectOption;
 
 
 /**

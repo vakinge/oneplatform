@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.ApiInfo;
-import com.oneplatform.base.model.SelectOption;
 import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dto.param.ModuleParam;
