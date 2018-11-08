@@ -181,12 +181,66 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 				}
 				return params;
 			},
+			serializeQueryParams($form){
+				var params = '';
+				var dataArrays = $form.serializeArray();
+				if(dataArrays){
+					$.each( dataArrays, function(i, field){
+						if(field.value && field.value != ''){	
+							params = params + field.name + '=' + field.value + '&';
+						}
+					});
+				}
+				return params;
+			},
 			redirct:function(url){
 				url = url || location.href;
 				url = url.replace("?__rnd=","__rnd=").replace("&__rnd=","__rnd=").split("__rnd=")[0];
 				var rnd = (url.indexOf("?")>0 ? "&" : "?") + "__rnd=" + new Date().getTime();
 				window.location.href = url + rnd;
-			}
+			},
+			insertAfterFocus:function(domId,str){//光标出插入文字
+				var obj = document.getElementById(domId);
+				if (document.selection) {
+			        var sel = document.selection.createRange();
+			        sel.text = str;
+			    } else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {
+			        var startPos = obj.selectionStart,
+			            endPos = obj.selectionEnd,
+			            cursorPos = startPos,
+			            tmpStr = obj.value;
+			        obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);
+			        cursorPos += str.length;
+			        obj.selectionStart = obj.selectionEnd = cursorPos;
+			    } else {
+			        obj.value += str;
+			    }
+			},
+			formatJson: function (json) {
+		        var formatted = '',     //转换后的json字符串
+		            padIdx = 0,         //换行后是否增减PADDING的标识
+		            PADDING = '    ';   //4个空格符
+		        if (typeof json !== 'string') {
+		            json = JSON.stringify(json);
+		        }
+		        json = json.replace(/([\{\}])/g, '\r\n$1\r\n')
+		                    .replace(/([\[\]])/g, '\r\n$1\r\n')
+		                    .replace(/(\,)/g, '$1\r\n')
+		                    .replace(/(\r\n\r\n)/g, '\r\n')
+		                    .replace(/\r\n\,/g, ',');
+		       (json.split('\r\n')).forEach(function (node, index) {
+		            var indent = 0,
+		                padding = '';
+		            if (node.match(/\{$/) || node.match(/\[$/)) indent = 1;
+		            else if (node.match(/\}/) || node.match(/\]/))  padIdx = padIdx !== 0 ? --padIdx : padIdx;
+		            else    indent = 0;
+		            for (var i = 0; i < padIdx; i++)    padding += PADDING;
+		            formatted += padding + node + '\r\n';
+		            padIdx += indent;
+		            console.log('index:'+index+',indent:'+indent+',padIdx:'+padIdx+',node-->'+node);
+		        });
+		        return formatted;
+		    }
 };
 
 exports('oneplatform', oneplatform);

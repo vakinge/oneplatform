@@ -33,7 +33,7 @@ public class AuthCacheManager implements InitializingBean{
 	private void addCahe(String cacheName,int timeToLiveSeconds){
 		Cache cache = null;
 		if("redis".equals(cacheType)){
-			
+			cache = new RedisCache(cacheName);
 		}else{
 			cache = new MemoryCache(timeToLiveSeconds);
 		}

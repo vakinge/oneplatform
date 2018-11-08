@@ -87,13 +87,8 @@
          <input type="text" id="resultName" placeholder="结果属性名" lay-verify="required" class="layui-input" /> 
        </div> 
        <div class="layui-input-inline" style="width: 100px;"> 
-         <select id="expectResult">
+         <select id="expectResult" asnycselect="/api/apiconfig/validatorOptions">
           <option value="">期望结果</option>  
-          <option value="not null">不为空</option> 
-          <option value="null">为空</option> 
-          <option value="gt 0">大于0</option> 
-          <option value="eq 0">等于0</option> 
-          <option value="lt 0">小于0</option>
         </select> 
        </div>
        <div class="layui-input-inline" style="width: 120px;"> 
@@ -102,6 +97,9 @@
        <div class="layui-input-inline" style="width: 60px;"> 
         <input type="button" id="add_action_btn" class="layui-btn layui-btn-warm" value="添加" /> 
        </div> 
+       <div class="layui-input-inline" style="width: 60px; padding-top: 15px;"> 
+        <a href=""><i style="color: #FF5722;text-decoration:underline;font-size: 12px;">查看帮助</i></a>
+       </div>
       </div> 
      </div> 
      <table class="layui-table" lay-size="sm" style="margin-left: 20px;width: 98%;"> 

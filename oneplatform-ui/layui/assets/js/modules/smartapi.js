@@ -84,13 +84,13 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 		    }
 		    ,cols: [[ //表头
 		      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
-		      ,{field: 'name', title: '接口名称', width:150, sort: true}
+		      ,{field: 'name', title: '接口名称', width:160, sort: true}
 		      ,{field: 'httpType', title: '请求方法', width:100} 
-		      ,{field: 'uri', title: '请求uri', width: 150}
-		      ,{field: 'datasource', title: '关联数据库', width: 220}
+		      ,{field: 'uri', title: '请求uri', width: 180}
+		      ,{field: 'datasource', title: '关联数据库', width: 120}
 		      ,{field: 'enabled', title: '是否启用', width: 100,templet: '#enabledTpl'}
 		      ,{field: 'published', title: '是否发布', width: 100,templet: '#publishedTpl'}
-		      ,{fixed: 'right', width: 250, align:'center', toolbar: '#toolBar'}
+		      ,{fixed: 'right', width: 300, align:'center', toolbar: '#toolBar'}
 		    ]]
 		  });
 		  
@@ -276,6 +276,8 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 	  $('#resultName').val('');
 	  $('#expectResult').val('');
 	  $('#unexpectMsg').val('');
+	  $('#actionName').val('');
+	  form.render('select');
   });
   
   $('#save_btn').click(function(){
@@ -300,6 +302,35 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 	  });
   });
   
+  $('#test_api_btn').click(function(){
+	  var uri=$('#uri').val(),method=$('#httpType').val(), params;
+	  if(method === 'GET'){
+		  params = oneplatform.serializeQueryParams($('#testapiForm'));
+		  if(params !== '')uri = uri + '?' + params;
+		  $.getJSON(uri,function(json){
+			  if(json.code != 200){oneplatform.error('执行错误:'+json.msg);return;}
+			  var formatJson = oneplatform.formatJson(JSON.stringify(json));
+			  $('#response_previve').text(formatJson);
+		  });
+	  }else{
+		  params = oneplatform.serializeJson($('#testapiForm'));
+		  $.ajax({
+	        	dataType:"json",
+			    type: "POST",
+		        url: uri,
+		        contentType: "application/json",
+	            data: JSON.stringify(params),
+	            success: function(json) {
+	  			  if(json.code != 200){oneplatform.error('执行错误:'+json.msg);return;}
+				  var formatJson = oneplatform.formatJson(JSON.stringify(json));
+				  $('#response_previve').text(formatJson);
+			  },
+	            error: function(e) {
+	                layer.msg('请求异常，请重试', {shift: 6});
+	            }
+	        });
+	  }
+  });
   
   function buildActionSql(){
 	  var sql = sqlTemplates[dbaction];

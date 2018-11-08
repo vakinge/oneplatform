@@ -46,7 +46,7 @@ import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
  * @date 2017年11月7日
  */
 @Component
-@ScheduleConf(cronExpr="0 0/5 * * * ?",jobName="moduleMetadataUpdateTask",executeOnStarted = false)
+@ScheduleConf(cronExpr="0 0/1 * * * ?",jobName="moduleMetadataUpdateTask",executeOnStarted = false)
 public class ModuleMetadataUpdateTask extends AbstractJob implements ApplicationStartedListener{
 	
 	private final static Logger logger = LoggerFactory.getLogger("com.oneplatform.system.task");
@@ -117,7 +117,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 			if(activeModules.containsKey(serviceId)){
 				activeModulesCache.put(serviceId, moduleEntity);
 				moduleEntity.setServiceInstances(activeModules.get(serviceId).getServiceInstances());
-				if(DateUtils.getDiffMinutes(new Date(), moduleEntity.getFetchMetaDataTime()) > 15){					
+				if(moduleEntity.getFetchMetaDataTime() == null || DateUtils.getDiffMinutes(new Date(), moduleEntity.getFetchMetaDataTime()) > 15){					
 					moduleEntity.setMetadata(fetchModuleMetadata(serviceId));
 					moduleEntity.setFetchMetaDataTime(new Date());
 					//创建菜单
@@ -126,7 +126,6 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				continue;
 			}
 			activeModulesCache.remove(serviceId);
-			moduleEntity.setEnabled(false);
 			moduleMapper.updateByPrimaryKey(moduleEntity);
 		}
 		

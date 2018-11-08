@@ -19,6 +19,7 @@ import com.jeesuite.common.util.BeanUtils;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.TreeModel;
+import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.entity.ResourceEntity;
@@ -231,6 +232,8 @@ public class ResourcesService {
 		}
 		resourceMapper.deleteResourceRalations(id);
 		resourceMapper.deleteByPrimaryKey(id);
+		
+		AuthPermHelper.reset();
 	}
 	
 	public void switchResource(int operUserId,Integer id,boolean enable){

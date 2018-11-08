@@ -14,7 +14,7 @@ layui.define(['oneplatform', 'table'], function(exports){
   table.render({
     elem: '#tablecont'
     ,height: 430
-    ,width: 1000
+    ,width: 1150
     ,url: '/api/role/list'
     ,page: false 
     ,response: {
@@ -26,8 +26,8 @@ layui.define(['oneplatform', 'table'], function(exports){
       {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
       ,{field: 'name', title: '角色名', width:150,sort: true}
       ,{field: 'enabled', title: '是否启用', width: 120,templet: '#enabledTpl'}
-      ,{field: 'memo', title: '备注', width:400}
-      ,{fixed: 'right', width: 280, align:'center', toolbar: '#toolBar'}
+      ,{field: 'memo', title: '备注', width:445}
+      ,{fixed: 'right', width: 350, align:'center', toolbar: '#toolBar'}
     ]],
   });
   
