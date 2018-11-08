@@ -35,6 +35,7 @@ import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.platform.auth.AuthSessionHelper;
+import com.oneplatform.platform.auth.LoginHelper;
 
 /**
  * @description <br>
@@ -57,7 +58,7 @@ public class AuthFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) res;
 		boolean anon = AuthPermHelper.anonymousAllowed(request.getRequestURI());
 
-		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,response);
+		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,response,LoginHelper.ssoEnabled);
 
 		if (session != null) {
 			LoginContext.setLoginSession(session);

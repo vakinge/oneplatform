@@ -3,15 +3,17 @@ package com.oneplatform.platform.auth;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeesuite.common.util.ResourceUtils;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.UserInfo;
 import com.oneplatform.system.dao.entity.AccountEntity;
 
 public class LoginHelper {
 
+	public static boolean ssoEnabled = ResourceUtils.getBoolean("sso.enabled", true);
 	public static UserInfo login(HttpServletRequest request, HttpServletResponse response, AccountEntity account) {
 
-		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request, response);
+		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request, response,ssoEnabled);
 		session.setUserId(account.getId());
 		session.setUserName(account.getUsername());
 		
@@ -22,12 +24,14 @@ public class LoginHelper {
 		session.setUserInfo(userInfo);
 		session.setExpiresIn(LoginSession.SESSION_EXPIRE_SECONDS);
 		
-		LoginSession otherSession = AuthSessionHelper.getLoginSessionByUserId(account.getId());
-		if(otherSession != null && !otherSession.getSessionId().equals(session.getSessionId())){
-			AuthSessionHelper.removeLoginSession(otherSession.getSessionId());
+		if(ssoEnabled){			
+			LoginSession otherSession = AuthSessionHelper.getLoginSessionByUserId(account.getId());
+			if(otherSession != null && !otherSession.getSessionId().equals(session.getSessionId())){
+				AuthSessionHelper.removeLoginSession(otherSession.getSessionId());
+			}
 		}
 		
-		AuthSessionHelper.storgeLoginSession(session);
+		AuthSessionHelper.storgeLoginSession(session,ssoEnabled);
 		//敏感信息不返回前端
 		userInfo.setRealname(null);
 		userInfo.setEmail(null);

@@ -23,6 +23,7 @@ import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.util.SecurityCryptUtils;
 import com.oneplatform.platform.PlatformConfigManager;
 import com.oneplatform.platform.auth.AuthSessionHelper;
+import com.oneplatform.platform.auth.LoginHelper;
 
 /**
  * 
@@ -73,7 +74,7 @@ public class GlobalFilter extends ZuulFilter{
 				ctx.put(PlatformConfigManager.CONTEXT_ROUTE_NAME, routeName);
 			}
 			
-			LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,ctx.getResponse());
+			LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,ctx.getResponse(),LoginHelper.ssoEnabled);
 			ctx.put(CONTEXT_SESSION_KEY, session);
 			//
 			Cookie[] cookies = request.getCookies();

@@ -39,7 +39,7 @@ public class AuthSessionHelper {
 	}
 	
 	
-	public static LoginSession getSessionIfNotCreateAnonymous(HttpServletRequest request,HttpServletResponse response){
+	public static LoginSession getSessionIfNotCreateAnonymous(HttpServletRequest request,HttpServletResponse response,boolean ssoEnabled){
 		LoginSession session = null;
 		String sessionId = getSessionId(request);
 		if(StringUtils.isNotBlank(sessionId)){
@@ -48,7 +48,7 @@ public class AuthSessionHelper {
 		
 		if(session == null){			
 			session = LoginSession.create();
-			storgeLoginSession(session);
+			storgeLoginSession(session,ssoEnabled);
 			
 			String domain = WebUtils.getRootDomain(request);
 			Cookie cookie = createSessionCookies(session.getSessionId(), domain, session.getExpiresIn());
@@ -65,10 +65,10 @@ public class AuthSessionHelper {
 		return  getLoginSession(sessionId);
 	}
 	
-	public static void storgeLoginSession(LoginSession session){
+	public static void storgeLoginSession(LoginSession session,boolean ssoEnabled){
 		String key = String.format(SESSION_CACHE_KEY, session.getSessionId());
 		getCache().setObject(key,session);
-		if(!session.isAnonymous()){			
+		if(!session.isAnonymous() && ssoEnabled){			
 			key = String.format(LOGIN_UID_CACHE_KEY, session.getUserId());
 			getCache().setString(key, session.getSessionId());
 		}
