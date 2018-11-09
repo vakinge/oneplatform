@@ -19,7 +19,7 @@ http://oneplatform.jeesuite.com/
    - 可选session本地和redis存储
    - 跨应用安全访问控制
  
-#### 重磅模块推荐：智能API:star::star::star::star::star:
+#### 重磅模块推荐：智能API
  - 不是代码生成器，我一直认为在线生成代码这个功能就很搞笑。(不是一个脚本就能搞定么，还在线上放个菜单，难道在生产环境生成代码，然后再拿回本地修改编译重新发布么)
  - 倡导sql即API，只需要编写sql即可实时完成接口
  - 支持常规CRUD，分页，聚合查询，以及多步骤复杂接口
@@ -85,8 +85,6 @@ http://oneplatform.jeesuite.com/
 
 
 ### 界面预览
-![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/module.png)
-![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/menu.png)
-![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/log.png)
-![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/schedule.png)
-![image](http://ojmezn0eq.bkt.clouddn.com/oneplatform/kafka.png)
+![image](http://www.jeesuite.com/images/one-snapshot-1.png)
+![image](http://www.jeesuite.com/images/one-snapshot-2.png)
+![image](http://www.jeesuite.com/images/one-snapshot-3.png)
