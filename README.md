@@ -76,7 +76,12 @@ http://oneplatform.jeesuite.com/
    - 全局事件:clock130:
    - 分布式事务:clock130:
 
-   
+### 关于前端
+ - 前端框架采用`layui`;首页样式引用开源前端项目`WeAdmin`
+ >为什么选用`layui`
+  - 方便后端开发人员也能从前端撸到后端，无需学习新的前端开发模式
+  - 本人一直沿用封装的一些原生js工具可以简化前端开发成本
+ 
 
 ### 文档
  - [快速开始](./docs/quick-start.md) 
