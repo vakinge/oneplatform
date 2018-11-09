@@ -16,25 +16,25 @@
     <div class="layui-form-item"> 
      <label class="layui-form-label">接口名称</label> 
      <div class="layui-input-block"> 
-      <input type="text" bindattr="name" class="layui-input" style="background-color: #E8E8E8" readonly="readonly" /> 
+      <input type="text" bindAttr="name" class="layui-input" style="background-color: #E8E8E8" readonly="readonly" /> 
      </div> 
     </div> 
     <div class="layui-form-item"> 
      <label class="layui-form-label">请求方法</label> 
      <div class="layui-input-block"> 
-      <input type="text" id="httpType" bindattr="httpType" class="layui-input" style="background-color: #E8E8E8" readonly="readonly" /> 
+      <input type="text" id="httpType" bindAttr="httpType" class="layui-input" style="background-color: #E8E8E8" readonly="readonly" /> 
      </div> 
     </div> 
     <div class="layui-form-item"> 
      <label class="layui-form-label">请求uri</label> 
      <div class="layui-input-block"> 
-      <input type="text" id="uri" bindattr="uri" class="layui-input" style="background-color: #E8E8E8" readonly="readonly" /> 
+      <input type="text" id="uri" bindAttr="uri" class="layui-input" style="background-color: #E8E8E8" readonly="readonly" /> 
      </div> 
     </div> 
     <div class="layui-form-item"> 
      <label class="layui-form-label">关联数据库</label> 
      <div class="layui-input-block"> 
-      <input type="text" bindattr="datasource" class="layui-input" style="background-color: #E8E8E8" readonly="readonly" /> 
+      <input type="text" bindAttr="datasource" class="layui-input" style="background-color: #E8E8E8" readonly="readonly" /> 
      </div> 
     </div> 
    </form> 
@@ -51,7 +51,7 @@
       <th width="120">错误提示</th> 
      </tr> 
     </thead> 
-    <tbody bindattr="template:actions_tpl"> 
+    <tbody bindAttr="template:actions_tpl"> 
      <script type="text/html" id="actions_tpl">
      {{# layui.each(d.actions, function(index, item){ }}
      <tr>
@@ -81,7 +81,7 @@
          <th width="150">默认值</th> 
         </tr> 
        </thead> 
-       <tbody bindattr="template:parameters_tpl"> 
+       <tbody bindAttr="template:parameters_tpl"> 
         <script type="text/html" id="parameters_tpl">
      {{# layui.each(d.parameters, function(index, item){ }}
      <tr>
