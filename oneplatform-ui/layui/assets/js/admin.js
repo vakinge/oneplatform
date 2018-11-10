@@ -41,32 +41,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	 * 打开或刷新后执行
 	 */
 	$(function() {
-		//延时加载
-		setTimeout(function() {
-			if(sessionStorage.getItem("menu")) {
-				menu = JSON.parse(sessionStorage.getItem("menu"));
-				for(var i = 0; i < menu.length; i++) {
-					tab.tabAdd(menu[i].title, menu[i].url, menu[i].id);
-				}
-			} else {
-				return false;
-			}
-			if(sessionStorage.getItem("curMenu")) {
-				$('.layui-tab-title').find('layui-this').removeClass('layui-class');
-				curMenu = JSON.parse(sessionStorage.getItem("curMenu"));
-				id = curMenu.id;
-				if(id) { //因为默认桌面首页不存在lay-id,所以要对此判断
-					$('.layui-tab-title li[lay-id="' + id + '"]').addClass('layui-this');
-					tab.tabChange(id);
-				} else {
-					$(".layui-tab-title li").eq(0).addClass('layui-this'); //未生效
-					$('.layui-tab-content iframe').eq(0).parent().addClass('layui-show');
-				}
-			} else {
-				$(".layui-tab-title li").eq(0).addClass('layui-this'); //未生效
-				$('.layui-tab-content iframe').eq(0).parent().addClass('layui-show');
-			}
-		}, 100);
 		//点击tab标题时，触发reloadTab函数
 		$('#tabName').on('click','li',function(){
 			reloadTab(this);
@@ -341,7 +315,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	//本地存储中移除删除的元素
 	function removeStorageMenu(id) {
 		var menu = JSON.parse(sessionStorage.getItem('menu'));
-		//var curMenu = JSON.parse(localStorage.getItem('curMenu'));
 		if(menu) {
 			var deep = false;
 			for(var i = 0; i < menu.length; i++) {

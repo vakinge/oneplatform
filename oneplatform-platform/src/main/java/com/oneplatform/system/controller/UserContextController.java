@@ -56,7 +56,7 @@ public class UserContextController {
 	
 	@ApiOperation(value = "退出登录")
 	@RequestMapping(value = "logout", method = RequestMethod.POST)
-    public WrapperResponse<String> logout(HttpServletRequest request,HttpServletResponse response) {
+    public @ResponseBody WrapperResponse<String> logout(HttpServletRequest request,HttpServletResponse response) {
 		LoginHelper.logout(request, response);
 		return new WrapperResponse<>();
 	} 

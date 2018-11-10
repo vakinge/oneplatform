@@ -16,12 +16,15 @@
  */
 package com.oneplatform.platform.auth;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.jeesuite.common.util.PathMatcher;
 import com.jeesuite.common.util.ResourceUtils;
@@ -54,6 +57,7 @@ public class AuthPermHelper {
 	// 无通配符uri
 	private static volatile Map<String,String> nonWildcardUriPerms = new HashMap<>();
 	private static volatile Map<Pattern,String>  wildcardUriPermPatterns = new HashMap<>();
+	private static volatile Map<String,String> uriPrefixs = new HashMap<>();
 	
 	public static boolean anonymousAllowed(String uri){
         doLoadPermDatasIfRequired();
@@ -71,6 +75,12 @@ public class AuthPermHelper {
 			if(pattern.matcher(uri).matches())return wildcardUriPermPatterns.get(pattern);
 		}
 		
+		for (String prefix : uriPrefixs.keySet()) {
+			if(uri.startsWith(prefix)){
+				return uriPrefixs.get(prefix);
+			}
+		}
+		
 		return null;
 	}
 	
@@ -81,6 +91,13 @@ public class AuthPermHelper {
 		if(perms == null || perms.isEmpty()){
 			ResourcesService resourcesService = InstanceFactory.getInstance(ResourcesService.class);
 			perms = resourcesService.findAllPermsByUserId(accountId);
+			List<String> removeWildcards = new ArrayList<>();
+			for (String perm : perms) {
+				if(perm.endsWith("*")){
+					removeWildcards.add(StringUtils.remove(perm, "*"));
+				}
+			}
+			if(!removeWildcards.isEmpty())perms.addAll(removeWildcards);
 			cache.setObject(key, perms);
 		}
 		return perms.contains(permCode);
@@ -89,37 +106,39 @@ public class AuthPermHelper {
 	private static void doLoadPermDatasIfRequired(){
 		if(loadFinished)return;
 		
-		if(contextPath.endsWith("/")){
-			contextPath = contextPath.substring(0,contextPath.indexOf("/"));
-		}
-		
-		anonymousUriMatcher = new PathMatcher(contextPath,ResourceUtils.getProperty("anonymous.uris"));
-		
-		ModuleEntityMapper moduleMapper = InstanceFactory.getInstance(ModuleEntityMapper.class);
-		Map<Integer,ModuleEntity> modulesMap = moduleMapper.findAll().stream().collect(Collectors.toMap(ModuleEntity::getId, entity -> entity));
-		ResourceEntityMapper resourceMapper = InstanceFactory.getInstance(ResourceEntityMapper.class);
-		List<ResourceEntity> resources = resourceMapper.findResources(ResourceType.uri.name());
-		String fullUri = null;
-		ModuleEntity module;
-		for (ResourceEntity resource : resources) {
-			module = modulesMap.get(resource.getModuleId());
-			if(module == null)continue;
-			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(module.getServiceId()) 
-					|| ModuleType.plugin.name().equals(module.getModuleType())){
-				fullUri = contextPath + resource.getResource();
-			}else{ 
-				fullUri = contextPath + "/" + module.getRouteName() + resource.getResource();
+		synchronized (AuthPermHelper.class) {
+			if(loadFinished)return;
+			if(contextPath.endsWith("/")){
+				contextPath = contextPath.substring(0,contextPath.indexOf("/"));
 			}
-			
-			if(resource.getResource().contains(WILDCARD_START)){
-				String regex = fullUri.replaceAll("\\{.*?(?=})", ".*").replaceAll("\\}", "");
-				wildcardUriPermPatterns.put(Pattern.compile(regex),resource.getResource());
-			}else{
-				nonWildcardUriPerms.put(fullUri, resource.getResource());
+			anonymousUriMatcher = new PathMatcher(contextPath,ResourceUtils.getProperty("anonymous.uris"));
+			ModuleEntityMapper moduleMapper = InstanceFactory.getInstance(ModuleEntityMapper.class);
+			Map<Integer,ModuleEntity> modulesMap = moduleMapper.findAll().stream().collect(Collectors.toMap(ModuleEntity::getId, entity -> entity));
+			ResourceEntityMapper resourceMapper = InstanceFactory.getInstance(ResourceEntityMapper.class);
+			List<ResourceEntity> resources = resourceMapper.findResources(ResourceType.uri.name());
+			String fullUri = null;
+			ModuleEntity module;
+			for (ResourceEntity resource : resources) {
+				module = modulesMap.get(resource.getModuleId());
+				if(module == null)continue;
+				if(GlobalContants.MODULE_NAME.equalsIgnoreCase(module.getServiceId()) 
+						|| ModuleType.plugin.name().equals(module.getModuleType())){
+					fullUri = contextPath + resource.getResource();
+				}else{ 
+					fullUri = contextPath + "/" + module.getRouteName() + resource.getResource();
+				}
+				
+				if(resource.getResource().contains(WILDCARD_START)){
+					String regex = fullUri.replaceAll("\\{.*?(?=})", ".*").replaceAll("\\}", "");
+					wildcardUriPermPatterns.put(Pattern.compile(regex),resource.getResource());
+				} else if(fullUri.endsWith("*")){
+					uriPrefixs.put(StringUtils.remove(fullUri, "*"),resource.getResource());
+				}else{
+					nonWildcardUriPerms.put(fullUri, resource.getResource());
+				}
 			}
+			loadFinished = true;
 		}
-
-		loadFinished = true;
 	}
 	
 	public static void refreshPermData(int accountId){
@@ -134,6 +153,7 @@ public class AuthPermHelper {
 	public static void reset(){
 		nonWildcardUriPerms.clear();
 		wildcardUriPermPatterns.clear();
+		uriPrefixs.clear();
 		loadFinished = false;
 	}
 

@@ -158,7 +158,7 @@ public class ResourceEntity extends BaseEntity {
 	}
 
 	public String getResource() {
-		return resource;
+		return StringUtils.trimToNull(resource);
 	}
 
 	public void setResource(String resource) {

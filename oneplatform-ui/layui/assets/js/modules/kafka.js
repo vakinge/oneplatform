@@ -14,7 +14,7 @@ layui.define(['oneplatform','layer', 'laytpl', 'form'],function(exports) {
         $.ajax({
             dataType: "json",
             type: "GET",
-            url: '/api/kafka/topicinfo/' + data.field.group,
+            url: '/api/scm/kafka/topicinfo/' + data.field.group,
             contentType: "application/json",
             complete: function() {
                 layer.close(loading);
