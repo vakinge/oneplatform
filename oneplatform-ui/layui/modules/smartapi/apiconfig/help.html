@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>帮助</title> 
+  <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" /> 
+  <link rel="stylesheet" href="/assets/css/global.css" media="all" /> 
+  <style type="text/css">
+   .highligth{color: #FF5722;font-size: 14px;font-weight: bold; }
+  </style>
+ </head> 
+ <body> 
+  <div class="admin-main"> 
+   <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> 
+    <legend>SQL规约</legend> 
+   </fieldset> 
+   
+     <blockquote class="layui-elem-quote layui-quote-nm" style="font-size: 14px;">
+		<p>1.sql关键词必须大写</p>
+		<p>2.<span class="highligth">UPDATE</span>与<span class="highligth">DELETE</span>必须带有查询条件并且全部查询条件都必填</p>
+		<p>3.<span class="highligth">JOIN</span>查询时<span class="highligth">ON</span>不能带查询条件，条件应该在<span class="highligth">WHERE</span>后面</p>
+		<p>4.动态参数必须连续 譬如不允许 <span class="highligth">WHERE a=${a} and b=1 and c=#{c}</span></p>
+	 </blockquote>
+	 
+	 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> 
+       <legend>普通变量</legend> 
+    </fieldset> 
+    <blockquote class="layui-elem-quote layui-quote-nm">
+     <p style="font-size: 14px;">表达式：<span class="highligth">${变量名}</span></p>
+    </blockquote>
+    
+	 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> 
+       <legend>系统变量</legend> 
+    </fieldset> 
+    <table class="layui-table" lay-size="sm" style="margin-left: 20px;width: 50%;"> 
+    <thead> 
+     <tr> 
+      <th width="150">变量名</th> 
+      <th>变量表达式</th> 
+     </tr> 
+    </thead> 
+    <tbody dataLoad="/api/apiconfig/variablesOptions" template-id="tbody_tpl"> 
+     <script type="text/html" id="tbody_tpl">
+     {{# layui.each(d, function(index, item){ }}
+     <tr>
+       <td>{{ item.text }}</td>
+       <td>{{ item.value }}</td>
+     </tr>
+    {{# }); }}
+ </script> 
+    </tbody> 
+   </table> 
+   
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> 
+       <legend>上下文变量</legend> 
+    </fieldset> 
+    <blockquote class="layui-elem-quote layui-quote-nm">
+     <p style="font-size: 14px;">表达式：<span class="highligth">${context.data[结果集名称].price}</span></p>
+     <p>结果集名称:上一步定义的返回结果名</p>
+    </blockquote>
+  </div>  
+  <script type="text/javascript" src="/assets/js/layui/layui.js"></script> 
+  <script>
+	var tables = {};
+	layui.config({
+		version : "1.0.0",
+		base : '/assets/js/modules/'
+	}).use('smartapi');
+</script> 
+ </body>
+</html>

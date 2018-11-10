@@ -29,14 +29,14 @@
    </select>
   
   <select id="findRoleResources" parameterType="map"  resultMap="BaseResultMap">
-	  SELECT  r.*
+	  SELECT distinct(r.id),r.parent_id,r.module_id,r.name,r.resource,r.icon,r.sort
 	  FROM sys_resources r,sys_role_resources rr where r.id=rr.resource_id and rr.role_id=#{roleId}
 	  <if test="type != 'all'">and r.type=#{type}</if>
 	  order by r.sort
    </select>
    
    <select id="findUserResources" parameterType="map"  resultMap="BaseResultMap">
-	  SELECT  r.*
+	  SELECT distinct(r.id),r.parent_id,r.module_id,r.name,r.resource,r.icon,r.sort
 	  FROM sys_resources r,sys_role_resources rr where r.type=#{type} and r.id=rr.resource_id and rr.role_id IN (
 	      SELECT  r.id FROM sys_role r,sys_account_roles ar where r.id=ar.role_id and ar.account_id=#{accountId}
 	  )
