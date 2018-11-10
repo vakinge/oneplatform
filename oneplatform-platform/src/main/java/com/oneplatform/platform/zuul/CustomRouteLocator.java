@@ -54,7 +54,7 @@ public class CustomRouteLocator extends SimpleRouteLocator   {
         String path = null;
         ZuulProperties.ZuulRoute zuulRoute = null;
         for (ModuleEntity module : serviceModules) {
-        	if(module.getEnabled() == false || module.getId() == 1)continue;
+        	if(module.getEnabled() == false || module.getId() == 1 || module.getInternal())continue;
         	path = String.format("/%s/**", module.getRouteName());
         	
         	zuulRoute = new ZuulProperties.ZuulRoute();  

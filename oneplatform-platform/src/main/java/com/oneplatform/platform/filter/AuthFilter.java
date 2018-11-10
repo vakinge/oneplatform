@@ -72,10 +72,14 @@ public class AuthFilter implements Filter {
 		}
 		
 		if (anon == false){
-			String permssionCode = AuthPermHelper.getPermssionCode(request.getRequestURI());
-			if(StringUtils.isNotBlank(permssionCode) && !AuthPermHelper.isPermitted(session.getUserId(),permssionCode)){
-				WebUtils.responseOutJson(response, MSG_403_FORBIDDEN);
-				return;
+			if(session.isSuperAdmin()){
+				//TODO 超管可以访问系统默认的接口，不能访问业务接口
+			}else{
+				String permssionCode = AuthPermHelper.getPermssionCode(request.getRequestURI());
+				if(StringUtils.isNotBlank(permssionCode) && !AuthPermHelper.isPermitted(session.getUserId(),permssionCode)){
+					WebUtils.responseOutJson(response, MSG_403_FORBIDDEN);
+					return;
+				}
 			}
 		}
 			

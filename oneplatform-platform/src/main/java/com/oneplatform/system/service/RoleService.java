@@ -68,9 +68,9 @@ public class RoleService {
 		}
 		entity.setName(param.getName());
 		entity.setMemo(param.getMemo());
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(operUserId);
-		roleMapper.insertSelective(entity);
+		entity.setUpdatedAt(new Date());
+		entity.setUpdatedBy(operUserId);
+		roleMapper.updateByPrimaryKeySelective(entity);
 	}
 	
 	@Transactional

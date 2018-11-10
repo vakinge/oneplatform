@@ -13,7 +13,7 @@ layui.define(['oneplatform','layer', 'laytpl', 'form'], function(exports){
         $.ajax({
             dataType: "json",
             type: "GET",
-            url: '/api/schedule/jobs?group=' + data.field.groupName,
+            url: '/api/scm/schedule/jobs?group=' + data.field.groupName,
             contentType: "application/json",
             complete: function() {
                 layer.close(loading);
@@ -57,7 +57,7 @@ layui.define(['oneplatform','layer', 'laytpl', 'form'], function(exports){
 			$.ajax({
 	            dataType: "json",
 	            type: "POST",
-	            url: '/api/schedule/job/'+cmd,
+	            url: '/api/scm/schedule/job/'+cmd,
 	            contentType: "application/json",
 	            data: JSON.stringify(params),
 	            complete: function() {

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,7 +93,13 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				if(metadata == null)continue;
 				moduleEntity = activeModules.get(serviceId);
 				moduleEntity.setName(metadata.getName());
-				moduleEntity.setRouteName(metadata.getIdentifier());
+				if(StringUtils.isNotBlank(metadata.getIdentifier())){
+					moduleEntity.setRouteName(metadata.getIdentifier());
+					moduleEntity.setInternal(false);
+				}else{
+					moduleEntity.setInternal(true);
+				}
+				
 				moduleEntity.setServiceId(serviceId);
 				moduleEntity.setModuleType(metadata.getType());
 				moduleEntity.setApidocUrl(String.format("/api/%s/swagger-ui.html", moduleEntity.getRouteName()));
@@ -105,7 +112,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				activeModulesCache.put(serviceId, moduleEntity);
 				//创建菜单
 				createModuleMenusIfNotExist(moduleEntity);
-				refreshRequired = true;
+				if(!refreshRequired)refreshRequired = !moduleEntity.getInternal();
 			}
 		}
 		
@@ -210,6 +217,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				child.setIcon(menu.getIcon());
 				child.setType(ResourceType.menu.name());
 				child.setParentId(parent.getId());
+				parent.setSort(child.getSort());
 				child.setEnabled(true);
 				child.setCreatedAt(new Date());
 				resourceMapper.insertSelective(child);

@@ -128,41 +128,15 @@ CREATE TABLE `sys_logs` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='系统操作日志';
 
 
-DROP TABLE IF EXISTS `sys_api_statistics`;
-CREATE TABLE `sys_api_statistics` (
-  `id` int(10)  NOT NULL AUTO_INCREMENT,
-  `api_name` varchar(32) DEFAULT NULL,
-  `api_uri` varchar(100) DEFAULT NULL,
-  `call_nums` int(8) DEFAULT 0,
-  `fail_nums` int(8) DEFAULT 0,
-  `stat_date` date DEFAULT NULL,
-  `min_use_time` int(10) DEFAULT NULL,
-  `max_use_time` int(10) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='接口调用统计';
-
-INSERT INTO `sys_account` (`id`,`username`, `email`, `mobile`, `password`, `enabled`,`created_at`) VALUES ('1','admin', 'vakinge@gmail.com', '13800138001', '5d10ac96f72efe7c0b984e8283518ac6', '1','2018-03-03 12:55:30');
+INSERT INTO `sys_account` (`id`,`username`, `email`, `mobile`, `password`, `enabled`,`created_at`) VALUES ('1','sa', 'sa@oneplatform.com', '13800138001', '5d10ac96f72efe7c0b984e8283518ac6', '1','2018-03-03 12:55:30');
 INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('1','基础平台', 'oneplatform', '/', '0', '1','/api/swagger-ui.html');
-
-INSERT INTO `sys_role` (`id`, `name`) VALUES ('1000', '系统管理员');
-
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('1000','0', '1', '系统管理', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('1001','1000', '1', '模块管理','/modules/module/list.html', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('1002','1000', '1', '日志管理', '/modules/log/list.html','menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('2000','0', '1', '权限管理', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('2001','2000', '1', '用户管理','/modules/account/list.html', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2002','2000', '1', '角色管理', '/modules/role/list.html','menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2003','2000', '1', '权限管理', '/modules/resource/permissions.html','menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2004','2000', '1', '菜单管理', '/modules/resource/menus.html','menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('3000','0', '1', '系统监控', 'menu', '1');
-
-
-
-INSERT INTO `sys_account_roles` (`account_id`, `role_id`) VALUES ('1', '1000');
-INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '1001');
-INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '1002');
-INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2001');
-INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2002');
-INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2003');
-INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2004');
+INSERT INTO `sys_resources` (`id`,`parent_id`,`module_id`,`name`,`code`,`resource`,`type`,`sort`) VALUES 
+(1000,0,1,'系统管理',NULL,NULL,'menu',1),
+(1001,1000,1,'模块管理',NULL,'/modules/module/list.html','menu',1),
+(1002,1000,1,'日志管理',NULL,'/modules/log/list.html','menu',2),
+(2000,0,1,'权限管理',NULL,NULL,'menu',2),
+(2001,2000,1,'用户管理',NULL,'/modules/account/list.html','menu',1),
+(2002,2000,1,'角色管理',NULL,'/modules/role/list.html','menu',2),
+(2003,2000,1,'权限管理',NULL,'/modules/resource/permissions.html','menu',3),
+(2004,2000,1,'菜单管理',NULL,'/modules/resource/menus.html','menu',4);
 

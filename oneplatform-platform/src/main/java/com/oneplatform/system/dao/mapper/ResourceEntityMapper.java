@@ -30,6 +30,10 @@ public interface ResourceEntityMapper extends CustomBaseMapper<ResourceEntity> {
 	
 	List<ResourceEntity> findAllResources();
 	
+	@Select("select * from sys_resources where is_default = 1 and parent_id > 0 order by sort")
+	@ResultMap("BaseResultMap")
+	List<ResourceEntity> findDefaultResources(String type);
+	
 	List<ResourceEntity> findUserResources(@Param("accountId") int accountId,@Param("type") String type);
 	
 	List<ResourceEntity> findRoleResources(@Param("roleId") int roleId,@Param("type") String type);

@@ -2,6 +2,7 @@
     "type": "plugin",
     "identifier": "system-component-mgt",
     "name": "系统监控管理",
+    "apiBasePackages": "com.oneplatform.scm.controller",
     "menuIcon":"",
 	"menus": [{
 	    "key": "schedule-mgt",

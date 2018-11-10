@@ -1,5 +1,8 @@
 package com.oneplatform.base.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -9,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.jeesuite.common.json.JsonUtils;
 import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.common.util.TokenGenerator;
+import com.oneplatform.base.GlobalContants.UserScope;
 import com.oneplatform.base.util.SecurityCryptUtils;
 
 @JsonInclude(Include.NON_NULL)
@@ -19,6 +23,7 @@ public class LoginSession {
 	
 	private Integer userId;
 	private String userName;
+	private List<String> scopes = new ArrayList<>();
 
 	private String sessionId;
 	private Integer expiresIn;
@@ -50,6 +55,13 @@ public class LoginSession {
 		this.userName = userName;
 	}
 
+	public List<String> getScopes() {
+		return scopes;
+	}
+
+	public void setScopes(List<String> scopes) {
+		this.scopes = scopes;
+	}
 
 	public Integer getExpiresIn() {
 		return expiresIn;
@@ -87,6 +99,10 @@ public class LoginSession {
 
 	public void setUserInfo(UserInfo userInfo) {
 		this.userInfo = userInfo;
+	}
+	
+	public boolean isSuperAdmin(){
+		return scopes.contains(UserScope.sa.name());
 	}
 
 	public String toEncodeString(){

@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jeesuite.common.util.ResourceUtils;
+import com.oneplatform.base.GlobalContants.UserScope;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.UserInfo;
 import com.oneplatform.system.dao.entity.AccountEntity;
@@ -16,7 +17,11 @@ public class LoginHelper {
 		LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request, response,ssoEnabled);
 		session.setUserId(account.getId());
 		session.setUserName(account.getUsername());
-		
+		if(account.getId() == 1){
+			session.getScopes().add(UserScope.sa.name());
+		}else{
+			//TODO 后续支持多端用户后需要查询scope表
+		}
 		UserInfo userInfo = new UserInfo(account.getId(), account.getUsername());
 		userInfo.setRealname(account.getRealname());
 		userInfo.setEmail(account.getEmail());

@@ -57,7 +57,7 @@ public class ResourceEntity extends BaseEntity {
     /**
      * 排序
      */
-    private Integer sort;
+    private Integer sort = 99;
 
     @Column(name = "created_at",updatable = false)
     private Date createdAt;

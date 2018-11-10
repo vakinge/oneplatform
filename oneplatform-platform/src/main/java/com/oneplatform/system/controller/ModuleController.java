@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
+import com.oneplatform.base.annotation.ApiScanIgnore;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.system.dao.entity.ModuleEntity;
-import com.oneplatform.system.dto.param.ModuleParam;
 import com.oneplatform.system.service.ModuleService;
 
 import io.swagger.annotations.Api;
@@ -44,30 +44,13 @@ public class ModuleController {
 		ModuleEntity entity = moduleService.getmoduleDetails(id);
 		return new WrapperResponse<>(entity);
 	}
-	
-	
-	@ApiOperation(value = "更新模块")
-	@RequestMapping(value = "update", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> updateModule(@RequestBody ModuleParam param) {
-		moduleService.updateModule(LoginContext.getLoginUserId(), param);
-		
-		return new WrapperResponse<>();
-	}
-	
+
 	@ApiOperation(value = "启用/停止模块")
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchModule(@RequestBody SwitchParam param) {
 		moduleService.switchModule(LoginContext.getLoginUserId(), param.getId(),param.getValue());
 		return new WrapperResponse<>();
 	}
-	
-	@ApiOperation(value = "删除模块")
-	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> deleteModule(@PathVariable("id") int id) {
-		moduleService.deleteModule(LoginContext.getLoginUserId(), id);
-		return new WrapperResponse<>();
-	}
-    
 	
 	@ApiOperation(value = "查询所有模块（下拉框选项）")
 	@RequestMapping(value = "options", method = RequestMethod.GET)
@@ -82,6 +65,7 @@ public class ModuleController {
 		return new WrapperResponse<>(options);
 	}
 	
+	@ApiScanIgnore
 	@ApiOperation(value = "查询无需鉴权接口列表")
 	@RequestMapping(value = "notperm_apis/{moduleId}", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<List<ApiInfo>> getApis(@PathVariable("moduleId") int moduleId) {

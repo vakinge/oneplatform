@@ -68,24 +68,34 @@ public class AccountService {
 		entity.setEnabled(true);
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(operUserId);
-		entity.setPassword(AccountEntity.encryptPassword("123456"));
+		entity.setPassword(AccountEntity.encryptPassword(param.getMobile().substring(5)));
 		accountMapper.insertSelective(entity);
 		
-		roleMapper.addAccountRoles(entity.getId(), param.getRoleIds());
+        if(param.getRoleIds() != null && param.getRoleIds().length > 0){			
+        	roleMapper.addAccountRoles(entity.getId(), param.getRoleIds());
+		}
 	}
 
 	@Transactional
 	public void updateAccount(int operUserId, AccountParam param) {
+		AccountEntity existEntity = accountMapper.findByLoginName(param.getMobile());
+		AssertUtil.isTrue(existEntity == null || !existEntity.getId().equals(param.getId()),5002, "手机号码已存在");
+		existEntity = accountMapper.findByLoginName(param.getEmail());
+		AssertUtil.isTrue(existEntity == null || !existEntity.getId().equals(param.getId()),5002, "邮箱已存在");
+		existEntity = accountMapper.findByLoginName(param.getUsername());
+		AssertUtil.isTrue(existEntity == null || !existEntity.getId().equals(param.getId()),5002, "用户名已存在");
+		
 		AccountEntity entity = findById(param.getId());
-		entity.setEmail(param.getEmail());
-		entity.setMobile(param.getMobile());
-		entity.setRealname(param.getRealname());
+		entity.setEmail(StringUtils.trimToNull(param.getEmail()));
+		entity.setMobile(StringUtils.trimToNull(param.getMobile()));
+		entity.setRealname(StringUtils.trimToNull(param.getRealname()));
 		entity.setUpdatedAt(new Date());
 		entity.setUpdatedBy(operUserId);
-		
 		accountMapper.updateByPrimaryKeySelective(entity);
 		
-		assignmentRoles(operUserId, entity.getId(), param.getRoleIds());
+		if(param.getRoleIds() != null && param.getRoleIds().length > 0){			
+			assignmentRoles(operUserId, entity.getId(), param.getRoleIds());
+		}
 		
 	}
 	

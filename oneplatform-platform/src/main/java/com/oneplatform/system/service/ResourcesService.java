@@ -18,6 +18,7 @@ import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.BeanUtils;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
+import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.constants.ResourceType;
@@ -144,14 +145,18 @@ public class ResourcesService {
 		return result;
 	}
 	
-	public List<TreeModel> findUserMenus(int accountId){
+	public List<TreeModel> findUserMenus(LoginSession currentUser){
 		//
 		Map<Integer, ModuleEntity> modules = ModuleMetadataUpdateTask.getActiveModules().values().stream().collect(Collectors.toMap(ModuleEntity::getId, module -> module));
 		
 		List<ResourceEntity> resources = resourceMapper.findNotLeafResources(ResourceType.menu.name());
 		Map<Integer, ResourceEntity> resourceMap = resources.stream().collect(Collectors.toMap(ResourceEntity::getId, entity -> entity));
 		
-		resources = resourceMapper.findUserResources(accountId, ResourceType.menu.name());
+		if(currentUser.isSuperAdmin()){
+			resources = resourceMapper.findDefaultResources(ResourceType.menu.name());
+		}else{			
+			resources = resourceMapper.findUserResources(currentUser.getUserId(), ResourceType.menu.name());
+		}
 		
 		List<TreeModel> models = new ArrayList<>();
 		ResourceEntity current;

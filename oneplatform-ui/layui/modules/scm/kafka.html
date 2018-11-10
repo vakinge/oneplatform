@@ -12,7 +12,7 @@
   <div class="admin-main"> 
    <form action="" class="layui-form" method="post">  
     <div class="layui-inline"> 
-     <select id="group_select" name="group" asnycSelect="/api/kafka/groups" lay-filter="group_select"> <option value="">请选择group</option> </select> 
+     <select id="group_select" name="group" asnycSelect="/api/scm/kafka/groups" lay-filter="group_select"> <option value="">请选择group</option> </select> 
     </div> 
     <div class="layui-inline"> 
      <input type="button" class="layui-btn  layui-btn-normal J_search" lay-submit="" lay-filter="search" value="查询" /> 
@@ -30,7 +30,7 @@
         <th width="25%">version</th> 
        </tr> 
       </thead> 
-      <tbody id="broker_content" dataLoad="/api/kafka/brokers" template-id="broker_list_tpl"></tbody> 
+      <tbody id="broker_content" dataLoad="/api/scm/kafka/brokers" template-id="broker_list_tpl"></tbody> 
      </table> 
     </div> 
    </fieldset> 

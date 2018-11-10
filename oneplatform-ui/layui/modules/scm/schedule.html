@@ -14,13 +14,13 @@
 		<div class="admin-main">
 			<form action="" class="layui-form" method="post">
               <div class="layui-inline">
-                <select id="group_select" name="groupName" asnycSelect="/api/schedule/groups" lay-filter="group_select">
+                <select id="group_select" name="groupName" asnycSelect="/api/scm/schedule/groups" lay-filter="group_select">
                   <option value="">请选择应用</option>
                 </select>     
               </div> 
               <div class="layui-inline">
                 <input type="button" class="layui-btn  layui-btn-normal J_search" lay-submit lay-filter="search" value="查询"/>    
-                <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/schedule/clean_invalid_group" value="清理无效任务"/>  
+                <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/scm/schedule/clean_invalid_group" value="清理无效任务"/>  
               </div>                           
            </form>
             <fieldset class="layui-elem-field">

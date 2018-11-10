@@ -348,13 +348,16 @@ exports('oneplatform', oneplatform);
 		        	 oneplatform.success(data.msg || '操作成功');
 		             data = data.data;
 		             if(callback != undefined){
-					    eval(callback+"(data)");
+		            	 if(callback !== 'None'){
+		            		 eval(callback+"(data)");
+		            	 }else{
+		            		 $this.removeAttr('disabled');
+		            	 }
 		             } else if(jumpUrl){
 		            	 setTimeout(function(){window.location.href = jumpUrl;},500);
 					 }else{		
-						 parent.window.location.reload();
+						 setTimeout(function(){parent.window.location.reload();},500);
 					 }
-		             setTimeout(function(){parent.layer.closeAll();},1000);
 		          }else{
 		        	 $this.removeAttr('disabled');
 		        	 oneplatform.error(data.msg);

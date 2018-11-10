@@ -11,4 +11,8 @@ public class GlobalContants {
 	public static enum ModuleType{
 		plugin,service;
 	}
+	
+	public static enum UserScope{
+		sa,admin,saas,user
+	}
 }

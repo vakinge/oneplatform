@@ -40,6 +40,7 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.io.CharStreams;
 import com.oneplatform.base.GlobalContants;
 import com.oneplatform.base.GlobalContants.ModuleType;
+import com.oneplatform.base.annotation.ApiScanIgnore;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.ModuleMetadata;
 
@@ -89,6 +90,7 @@ public class ModuleMetadataHolder {
 					MetadataReader reader = readerFactory.getMetadataReader(resource);
 					String className = reader.getClassMetadata().getClassName();
 					Class<?> clazz = Class.forName(className);
+					if(clazz.isAnnotationPresent(ApiScanIgnore.class))continue;
 					if (clazz.isAnnotationPresent(Controller.class)
 							|| clazz.isAnnotationPresent(RestController.class)) {
 						if (clazz.isAnnotationPresent(RequestMapping.class)) {
@@ -102,6 +104,7 @@ public class ModuleMetadataHolder {
 						}
 						methods = clazz.getDeclaredMethods();
 						methodLoop: for (Method method : methods) {
+							if(method.isAnnotationPresent(ApiScanIgnore.class))continue methodLoop;
 							if (!method.isAnnotationPresent(RequestMapping.class))
 								continue methodLoop;
 							RequestMapping annotation = method.getAnnotation(RequestMapping.class);

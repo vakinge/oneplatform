@@ -1,5 +1,6 @@
 package com.oneplatform.system.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
@@ -19,7 +21,6 @@ import com.oneplatform.system.dao.entity.AccountEntity;
 import com.oneplatform.system.dto.param.AccountParam;
 import com.oneplatform.system.dto.param.AccountQueryParam;
 import com.oneplatform.system.dto.param.AssignmentParam;
-import com.oneplatform.system.dto.param.UpdatepasswordParam;
 import com.oneplatform.system.service.AccountService;
 
 import io.swagger.annotations.Api;
@@ -50,6 +51,9 @@ public class AccountController {
 	@ApiOperation(value = "新增账号")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> addAccount(@RequestBody AccountParam param) {
+		if(StringUtils.isAnyBlank(param.getMobile(),param.getEmail(),param.getUsername())){
+			throw new JeesuiteBaseException(4001, "用户名、手机、邮箱必填");
+		}
 		accountService.addAccount(LoginContext.getLoginUserId(), param);
 		return new WrapperResponse<>();
 	}
@@ -57,7 +61,6 @@ public class AccountController {
 	@ApiOperation(value = "更新账号")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> updateAccount(@RequestBody AccountParam param) {
-		AssertUtil.notInitData(param.getId());
 		accountService.updateAccount(LoginContext.getLoginUserId(), param);
 		return new WrapperResponse<>();
 	}
@@ -70,15 +73,7 @@ public class AccountController {
 		return new WrapperResponse<>();
 	}
 	
-	@ApiOperation(value = "更新密码")
-	@RequestMapping(value = "update/password", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> updatePassword(@RequestBody UpdatepasswordParam param) {
-		Integer loginUserId = LoginContext.getLoginUserId();
-		param.setUserId(loginUserId);
-		accountService.updatePassword(loginUserId, param);
-		return new WrapperResponse<>();
-	}
-	
+
 	@ApiOperation(value = "启用/停止账号")
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchAccount(@RequestBody SwitchParam param) {

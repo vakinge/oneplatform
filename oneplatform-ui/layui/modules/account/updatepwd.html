@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>编辑模块</title> 
+  <link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/global.css" media="all">
+  <link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main"> 
+   <form class="layui-form" action="/api/user/updatepwd">  
+    <input type="hidden" name="id" bindAttr="id" />
+    <div class="layui-form-item">
+		<label class="layui-form-label">原密码</label>
+		<div class="layui-input-block">
+		   <input type="password" name="oldPassword" class="layui-input">
+		</div>
+	</div> 
+    <div class="layui-form-item">
+		<label class="layui-form-label">新密码</label>
+		<div class="layui-input-block">
+		   <input type="password" id="password" name="password" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">确认密码</label>
+		<div class="layui-input-block">
+		   <input type="password" id="password2" class="layui-input">
+		</div>
+	</div>
+      
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="更新"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div>  
+ </body>
+ 
+<script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
+<script>
+	layui.cache.page = 'account';
+	layui.config({
+		version : "1.0.0",
+		base : '../../assets/js/modules/'
+	}).use('account');
+</script>
+</html>

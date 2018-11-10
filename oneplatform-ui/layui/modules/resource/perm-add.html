@@ -44,13 +44,14 @@
        <div class="layui-form-item"> 
         <label id="code_label" class="layui-form-label">接口链接</label> 
         <div class="layui-input-block"> 
-         <input type="text" id="resourceinput" class="layui-input" bindattr="resource" name="resource" lay-verify="required" placeholder="请输入接口链接或者编码" /> 
+         <input type="text" id="resourceinput" class="layui-input" bindattr="resource" name="resource" lay-verify="required" placeholder="请输入接口链接,可以使用通配符,如:/user/*" /> 
         </div> 
        </div> 
 		     
     <div class="layui-form-item"> 
      <div class="layui-input-block"> 
-        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存"/>
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存并返回"/>
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" onSuccessCallback="None" value="保存并继续添加"/>
         <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
      </div> 
     </div> 
