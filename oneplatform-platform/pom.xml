@@ -181,12 +181,20 @@
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka_2.11</artifactId>
 		</dependency>
-		
+ 
+       <!-- 以下是系统插件，按需加载 -->
+		<dependency>
+			<groupId>com.jeesuite.oneplatform</groupId>
+			<artifactId>system-component-mgt</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.jeesuite.oneplatform</groupId>
 			<artifactId>smartapi-core</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+		<!-- 系统插件 end-->
 
 	</dependencies>
 

@@ -155,8 +155,7 @@ INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`
 INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2003','2000', '1', '权限管理', '/modules/resource/permissions.html','menu', '1');
 INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('2004','2000', '1', '菜单管理', '/modules/resource/menus.html','menu', '1');
 INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`, `type`, `enabled`) VALUES ('3000','0', '1', '系统监控', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`, `type`, `enabled`) VALUES ('3001','3000', '1', '定时任务监控','/modules/monitor/schedule.html', 'menu', '1');
-INSERT INTO `sys_resources` (`id`,`parent_id`, `module_id`, `name`,`code`,`type`, `enabled`) VALUES ('3002','3000', '1', 'kafka监控', '/modules/monitor/kafka.html','menu', '1');
+
 
 
 INSERT INTO `sys_account_roles` (`account_id`, `role_id`) VALUES ('1', '1000');
@@ -166,5 +165,4 @@ INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2001
 INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2002');
 INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2003');
 INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '2004');
-INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '3001');
-INSERT INTO `sys_role_resources` (`role_id`,`resource_id`) VALUES ('1000', '3002');
+

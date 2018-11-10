@@ -1,0 +1,19 @@
+{
+    "type": "plugin",
+    "identifier": "system-component-mgt",
+    "name": "系统监控管理",
+    "menuIcon":"",
+	"menus": [{
+	    "key": "schedule-mgt",
+		"uri": "/modules/scm/schedule.html",
+		"text": "定时任务管理",
+		"icon": "",
+		"sort": 1
+	},{
+	    "key": "kafka-mgt",
+		"uri": "/modules/scm/kafka.html",
+		"text": "kafka监控管理",
+		"icon": "",
+		"sort": 2
+	}]
+}

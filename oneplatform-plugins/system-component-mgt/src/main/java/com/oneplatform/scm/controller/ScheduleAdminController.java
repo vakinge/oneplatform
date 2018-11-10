@@ -1,4 +1,4 @@
-package com.oneplatform.system.controller;
+package com.oneplatform.scm.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import com.jeesuite.springweb.model.WrapperResponse;
  * @author <a href="mailto:vakinge@gmail.com">vakin</a>
  * @date 2018年4月10日
  */
-@RequestMapping("/schedule")
+@RequestMapping("/scm/schedule")
 @Controller
 public class ScheduleAdminController implements InitializingBean{
 

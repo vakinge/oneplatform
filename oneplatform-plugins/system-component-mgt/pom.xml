@@ -1,17 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.jeesuite.oneplatform</groupId>
-    <artifactId>oneplatform-parent</artifactId>
-    <version>1.0.0</version>
-  </parent>
-  <artifactId>oneplatform-plugins</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-  	<module>system-component-mgt</module>
-  </modules>
-  
-  <dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.jeesuite.oneplatform</groupId>
+		<artifactId>oneplatform-plugins</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<artifactId>system-component-mgt</artifactId>
+
+	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -42,12 +39,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!--通用Mapper -->
-		<dependency>
-			<groupId>tk.mybatis</groupId>
-			<artifactId>mapper</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-spring</artifactId>
@@ -55,26 +46,12 @@
 
 		<dependency>
 			<groupId>com.jeesuite</groupId>
-			<artifactId>jeesuite-common</artifactId>
+			<artifactId>jeesuite-kafka</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.jeesuite</groupId>
-			<artifactId>jeesuite-cache</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.jeesuite</groupId>
-			<artifactId>jeesuite-mybatis</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
+			<artifactId>jeesuite-scheduler</artifactId>
 		</dependency>
 
 		<dependency>
@@ -82,5 +59,16 @@
 			<artifactId>oneplatform-base</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+	</build>
+
 </project>

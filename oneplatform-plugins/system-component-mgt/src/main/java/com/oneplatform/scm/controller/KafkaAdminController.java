@@ -1,4 +1,4 @@
-package com.oneplatform.system.controller;
+package com.oneplatform.scm.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ import com.jeesuite.springweb.model.WrapperResponseEntity;
  * @date 2018年4月10日
  */
 @Controller
-@RequestMapping("/kafka")
+@RequestMapping("/scm/kafka")
 public class KafkaAdminController implements InitializingBean {
 	
 private static KafkaMonitor monitor;
