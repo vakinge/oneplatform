@@ -23,15 +23,11 @@ public class GlobalExceptionHandler {
 	public WrapperResponseEntity exceptionHandler(Exception e, HttpServletResponse response) {
 
 		WrapperResponseEntity resp = new WrapperResponseEntity();
-		if (e.getCause() != null && e.getCause() instanceof JeesuiteBaseException) {
-			JeesuiteBaseException e1 = (JeesuiteBaseException) e.getCause();
-			resp.setCode(e1.getCode());
-			resp.setMsg(e1.getMessage());
-		} else if (e instanceof JeesuiteBaseException) {
+		if (e instanceof JeesuiteBaseException) {
 			JeesuiteBaseException e1 = (JeesuiteBaseException) e;
 			resp.setCode(e1.getCode());
 			resp.setMsg(e1.getMessage());
-		} else if (e instanceof org.springframework.web.HttpRequestMethodNotSupportedException) {
+		}else if (e instanceof org.springframework.web.HttpRequestMethodNotSupportedException) {
 			resp.setCode(HttpStatus.METHOD_NOT_ALLOWED.value());
 			resp.setMsg(e.getMessage());
 		} else if (e instanceof org.springframework.web.HttpMediaTypeException) {
@@ -41,8 +37,12 @@ public class GlobalExceptionHandler {
 			resp.setCode(ExceptionCode.REQUEST_PARAM_REQUIRED.code);
 			resp.setMsg(e.getMessage());
 		} else {
-			Throwable parent = e.getCause();
-			if (parent instanceof IllegalStateException) {
+			Throwable parent = getActualThrowable(e);
+			if (parent instanceof JeesuiteBaseException) {
+				JeesuiteBaseException e1 = (JeesuiteBaseException) parent;
+				resp.setCode(e1.getCode());
+				resp.setMsg(e1.getMessage());
+			}else if (parent instanceof IllegalStateException) {
 				resp.setCode(ExceptionCode.ILLEGAL_STATE.code);
 				resp.setMsg(e.getMessage());
 			} else {
@@ -59,5 +59,13 @@ public class GlobalExceptionHandler {
 		LogContext.end(String.valueOf(resp.getCode()), resp.getMsg());
 
 		return resp;
+	}
+	
+	private Throwable getActualThrowable(Throwable e){
+		Throwable cause = e;
+		while(cause.getCause() != null){
+			cause = cause.getCause();
+		}
+		return cause;
 	}
 }

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.jeesuite.oneplatform</groupId>
 		<artifactId>oneplatform-parent</artifactId>
-		<version>1.0.0</version>
+		<version>2.0.0</version>
 	</parent>
 	<artifactId>oneplatform-base</artifactId>
 
@@ -33,6 +33,12 @@
 		<dependency>
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-cache</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.jeesuite</groupId>
+			<artifactId>jeesuite-mybatis</artifactId>
 			<optional>true</optional>
 		</dependency>
 

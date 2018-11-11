@@ -31,7 +31,7 @@
 							<a href="javascript:;" id="update_pwd_btn">修改密码</a>
 						</dd>
 						<dd>
-							<a href="javascript:;" class="loginout J_confirm" ajax-method="POST" data-msg="确认退出么？" data-url="/api/user/logout" onSuccessCallback="redirectLogin">退出</a>
+							<a href="javascript:;" id="logout_btn" class="loginout">退出</a>
 						</dd>
 					</dl>
 				</li>
@@ -132,9 +132,16 @@
 					  area: ['500px', '300px']
 				}); 
 			});
+		    
+		    $('#logout_btn').on('click',function(){
+		    	layui.oneplatform.post('/api/user/logout',{},function(){
+		    		location.href = './login.html';
+		    	});
+		    });
 	  });
 	  
 	  function redirectLogin(){
+		  alert(1);
 		  top.location.href = "/login.html";
 	  }
 	</script>
