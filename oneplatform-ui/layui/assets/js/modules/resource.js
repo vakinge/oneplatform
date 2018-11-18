@@ -2,10 +2,9 @@ layui.config({
   version: '20180325',
   base : '../../assets/js/'
 });
-layui.define(['laypage','form','oneplatform', 'layer', 'tree', 'treeselect','element'], function(exports){
+layui.define(['form','oneplatform', 'layer', 'tree','element'], function(exports){
 
   var $ = layui.jquery
-  ,laypage = layui.laypage 
   ,layer = layui.layer 
   ,tree = layui.tree 
   ,form = layui.form
@@ -30,7 +29,7 @@ layui.define(['laypage','form','oneplatform', 'layer', 'tree', 'treeselect','ele
 	      	
 	      },
 	      error: function(a, b, c) {
-	      	sessionId = null;
+	    	  nodeDatas = null;
 	      }
 	  }); 
   }
@@ -88,14 +87,6 @@ layui.define(['laypage','form','oneplatform', 'layer', 'tree', 'treeselect','ele
 		 
 	  });
   });
-  
-  if($('#treeSelect')[0]){
-	  layui.treeselect({
-		elem: "#treeSelect",
-		valueField:"#parentIdVal",
-	    data: nodeDatas
-	  });
-  }
 
   exports('resource', null);
   

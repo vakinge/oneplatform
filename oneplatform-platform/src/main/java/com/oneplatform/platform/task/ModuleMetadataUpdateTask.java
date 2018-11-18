@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.oneplatform.system.task;
+package com.oneplatform.platform.task;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -235,7 +235,9 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 		List<ModuleMetadata> metadatas = ModuleMetadataHolder.getMetadatas();
 		ModuleEntity moduleEntity;
 		for (ModuleMetadata metadata : metadatas) {
-			if(ModuleType.plugin.name().equals(metadata.getType())){
+			if(metadata.getIdentifier().equalsIgnoreCase(GlobalContants.MODULE_NAME)){
+				platform.setMetadata(metadata);
+			}else{
 				moduleEntity = moduleMapper.findByServiceId(metadata.getIdentifier().toUpperCase());
 				if(moduleEntity == null){
 					moduleEntity = new ModuleEntity();
@@ -248,10 +250,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				moduleEntity.setMetadata(metadata);
 				//
 				createModuleMenusIfNotExist(moduleEntity);
-				
 				activeModulesCache.put(moduleEntity.getServiceId(), moduleEntity);
-			}else if(metadata.getIdentifier().equalsIgnoreCase(GlobalContants.MODULE_NAME)){
-				platform.setMetadata(metadata);
 			}
 		}
 		//

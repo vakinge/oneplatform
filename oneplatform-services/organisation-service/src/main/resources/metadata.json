@@ -5,9 +5,9 @@
 	"identifier": "organisation",
 	"apiBasePackages": "com.oneplatform.organisation.controller",
 	"menus": [{
-	    "key": "file-list",
-		"uri": "/modules/common/files.html",
-		"text": "文件管理",
+	    "key": "organisation-structure",
+		"uri": "/modules/organisation/structure.html",
+		"text": "组织架构管理",
 		"icon": "",
 		"sort": 1
 	}]

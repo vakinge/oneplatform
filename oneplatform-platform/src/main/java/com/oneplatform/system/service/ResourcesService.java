@@ -21,6 +21,7 @@ import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.platform.auth.AuthPermHelper;
+import com.oneplatform.platform.task.ModuleMetadataUpdateTask;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.entity.ResourceEntity;
@@ -31,7 +32,6 @@ import com.oneplatform.system.dao.mapper.RoleEntityMapper;
 import com.oneplatform.system.dto.ModuleRoleResource;
 import com.oneplatform.system.dto.RoleResource;
 import com.oneplatform.system.dto.param.ResourceParam;
-import com.oneplatform.system.task.ModuleMetadataUpdateTask;
 
 /**
  * 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>新增部门</title> 
+  <link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="../../assets/css/global.css" media="all">
+  <link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main">  
+   <form class="layui-form" action="/api/department/save">  
+       <input type="hidden" name="branchId" id="branchId" />  
+       <div class="layui-form-item"> 
+        <label class="layui-form-label">名称</label> 
+        <div class="layui-input-block"> 
+         <input type="text" class="layui-input" name="name" lay-verify="required" /> 
+        </div> 
+       </div> 
+       
+       <div class="layui-form-item"> 
+        <label class="layui-form-label">联系电话</label> 
+        <div class="layui-input-block"> 
+         <input type="text" class="layui-input" name="telephone" lay-verify="required" /> 
+        </div> 
+       </div>
+		     
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存并返回"/>
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" onSuccessCallback="None" value="保存并继续添加"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+ <script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
+<script>
+	layui.config({
+		version : "1.0.0",
+		base : '../../assets/js/modules/'
+	}).use('organisation',function(){
+		var companyId = layui.oneplatform.getQueryParams('companyId');
+		layui.jquery('#branchId').val(companyId);
+	});
+</script>
+</html>

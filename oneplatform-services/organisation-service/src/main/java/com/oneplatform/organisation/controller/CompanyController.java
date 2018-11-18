@@ -1,11 +1,11 @@
 package com.oneplatform.organisation.controller;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.util.BeanUtils;
-import com.jeesuite.mybatis.plugin.pagination.PageParams;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.LoginSession;
-import com.oneplatform.base.model.PageQueryParam;
-import com.oneplatform.base.model.PageResult;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.organisation.dao.entity.CompanyEntity;
 import com.oneplatform.organisation.dto.param.CompanyParam;
@@ -37,9 +34,9 @@ public class CompanyController {
 
 	@ApiOperation(value = "组织架构")
 	@RequestMapping(value = "structure", method = RequestMethod.GET)
-	public @ResponseBody WrapperResponse<TreeModel> getAllStructure() {
+	public @ResponseBody WrapperResponse<List<TreeModel>> getAllStructure() {
 		TreeModel root = companyService.findStructureTree();
-		return new WrapperResponse<>(root);
+		return new WrapperResponse<>(Arrays.asList(root));
 	}
 
 	@ApiOperation(value = "按id查询")
@@ -49,53 +46,27 @@ public class CompanyController {
 		return new WrapperResponse<>(entity);
 	}
 
-	@ApiOperation(value = "查询总公司信息")
-	@RequestMapping(value = "details", method = RequestMethod.GET)
-	public @ResponseBody WrapperResponse<CompanyEntity> getHead() {
-		CompanyEntity entity = companyService.findHeadCompany();
-		return new WrapperResponse<>(entity);
-	}
-
 	@ApiOperation(value = "保存总公司信息")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public @ResponseBody WrapperResponse<String> addCompany(@RequestBody CompanyParam param) {
 		CompanyEntity entity = BeanUtils.copy(param, CompanyEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
-		entity.setIsBranch(false);
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
-		companyService.addCompany(entity);
-
-		return new WrapperResponse<>();
-	}
-
-	@ApiOperation(value = "新增子公司")
-	@RequestMapping(value = "branch/add", method = RequestMethod.POST)
-	public @ResponseBody WrapperResponse<String> addBranchCompany(@RequestBody CompanyParam param) {
-		CompanyEntity entity = BeanUtils.copy(param, CompanyEntity.class);
-		LoginSession session = LoginContext.getLoginSession();
-		entity.setIsBranch(true);
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
-		companyService.addCompany(entity);
-
-		return new WrapperResponse<>();
-	}
-
-	@ApiOperation(value = "更新子公司")
-	@RequestMapping(value = "branch/update", method = RequestMethod.POST)
-	public @ResponseBody WrapperResponse<String> updateCompany(@RequestBody CompanyParam param) {
-		CompanyEntity entity = BeanUtils.copy(param, CompanyEntity.class);
-		LoginSession session = LoginContext.getLoginSession();
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
-		companyService.updateCompany(entity);
+		if(param.getId() == null || param.getId() == 0){
+			entity.setCreatedAt(new Date());
+			entity.setCreatedBy(session.getUserId());
+			companyService.addCompany(entity);
+		}else{
+			entity.setUpdatedAt(new Date());
+			entity.setUpdatedBy(session.getUserId());
+			companyService.updateCompany(entity);
+		}
+		
 
 		return new WrapperResponse<>();
 	}
 
 	@ApiOperation(value = "删除子公司")
-	@RequestMapping(value = "branch/delete/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
 	public @ResponseBody WrapperResponse<String> deleteCompany(@PathVariable("id") int id) {
 		companyService.deleteCompany(id);
 		return new WrapperResponse<>();

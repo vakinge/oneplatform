@@ -373,7 +373,9 @@ exports('oneplatform', oneplatform);
 	$('body').on('click','.J_iframe_dialog', function(){
 		var self = $(this),
 	     url = self.attr('data-url'),
+	     dataId = self.attr('data-id'),
 	     title = self.attr('data-title') || '弹窗';
+		if(dataId)url=url.replace('{id}',dataId);
 		if(self.attr('data-scroll') === '0')url = [url, 'no'];
 		 var index = layer.open({
 			  type: 2,

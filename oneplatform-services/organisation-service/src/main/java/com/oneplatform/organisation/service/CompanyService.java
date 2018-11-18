@@ -27,6 +27,20 @@ public class CompanyService {
 	private @Autowired DepartmentEntityMapper departmentMapper;
 
 	public void addCompany(CompanyEntity entity) {
+		CompanyEntity headCompany = companyMapper.findHeadCompany();
+		if(headCompany == null){
+			entity.setIsBranch(false);
+		}else{
+			entity.setIsBranch(true);
+			CompanyEntity sameNameCompany = companyMapper.findByName(entity.getName());
+			if(sameNameCompany != null){
+				if(sameNameCompany.getInActive())throw new JeesuiteBaseException(ExceptionCode.RECORD_EXISTED.code,"该子公司已存在");
+				BeanUtils.copy(entity, sameNameCompany);
+				sameNameCompany.setInActive(true);
+				companyMapper.updateByPrimaryKeySelective(sameNameCompany);
+				return ;
+			}
+		}
 		companyMapper.insertSelective(entity);
 	}
 

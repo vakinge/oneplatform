@@ -16,12 +16,12 @@ import com.oneplatform.base.GlobalContants.ModuleType;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
+import com.oneplatform.platform.task.ModuleMetadataUpdateTask;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
 import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dto.param.ModuleParam;
-import com.oneplatform.system.task.ModuleMetadataUpdateTask;
 
 
 /**

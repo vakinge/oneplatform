@@ -36,26 +36,20 @@ private @Autowired DepartmentService departmentService;
 		return new WrapperResponse<>(entity);
 	}
 	
-	@ApiOperation(value = "新增")
-	@RequestMapping(value = "add", method = RequestMethod.POST)
+	@ApiOperation(value = "保存")
+	@RequestMapping(value = "save", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> addAccount(@RequestBody DepartmentParam param) {
 		DepartmentEntity entity = BeanUtils.copy(param, DepartmentEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
-		departmentService.addDepartment(entity);
-		
-		return new WrapperResponse<>();
-	}
-	
-	@ApiOperation(value = "更新")
-	@RequestMapping(value = "update", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> updateAccount(@RequestBody DepartmentParam param) {
-		DepartmentEntity entity = BeanUtils.copy(param, DepartmentEntity.class);
-		LoginSession session = LoginContext.getLoginSession();
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
-		departmentService.updateDepartment(entity);
+		if(param.getId() == null || param.getId() == 0){
+			entity.setCreatedAt(new Date());
+			entity.setCreatedBy(session.getUserId());
+			departmentService.addDepartment(entity);
+		}else{
+			entity.setUpdatedAt(new Date());
+			entity.setUpdatedBy(session.getUserId());
+			departmentService.updateDepartment(entity);
+		}
 		
 		return new WrapperResponse<>();
 	}
