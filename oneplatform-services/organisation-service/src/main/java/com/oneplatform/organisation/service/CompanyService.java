@@ -81,7 +81,7 @@ public class CompanyService {
 			modelMapping.put(0, root);
 			TreeModel branch;
 			for (int i = 1; i < companys.size(); i++) {
-				branch = new TreeModel(companys.get(i).getId(), companys.get(i).getName(), null, null, root.getPid(), false);
+				branch = new TreeModel(companys.get(i).getId(), "【分公司】" + companys.get(i).getName(), null, null, root.getPid(), false);
 				branch.setOriginData(companys.get(i));
 				branch.setExtraAttr("company");
 				root.addChild(branch);
@@ -94,7 +94,7 @@ public class CompanyService {
 			for (DepartmentEntity d : departments) {
 				if(!d.getInActive())continue;
 				parentModel = modelMapping.get(d.getBranchId());
-				departModel = new TreeModel(d.getId(), d.getName(), null, null, parentModel.getId(), true);
+				departModel = new TreeModel(d.getId(), "【部门】" + d.getName(), null, null, parentModel.getId(), true);
 				departModel.setOriginData(d);
 				departModel.setExtraAttr("department");
 				parentModel.addChild(departModel);
