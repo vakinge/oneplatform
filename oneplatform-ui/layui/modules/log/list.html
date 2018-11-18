@@ -14,16 +14,16 @@
 		<div class="content-search">
 			<form id="searchform" action="" class="layui-form">
               <div class="layui-inline">
-                <select name="moduleId" asnycSelect="/api/module/options" lay-filter="module_select">
+                <select name="conditions[moduleId]" asnycSelect="/api/module/options" lay-filter="module_select">
                   <option value="">请选择模块</option>
                 </select>     
               </div>
               <div class="layui-inline">
-				 <input class="layui-input layui-date" name="actionStart" placeholder="开始时间" id="start">
+				 <input class="layui-input layui-date" name="conditions[actionStart]" placeholder="开始时间" id="start">
 			  </div>
 			  <div class="layui-form-mid">-</div>
 			  <div class="layui-inline">
-				 <input class="layui-input layui-date" name="actionEnd" placeholder="截止时间" id="end">
+				 <input class="layui-input layui-date" name="conditions[actionEnd]" placeholder="截止时间" id="end">
 			  </div>
               <div class="layui-inline">
                 <input type="button" class="layui-btn layui-btn-normal J_search" lay-submit lay-filter="search" value="筛选"/>    

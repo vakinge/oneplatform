@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.mybatis.plugin.pagination.PageParams;
+import com.oneplatform.base.model.PageQueryParam;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.system.dao.entity.SysLogEntity;
-import com.oneplatform.system.dto.param.LogQueryParam;
 import com.oneplatform.system.service.SysMonitorService;
 
 import io.swagger.annotations.Api;
@@ -23,8 +24,8 @@ public class LogController {
 	private @Autowired SysMonitorService sysMonitorService;
 	@ApiOperation(value = "分页查询日志列表")
 	@RequestMapping(value = "list", method = RequestMethod.POST)
-    public @ResponseBody PageResult<SysLogEntity> pageQueryAccounts(@ModelAttribute LogQueryParam param) {
-		PageResult<SysLogEntity> page = sysMonitorService.pageQuery(param, param);
+    public @ResponseBody PageResult<SysLogEntity> pageQueryAccounts(@ModelAttribute PageQueryParam param) {
+		PageResult<SysLogEntity> page = sysMonitorService.pageQuery(new PageParams(param.getPageNo(), param.getPageSize()), param);
 		return page;
 	}
 }

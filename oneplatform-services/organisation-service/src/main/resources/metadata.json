@@ -1,0 +1,14 @@
+{
+    "type": "service",
+    "name": "组织架构",
+    "menuIcon":"",
+	"identifier": "organisation",
+	"apiBasePackages": "com.oneplatform.organisation.controller",
+	"menus": [{
+	    "key": "file-list",
+		"uri": "/modules/common/files.html",
+		"text": "文件管理",
+		"icon": "",
+		"sort": 1
+	}]
+}

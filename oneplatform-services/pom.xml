@@ -11,6 +11,7 @@
 
 	<modules>
 		<module>common-service</module>
+		<module>organisation-service</module>
 	</modules>
 
 	<dependencies>
@@ -62,6 +63,11 @@
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-springboot-starter</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-feign</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -104,6 +110,11 @@
 		<dependency>
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-mybatis</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.jeesuite</groupId>
+			<artifactId>jeesuite-scheduler</artifactId>
 		</dependency>
 
 		<dependency>

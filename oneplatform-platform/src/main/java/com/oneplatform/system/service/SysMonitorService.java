@@ -21,10 +21,10 @@ import org.springframework.stereotype.Service;
 
 import com.jeesuite.mybatis.plugin.pagination.Page;
 import com.jeesuite.mybatis.plugin.pagination.PageParams;
+import com.oneplatform.base.model.PageQueryParam;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.system.dao.entity.SysLogEntity;
 import com.oneplatform.system.dao.mapper.SysLogEntityMapper;
-import com.oneplatform.system.dto.param.LogQueryParam;
 
 /**
  * @description <br>
@@ -36,9 +36,9 @@ public class SysMonitorService {
 
 	private @Autowired SysLogEntityMapper logMapper;
 	
-public PageResult<SysLogEntity> pageQuery(PageParams pageParam,LogQueryParam param){
+public PageResult<SysLogEntity> pageQuery(PageParams pageParam,PageQueryParam param){
 		
-		Page<SysLogEntity> page = logMapper.pageQuery(pageParam, param);
+		Page<SysLogEntity> page = logMapper.pageQuery(pageParam, param.getConditions());
 		return new PageResult<SysLogEntity>(page.getPageNo(), page.getPageSize(), page.getTotal(), page.getData());
 	}
 }

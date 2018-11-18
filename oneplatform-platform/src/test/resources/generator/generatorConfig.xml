@@ -11,7 +11,7 @@
 
 		<!-- 为继承的BaseMapper接口添加对应的实现类 -->
 		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-			<property name="mappers" value="com.oneplatform.system.dao.CustomBaseMapper" />
+			<property name="mappers" value="com.oneplatform.base.dao.CustomBaseMapper" />
 		</plugin>
 
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"

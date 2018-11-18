@@ -27,10 +27,10 @@
   
   <select id="pageQuery" parameterType="map"  resultMap="BaseResultMap">
 	  SELECT  * FROM sys_logs where entrylog=1
-	  <if test="param.moduleId != null">and module_id = #{param.moduleId}</if>
-	  <if test="param.name != null">and name like CONCAT('%',#{param.name},'%')</if>
-      <if test="param.actionStart != null">and request_at &gt;= #{param.actionStart}</if>
-      <if test="param.actionEnd != null">and request_at &lt;= #{param.actionEnd}</if>
+	  <if test="params.moduleId != null">and module_id = #{params.moduleId}</if>
+	  <if test="params.name != null">and name like CONCAT('%',#{params.name},'%')</if>
+      <if test="params.actionStart != null">and request_at &gt;= #{params.actionStart}</if>
+      <if test="params.actionEnd != null">and request_at &lt;= #{params.actionEnd}</if>
       order by request_at desc
    </select>
    

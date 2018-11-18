@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<context id="Mysql" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+
+		<!-- 为继承的BaseMapper接口添加对应的实现类 -->
+		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+			<property name="mappers" value="com.oneplatform.base.dao.CustomBaseMapper" />
+		</plugin>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/oneplatform" userId="root" password="123456">
+		</jdbcConnection>
+
+		<javaModelGenerator targetPackage="com.oneplatform.organisation.dao.entity" targetProject="src/main/java">
+		   <property name="rootClass" value="com.jeesuite.mybatis.core.BaseEntity"/>
+		</javaModelGenerator>
+			
+		<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources" />
+		<javaClientGenerator targetPackage="com.oneplatform.organisation.dao.mapper"
+			targetProject="src/main/java" type="XMLMAPPER" />
+
+		<table tableName="company" domainObjectName="CompanyEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		
+		<table tableName="department" domainObjectName="DepartmentEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		<table tableName="positions" domainObjectName="PositionEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		
+		<table tableName="employee" domainObjectName="EmployeeEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		<table tableName="employee_departments" domainObjectName="EmployeeDepartmentEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table> 
+
+	</context>
+</generatorConfiguration>

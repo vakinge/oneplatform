@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.organisation.dao.mapper.CompanyEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.organisation.dao.entity.CompanyEntity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="CHAR" />
+    <result column="is_branch" property="isBranch" jdbcType="BIT" />
+    <result column="contact_employee_id" property="contactEmployeeId" jdbcType="INTEGER" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="in_active" property="inActive" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="findByParam" parameterType="map"  resultMap="BaseResultMap">
+	  SELECT  * FROM company where <![CDATA[id <> 1]]>
+      order by id desc
+   </select>
+</mapper>

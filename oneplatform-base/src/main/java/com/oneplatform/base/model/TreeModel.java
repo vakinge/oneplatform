@@ -21,6 +21,7 @@ public class TreeModel {
 	private boolean leaf;
 	private boolean spread;
 	private String extraAttr;
+	private Object originData;
 	private List<TreeModel> children;
 	
 
@@ -107,6 +108,14 @@ public class TreeModel {
 
 	public void setExtraAttr(String extraAttr) {
 		this.extraAttr = extraAttr;
+	}
+	
+	public Object getOriginData() {
+		return originData;
+	}
+
+	public void setOriginData(Object originData) {
+		this.originData = originData;
 	}
 
 	public void addChild(TreeModel child) {

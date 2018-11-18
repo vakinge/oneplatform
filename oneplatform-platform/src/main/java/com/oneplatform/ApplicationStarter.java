@@ -30,7 +30,7 @@ import com.oneplatform.platform.filter.AuthFilter;
 @EnableJeesuiteKafkaProducer
 @EnableJeesuiteKafkaConsumer
 @EnableJeesuiteSchedule
-@MapperScan(basePackages = {"com.oneplatform.system.dao.mapper","com.oneplatform.smartapi.dao.mapper"})
+@MapperScan(basePackages = {"com.oneplatform.*.dao.mapper"})
 @ComponentScan(value = {"com.oneplatform"})
 @ServletComponentScan({ "com.oneplatform" })
 public class ApplicationStarter extends BaseApplicationStarter{
