@@ -17,7 +17,7 @@ public class DepartmentParam{
     private String telephone;
     
     @ApiModelProperty("属性名")
-    private Integer branchId;
+    private Integer companyId;
     
     @ApiModelProperty("联系人员工ID")
     private Integer contactEmployeeId;
@@ -47,14 +47,16 @@ public class DepartmentParam{
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-    public Integer getBranchId() {
-        return branchId;
-    }
+    
+    public Integer getCompanyId() {
+		return companyId;
+	}
 
-    public void setBranchId(Integer branchId) {
-        this.branchId = branchId;
-    }
-    public Integer getContactEmployeeId() {
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
+
+	public Integer getContactEmployeeId() {
         return contactEmployeeId;
     }
 

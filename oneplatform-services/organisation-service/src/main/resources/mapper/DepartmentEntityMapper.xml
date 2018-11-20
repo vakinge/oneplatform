@@ -8,7 +8,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="telephone" property="telephone" jdbcType="CHAR" />
-    <result column="branch_id" property="branchId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
     <result column="contact_employee_id" property="contactEmployeeId" jdbcType="INTEGER" />
     <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
     <result column="in_active" property="inActive" jdbcType="BIT" />

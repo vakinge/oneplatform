@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.mybatis.plugin.pagination.PageParams;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
+import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.PageQueryParam;
 import com.oneplatform.base.model.PageResult;
@@ -35,7 +37,7 @@ private @Autowired EmployeeService employeeService;
 	
 	@ApiOperation(value = "分页查询")
 	@RequestMapping(value = "list", method = RequestMethod.POST)
-    public @ResponseBody PageResult<EmployeeEntity> pageQueryAccounts(@ModelAttribute PageQueryParam param) {
+    public @ResponseBody PageResult<EmployeeEntity> pageQueryEmployees(@ModelAttribute PageQueryParam param) {
 		PageResult<EmployeeEntity> page = employeeService.pageQuery(new PageParams(param.getPageNo(), param.getPageSize()), param.getConditions());
 		return page;
 	}
@@ -49,19 +51,26 @@ private @Autowired EmployeeService employeeService;
 	
 	@ApiOperation(value = "新增")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> addAccount(@RequestBody EmployeeParam param) {
+    public @ResponseBody WrapperResponse<String> addEmployee(@RequestBody EmployeeParam param) {
+		if(param.getDepartmentId() == null || param.getDepartmentId() == 0){
+			throw new JeesuiteBaseException(ExceptionCode.REQUEST_PARAM_REQUIRED.code, "请先选择所在部门");
+		}
+		if(param.getPositionId() == null || param.getPositionId() == 0){
+			throw new JeesuiteBaseException(ExceptionCode.REQUEST_PARAM_REQUIRED.code, "请先选择职位");
+		}
 		EmployeeEntity entity = BeanUtils.copy(param, EmployeeEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(session.getUserId());
-		employeeService.addEmployee(entity);
+		
+		employeeService.addEmployee(entity,param.getDepartmentId(),param.getPositionId());
 		
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "更新")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> updateAccount(@RequestBody EmployeeParam param) {
+    public @ResponseBody WrapperResponse<String> updateEmployee(@RequestBody EmployeeParam param) {
 		EmployeeEntity entity = BeanUtils.copy(param, EmployeeEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
 		entity.setCreatedAt(new Date());
@@ -71,9 +80,9 @@ private @Autowired EmployeeService employeeService;
 		return new WrapperResponse<>();
 	}
 	
-	@ApiOperation(value = "删除账户")
+	@ApiOperation(value = "删除")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> deleteAccount(@PathVariable("id") int id) {
+    public @ResponseBody WrapperResponse<String> deleteEmployee(@PathVariable("id") int id) {
 		employeeService.deleteEmployee(id);
 		return new WrapperResponse<>();
 	}

@@ -1,7 +1,11 @@
 package com.oneplatform.organisation.dao.entity;
 
 import com.jeesuite.mybatis.core.BaseEntity;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Table(name = "employee")
@@ -33,8 +37,8 @@ public class EmployeeEntity extends BaseEntity {
     @Column(name = "account_id")
     private Integer accountId;
     
-    @Column(name = "branch_id")
-    private Integer branchId;
+    @Column(name = "company_id")
+    private Integer companyId;
 
     @Column(name = "in_active")
     private Boolean inActive;
@@ -56,6 +60,10 @@ public class EmployeeEntity extends BaseEntity {
 
     @Column(name = "updated_by")
     private Integer updatedBy;
+    @Transient
+    private String departmentInfo;
+    @Transient
+    private String companyName;
 
     /**
      * @return id
@@ -275,13 +283,30 @@ public class EmployeeEntity extends BaseEntity {
         this.updatedBy = updatedBy;
     }
 
-	public Integer getBranchId() {
-		return branchId;
+	public Integer getCompanyId() {
+		return companyId;
 	}
 
-	public void setBranchId(Integer branchId) {
-		this.branchId = branchId;
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
 	}
-    
-    
+
+	public String getDepartmentInfo() {
+		return departmentInfo;
+	}
+
+	public void setDepartmentInfo(String departmentInfo) {
+		this.departmentInfo = departmentInfo;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+	
+	
+
 }

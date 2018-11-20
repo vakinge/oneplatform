@@ -1,23 +1,22 @@
 package com.oneplatform.organisation.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.util.BeanUtils;
-import com.jeesuite.mybatis.plugin.pagination.PageParams;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.LoginSession;
-import com.oneplatform.base.model.PageQueryParam;
-import com.oneplatform.base.model.PageResult;
 import com.oneplatform.organisation.dao.entity.PositionEntity;
 import com.oneplatform.organisation.dto.param.PositionParam;
 import com.oneplatform.organisation.service.PositionsService;
@@ -31,45 +30,56 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/position")
 public class PositionsController {
 
-private @Autowired PositionsService positionsService;
-	
+	private @Autowired PositionsService positionsService;
+
 	@ApiOperation(value = "按id查询")
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public @ResponseBody WrapperResponse<PositionEntity> getById(@PathVariable("id") int id) {
+	public @ResponseBody WrapperResponse<PositionEntity> getById(@PathVariable("id") int id) {
 		PositionEntity entity = positionsService.findPositionsById(id);
 		return new WrapperResponse<>(entity);
 	}
-	
+
 	@ApiOperation(value = "新增")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> addAccount(@RequestBody PositionParam param) {
+	public @ResponseBody WrapperResponse<String> addPosition(@RequestBody PositionParam param) {
 		PositionEntity entity = BeanUtils.copy(param, PositionEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(session.getUserId());
 		positionsService.addPositions(entity);
-		
+
 		return new WrapperResponse<>();
 	}
-	
+
 	@ApiOperation(value = "更新")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> updateAccount(@RequestBody PositionParam param) {
+	public @ResponseBody WrapperResponse<String> updatePosition(@RequestBody PositionParam param) {
 		PositionEntity entity = BeanUtils.copy(param, PositionEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(session.getUserId());
 		positionsService.updatePositions(entity);
-		
+
 		return new WrapperResponse<>();
 	}
-	
+
 	@ApiOperation(value = "删除账户")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> deleteAccount(@PathVariable("id") int id) {
+	public @ResponseBody WrapperResponse<String> deletePosition(@PathVariable("id") int id) {
 		positionsService.deletePositions(id);
 		return new WrapperResponse<>();
 	}
 	
-	
+	@ApiOperation(value = "下拉选项")
+	@RequestMapping(value = "options", method = RequestMethod.GET)
+	public @ResponseBody WrapperResponse<List<SelectOption>> getOptions() {
+		List<PositionEntity> positions = positionsService.findAll();
+		List<SelectOption> opts = new ArrayList<>();
+		for (PositionEntity position : positions) {
+			opts.add(new SelectOption(String.valueOf(position.getId()), position.getName()));
+		}
+		
+		return new WrapperResponse<>(opts);
+	}
+
 }

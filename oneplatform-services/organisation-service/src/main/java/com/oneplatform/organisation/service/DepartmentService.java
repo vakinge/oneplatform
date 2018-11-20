@@ -1,5 +1,7 @@
 package com.oneplatform.organisation.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +46,22 @@ public class DepartmentService {
 		DepartmentEntity entity = departmentMapper.selectByPrimaryKey(id);
 		AssertUtil.notNull(entity);
 		return entity;
+	}
+	
+	
+	public Map<Integer, List<DepartmentEntity>> findAllActive(){
+		 Map<Integer, List<DepartmentEntity>> result = new HashMap<>();
+		List<DepartmentEntity> list = departmentMapper.findAllActive();
+		List<DepartmentEntity> tmpList;
+		for (DepartmentEntity entity : list) {
+			tmpList = result.get(entity.getCompanyId());
+			if(tmpList == null){
+				tmpList = new ArrayList<>();
+				result.put(entity.getCompanyId(), tmpList);
+			}
+			tmpList.add(entity);
+		}
+		return result;
 	}
 
 

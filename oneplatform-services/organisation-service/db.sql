@@ -20,7 +20,7 @@ CREATE TABLE `department` (
   `id` int(10)  NOT NULL AUTO_INCREMENT,
   `name` varchar(32) DEFAULT NULL,
   `telephone` char(12) DEFAULT NULL,
-  `branch_id` int(10) DEFAULT 0,
+  `company_id` int(10) DEFAULT 0,
   `contact_employee_id` int(10) DEFAULT 0 COMMENT '联系人员工ID',
   `contact_name` varchar(16) DEFAULT NULL COMMENT '联系人',
   `in_active` tinyint(1) DEFAULT 1,
@@ -36,11 +36,8 @@ DROP TABLE IF EXISTS `positions`;
 CREATE TABLE `positions` (
   `id` int(10)  NOT NULL AUTO_INCREMENT,
   `name` varchar(32) DEFAULT NULL,
-  `department_id` int(10) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `created_by` int(10) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `updated_by` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='职位表';
 
@@ -54,7 +51,7 @@ CREATE TABLE `employee` (
   `contact_name` varchar(16) DEFAULT NULL COMMENT '联系人',
   `contact_tel` varchar(12) DEFAULT NULL COMMENT '联系人电话',
   `account_id` int(10) DEFAULT 0,
-  `branch_id` int(10) DEFAULT NULL,
+  `company_id` int(10) DEFAULT NULL,
   `in_active` tinyint(1) DEFAULT 1,
   `joined_at` date DEFAULT NULL,
   `left_at` date DEFAULT NULL,

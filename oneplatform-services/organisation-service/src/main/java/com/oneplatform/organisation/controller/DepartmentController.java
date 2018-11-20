@@ -1,6 +1,9 @@
 package com.oneplatform.organisation.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,12 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.JeesuiteBaseException;
+import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
+import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.LoginSession;
+import com.oneplatform.base.model.SelectOptGroup;
+import com.oneplatform.organisation.dao.entity.CompanyEntity;
 import com.oneplatform.organisation.dao.entity.DepartmentEntity;
 import com.oneplatform.organisation.dto.param.DepartmentParam;
+import com.oneplatform.organisation.service.CompanyService;
 import com.oneplatform.organisation.service.DepartmentService;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,39 +36,60 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/department")
 public class DepartmentController {
 
-private @Autowired DepartmentService departmentService;
-	
+	private @Autowired DepartmentService departmentService;
+	private @Autowired CompanyService companyService;
+
 	@ApiOperation(value = "按id查询")
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public @ResponseBody WrapperResponse<DepartmentEntity> getById(@PathVariable("id") int id) {
+	public @ResponseBody WrapperResponse<DepartmentEntity> getById(@PathVariable("id") int id) {
 		DepartmentEntity entity = departmentService.findDepartmentById(id);
 		return new WrapperResponse<>(entity);
 	}
-	
+
 	@ApiOperation(value = "保存")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> addAccount(@RequestBody DepartmentParam param) {
+	public @ResponseBody WrapperResponse<String> addAccount(@RequestBody DepartmentParam param) {
+		if(param.getCompanyId() == null || param.getCompanyId() == 0){
+			throw new JeesuiteBaseException(ExceptionCode.REQUEST_PARAM_REQUIRED.code, "请先选择公司");
+		}
 		DepartmentEntity entity = BeanUtils.copy(param, DepartmentEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
-		if(param.getId() == null || param.getId() == 0){
+		if (param.getId() == null || param.getId() == 0) {
 			entity.setCreatedAt(new Date());
 			entity.setCreatedBy(session.getUserId());
 			departmentService.addDepartment(entity);
-		}else{
+		} else {
 			entity.setUpdatedAt(new Date());
 			entity.setUpdatedBy(session.getUserId());
 			departmentService.updateDepartment(entity);
 		}
-		
+
 		return new WrapperResponse<>();
 	}
-	
+
 	@ApiOperation(value = "删除账户")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> deleteAccount(@PathVariable("id") int id) {
+	public @ResponseBody WrapperResponse<String> deleteAccount(@PathVariable("id") int id) {
 		departmentService.deleteDepartment(id);
 		return new WrapperResponse<>();
 	}
 	
-	
+	@ApiOperation(value = "下拉选项")
+	@RequestMapping(value = "options", method = RequestMethod.GET)
+	public @ResponseBody WrapperResponse<List<SelectOptGroup>> getOptions() {
+		List<CompanyEntity> companys = companyService.findCompanys();
+		Map<Integer, List<DepartmentEntity>> departments = departmentService.findAllActive();
+		List<SelectOptGroup> optGroups = new ArrayList<>(companys.size());
+		SelectOptGroup optGroup;
+		for (CompanyEntity company : companys) {
+			optGroup = new SelectOptGroup();
+			optGroup.setLabel(company.getName());
+			for (DepartmentEntity d : departments.get(company.getId())) {
+				optGroup.getOptions().add(new SelectOption(String.valueOf(d.getId()), d.getName()));
+			}
+			optGroups.add(optGroup);
+		}
+		return new WrapperResponse<>(optGroups);
+	}
+
 }

@@ -69,7 +69,7 @@ public class CompanyService {
 	
 	public TreeModel findStructureTree(){
 		TreeModel root = new TreeModel();
-		List<CompanyEntity> companys =  companyMapper.findAllCompany();
+		List<CompanyEntity> companys =  companyMapper.findAllActive();
 		if(companys.isEmpty()){
 			root.setId(0);
 			root.setName("总公司");
@@ -78,7 +78,7 @@ public class CompanyService {
 			root.setId(companys.get(0).getId());
 			root.setName(companys.get(0).getName());
 			root.setOriginData(companys.get(0));
-			modelMapping.put(0, root);
+			modelMapping.put(companys.get(0).getId(), root);
 			TreeModel branch;
 			for (int i = 1; i < companys.size(); i++) {
 				branch = new TreeModel(companys.get(i).getId(), "【分公司】" + companys.get(i).getName(), null, null, root.getPid(), false);
@@ -93,7 +93,7 @@ public class CompanyService {
 			TreeModel parentModel;
 			for (DepartmentEntity d : departments) {
 				if(!d.getInActive())continue;
-				parentModel = modelMapping.get(d.getBranchId());
+				parentModel = modelMapping.get(d.getCompanyId());
 				departModel = new TreeModel(d.getId(), "【部门】" + d.getName(), null, null, parentModel.getId(), true);
 				departModel.setOriginData(d);
 				departModel.setExtraAttr("department");
@@ -110,6 +110,10 @@ public class CompanyService {
 		CompanyEntity entity = companyMapper.selectByPrimaryKey(id);
 		AssertUtil.notNull(entity);
 		return entity;
+	}
+	
+	public List<CompanyEntity> findCompanys(){
+		return companyMapper.findAllActive();
 	}
 
 

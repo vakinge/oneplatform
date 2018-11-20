@@ -25,5 +25,5 @@ public interface CompanyEntityMapper extends CustomBaseMapper<CompanyEntity> {
 	
 	@Select("select * from company where in_active=1 order by id")
 	@ResultMap("BaseResultMap")
-	List<CompanyEntity> findAllCompany();
+	List<CompanyEntity> findAllActive();
 }

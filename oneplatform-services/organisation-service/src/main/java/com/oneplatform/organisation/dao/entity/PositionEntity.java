@@ -1,8 +1,14 @@
 package com.oneplatform.organisation.dao.entity;
 
-import com.jeesuite.mybatis.core.BaseEntity;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.jeesuite.mybatis.core.BaseEntity;
 
 @Table(name = "positions")
 public class PositionEntity extends BaseEntity {
@@ -12,20 +18,12 @@ public class PositionEntity extends BaseEntity {
 
     private String name;
 
-    @Column(name = "department_id")
-    private Integer departmentId;
-
     @Column(name = "created_at")
     private Date createdAt;
 
     @Column(name = "created_by")
     private Integer createdBy;
 
-    @Column(name = "updated_at")
-    private Date updatedAt;
-
-    @Column(name = "updated_by")
-    private Integer updatedBy;
 
     /**
      * @return id
@@ -55,20 +53,7 @@ public class PositionEntity extends BaseEntity {
         this.name = name;
     }
 
-    /**
-     * @return department_id
-     */
-    public Integer getDepartmentId() {
-        return departmentId;
-    }
-
-    /**
-     * @param departmentId
-     */
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
-    }
-
+  
     /**
      * @return created_at
      */
@@ -97,31 +82,5 @@ public class PositionEntity extends BaseEntity {
         this.createdBy = createdBy;
     }
 
-    /**
-     * @return updated_at
-     */
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    /**
-     * @param updatedAt
-     */
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    /**
-     * @return updated_by
-     */
-    public Integer getUpdatedBy() {
-        return updatedBy;
-    }
-
-    /**
-     * @param updatedBy
-     */
-    public void setUpdatedBy(Integer updatedBy) {
-        this.updatedBy = updatedBy;
-    }
+   
 }

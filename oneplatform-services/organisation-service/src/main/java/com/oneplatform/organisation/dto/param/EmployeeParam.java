@@ -29,10 +29,10 @@ public class EmployeeParam{
     private String contactTel;
     
     @ApiModelProperty("属性名")
-    private Integer accountId;
+    private Integer positionId;
     
     @ApiModelProperty("属性名")
-    private Boolean inActive;
+    private Integer departmentId;
     
     @ApiModelProperty("属性名")
     private java.util.Date joinedAt;
@@ -86,20 +86,23 @@ public class EmployeeParam{
     public void setContactTel(String contactTel) {
         this.contactTel = contactTel;
     }
-    public Integer getAccountId() {
-        return accountId;
-    }
+    
+    public Integer getDepartmentId() {
+		return departmentId;
+	}
 
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
-    public Boolean getInActive() {
-        return inActive;
-    }
+	public void setDepartmentId(Integer departmentId) {
+		this.departmentId = departmentId;
+	}
 
-    public void setInActive(Boolean inActive) {
-        this.inActive = inActive;
-    }
+	public Integer getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(Integer positionId) {
+		this.positionId = positionId;
+	}
+
     public java.util.Date getJoinedAt() {
         return joinedAt;
     }

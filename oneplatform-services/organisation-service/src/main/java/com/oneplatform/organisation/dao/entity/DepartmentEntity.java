@@ -14,8 +14,8 @@ public class DepartmentEntity extends BaseEntity {
 
     private String telephone;
 
-    @Column(name = "branch_id")
-    private Integer branchId;
+    @Column(name = "company_id")
+    private Integer companyId;
 
     /**
      * 联系人员工ID
@@ -86,21 +86,16 @@ public class DepartmentEntity extends BaseEntity {
         this.telephone = telephone;
     }
 
-    /**
-     * @return branch_id
-     */
-    public Integer getBranchId() {
-        return branchId == null ? 0 : branchId;
-    }
 
-    /**
-     * @param branchId
-     */
-    public void setBranchId(Integer branchId) {
-        this.branchId = branchId;
-    }
+    public Integer getCompanyId() {
+		return companyId;
+	}
 
-    /**
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
+
+	/**
      * 获取联系人员工ID
      *
      * @return contact_employee_id - 联系人员工ID

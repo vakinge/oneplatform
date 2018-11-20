@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>新增账号</title> 
+  <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" />
+  <link rel="stylesheet" href="/assets/css/global.css" media="all">
+  <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css">
+ </head> 
+ <body> 
+  <div class="admin-main">  
+   <form class="layui-form" action="/api/element/add">  
+    <div class="layui-form-item">
+		<label class="layui-form-label">姓名</label>
+		<div class="layui-input-block">
+		   <input type="text" name="name" placeholder="员工姓名" lay-verify="required" class="layui-input">
+		</div>
+	</div> 
+    <div class="layui-form-item">
+		<label class="layui-form-label">手机</label>
+		<div class="layui-input-block">
+		   <input type="text" name="mobile" placeholder="手机号码" class="layui-input">
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">邮箱</label>
+		<div class="layui-input-block">
+		   <input type="text" name="email" placeholder="邮箱" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item"> 
+     <label class="layui-form-label">所在部门</label> 
+     <div class="layui-input-block"> 
+      <select id="departmentId" name="departmentId" lay-verify="required" asnycselect="/api/department/options" lay-filter="department"> <option value="">请选择部门</option> </select> 
+     </div> 
+    </div>
+    <div class="layui-form-item"> 
+     <label class="layui-form-label">职位</label> 
+     <div class="layui-input-block"> 
+      <select id="positionId" name="positionId" lay-verify="required" asnycselect="/api/position/options" lay-filter="position"> <option value="">请选择职位</option> </select> 
+     </div> 
+    </div>
+		     
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+ <script type="text/javascript" src="/assets/js/layui/layui.js"></script>
+<script>
+    var actionType = 'employee-add';
+	layui.config({
+		version : "1.0.0",
+		base : '/assets/js/modules/'
+	}).use('organisation');
+	
+	function onFinishCallback(){
+		layui.form.render('checkbox');
+	}
+</script>
+</html>

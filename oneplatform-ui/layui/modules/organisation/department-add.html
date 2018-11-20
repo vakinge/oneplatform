@@ -10,7 +10,7 @@
  <body> 
   <div class="admin-main">  
    <form class="layui-form" action="/api/department/save">  
-       <input type="hidden" name="branchId" id="branchId" />  
+       <input type="hidden" name="companyId" id="companyId" />  
        <div class="layui-form-item"> 
         <label class="layui-form-label">名称</label> 
         <div class="layui-input-block"> 
@@ -42,7 +42,7 @@
 		base : '../../assets/js/modules/'
 	}).use('organisation',function(){
 		var companyId = layui.oneplatform.getQueryParams('companyId');
-		layui.jquery('#branchId').val(companyId);
+		layui.jquery('#companyId').val(companyId);
 	});
 </script>
 </html>

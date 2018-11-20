@@ -529,9 +529,18 @@ exports('oneplatform', oneplatform);
 			}
 			var opthtml;
 			for(var index in data){
-				var selected = data[index].selected ? 'selected="selected"' : '';
-				opthtml = '<option value="'+data[index].value+'" '+selected+'>'+data[index].text+'</option>';
-				$this.append(opthtml);
+				if(data[index].label){
+					$this.append('<optgroup label="'+data[index].label+'">');
+					var options = data[index].options;
+					for(var index2 in options){
+						opthtml = '<option value="'+options[index2].value+'">'+options[index2].text+'</option>';
+						$this.append(opthtml);
+					}
+				}else{
+					var selected = data[index].selected ? 'selected="selected"' : '';
+					opthtml = '<option value="'+data[index].value+'" '+selected+'>'+data[index].text+'</option>';
+					$this.append(opthtml);
+				}
 			}
 			form.render('select');
 		});
