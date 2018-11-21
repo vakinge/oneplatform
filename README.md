@@ -48,11 +48,12 @@ http://oneplatform.jeesuite.com/
    - zookeeper监控管理:clock130:
    - 操作日志:white_check_mark:
  - 通用服务
-   - 文件服务:七牛、阿里云:white_check_mark:
+   - 文件服务:七牛阿里云 :white_check_mark:
    - 消息服务：短信、邮件:clock130:
  - 组织架构
-   - 部门管理:clock130:
-   - 员工管理:clock130:
+   - 分公司管理:white_check_mark:
+   - 部门管理:white_check_mark:
+   - 员工管理:white_check_mark:
  - 工作流
    - 流程设计:clock130:
    - 流程表单设计:clock130:
