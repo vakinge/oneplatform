@@ -15,6 +15,7 @@ import com.jeesuite.mybatis.plugin.pagination.PageParams;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.organisation.dao.entity.CompanyEntity;
+import com.oneplatform.organisation.dao.entity.DepartmentEntity;
 import com.oneplatform.organisation.dao.entity.EmployeeDepartmentEntity;
 import com.oneplatform.organisation.dao.entity.EmployeeEntity;
 import com.oneplatform.organisation.dao.entity.PositionEntity;
@@ -38,6 +39,9 @@ public class EmployeeService {
 
 	@Transactional
 	public void addEmployee(EmployeeEntity entity,Integer departmentId,Integer positionId) {
+		
+		DepartmentEntity departmentEntity = departmentMapper.selectByPrimaryKey(departmentId);
+		entity.setCompanyId(departmentEntity.getCompanyId());
 		employeeMapper.insertSelective(entity);
 		EmployeeDepartmentEntity ed = new EmployeeDepartmentEntity();
 		ed.setEmployeeId(entity.getId());

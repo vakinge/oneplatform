@@ -24,7 +24,7 @@
   </resultMap>
   
   <select id="findByParam" parameterType="map"  resultMap="BaseResultMap">
-	  SELECT  * FROM employee where <![CDATA[id <> 1]]>
+	  SELECT  * FROM employee where 1=1
       order by id desc
    </select>
 </mapper>

@@ -8,21 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 public class PositionParam{
 
     @ApiModelProperty("属性名")
-    private Integer id;
-    
-    @ApiModelProperty("属性名")
     private String name;
-    
-    @ApiModelProperty("属性名")
-    private Integer departmentId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
     public String getName() {
         return name;
     }
@@ -30,12 +17,5 @@ public class PositionParam{
     public void setName(String name) {
         this.name = name;
     }
-    public Integer getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(Integer departmentId) {
-        this.departmentId = departmentId;
-    }
-
+   
 }

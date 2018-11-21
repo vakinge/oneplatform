@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
+import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.organisation.dao.entity.PositionEntity;
 import com.oneplatform.organisation.dto.param.PositionParam;
@@ -32,17 +35,20 @@ public class PositionsController {
 
 	private @Autowired PositionsService positionsService;
 
-	@ApiOperation(value = "按id查询")
-	@RequestMapping(value = "{id}", method = RequestMethod.GET)
-	public @ResponseBody WrapperResponse<PositionEntity> getById(@PathVariable("id") int id) {
-		PositionEntity entity = positionsService.findPositionsById(id);
-		return new WrapperResponse<>(entity);
+	@ApiOperation(value = "查询列表")
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public @ResponseBody WrapperResponse<List<PositionEntity>> findAll() {
+		return new WrapperResponse<>(positionsService.findPositions());
 	}
 
 	@ApiOperation(value = "新增")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	public @ResponseBody WrapperResponse<String> addPosition(@RequestBody PositionParam param) {
-		PositionEntity entity = BeanUtils.copy(param, PositionEntity.class);
+		if(StringUtils.isBlank(param.getName())){
+			throw new JeesuiteBaseException(ExceptionCode.REQUEST_PARAM_REQUIRED.code, "请填写公司名");
+		}
+		PositionEntity entity = new PositionEntity();
+		entity.setName(param.getName());
 		LoginSession session = LoginContext.getLoginSession();
 		entity.setCreatedAt(new Date());
 		entity.setCreatedBy(session.getUserId());
@@ -51,17 +57,6 @@ public class PositionsController {
 		return new WrapperResponse<>();
 	}
 
-	@ApiOperation(value = "更新")
-	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public @ResponseBody WrapperResponse<String> updatePosition(@RequestBody PositionParam param) {
-		PositionEntity entity = BeanUtils.copy(param, PositionEntity.class);
-		LoginSession session = LoginContext.getLoginSession();
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
-		positionsService.updatePositions(entity);
-
-		return new WrapperResponse<>();
-	}
 
 	@ApiOperation(value = "删除账户")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)

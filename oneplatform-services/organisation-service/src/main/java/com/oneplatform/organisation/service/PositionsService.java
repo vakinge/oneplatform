@@ -1,9 +1,6 @@
 package com.oneplatform.organisation.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +20,7 @@ public class PositionsService {
 	private PositionEntityMapper positionsMapper;
 
 	public void addPositions(PositionEntity entity) {
+		AssertUtil.isNull(positionsMapper.findByName(entity.getName()), "该职位已存在");
 		positionsMapper.insertSelective(entity);
 	}
 
@@ -37,10 +35,8 @@ public class PositionsService {
 		positionsMapper.deleteByPrimaryKey(id);
 	}
 	
-	public PositionEntity findPositionsById(Integer id){
-		PositionEntity entity = positionsMapper.selectByPrimaryKey(id);
-		AssertUtil.notNull(entity);
-		return entity;
+	public List<PositionEntity> findPositions(){
+		return positionsMapper.selectAll();
 	}
 
 
