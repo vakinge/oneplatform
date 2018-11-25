@@ -25,6 +25,9 @@ public class CompanyParam{
     @ApiModelProperty("联系人")
     private String contactName;
     
+    @ApiModelProperty("是否分公司")
+    private Boolean branch;
+    
 
     public Integer getId() {
         return id;
@@ -69,5 +72,15 @@ public class CompanyParam{
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
+
+	public Boolean getBranch() {
+		return branch == null ? false : branch;
+	}
+
+	public void setBranch(Boolean branch) {
+		this.branch = branch;
+	}
+    
+    
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
+import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.organisation.dao.entity.CompanyEntity;
@@ -49,6 +50,9 @@ public class CompanyController {
 	@ApiOperation(value = "保存总公司信息")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public @ResponseBody WrapperResponse<String> addCompany(@RequestBody CompanyParam param) {
+		if(param.getBranch()){
+			AssertUtil.notNull(companyService.findHeadCompany(),"请先保存总公司信息");
+		}
 		CompanyEntity entity = BeanUtils.copy(param, CompanyEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
 		if(param.getId() == null || param.getId() == 0){

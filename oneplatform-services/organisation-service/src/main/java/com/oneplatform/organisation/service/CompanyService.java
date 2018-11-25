@@ -94,6 +94,7 @@ public class CompanyService {
 			for (DepartmentEntity d : departments) {
 				if(!d.getInActive())continue;
 				parentModel = modelMapping.get(d.getCompanyId());
+				if(parentModel == null)continue;
 				departModel = new TreeModel(d.getId(), "【部门】" + d.getName(), null, null, parentModel.getId(), true);
 				departModel.setOriginData(d);
 				departModel.setExtraAttr("department");

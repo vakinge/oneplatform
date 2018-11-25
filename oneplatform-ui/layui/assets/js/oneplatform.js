@@ -441,7 +441,7 @@ exports('oneplatform', oneplatform);
 	//
 	$('body').on('click','.J_iframe_dialog', function(){
 		var self = $(this),
-	     url = oneplatform.buildPath(self.attr('data-url')),
+	     url = self.attr('data-url'),
 	     dataId = self.attr('data-id'),
 	     title = self.attr('data-title') || '弹窗';
 		if(dataId)url=url.replace('{id}',dataId);

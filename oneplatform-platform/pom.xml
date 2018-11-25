@@ -184,11 +184,6 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
-		<!-- <dependency>
-			<groupId>com.jeesuite.oneplatform</groupId>
-			<artifactId>smartapi-core</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>  -->
 		<!-- 系统插件 end-->
 
 	</dependencies>
@@ -226,7 +221,7 @@
 	</profiles>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>oneplatform</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

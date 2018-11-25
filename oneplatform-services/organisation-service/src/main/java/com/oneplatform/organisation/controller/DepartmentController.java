@@ -48,7 +48,7 @@ public class DepartmentController {
 
 	@ApiOperation(value = "保存")
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public @ResponseBody WrapperResponse<String> addAccount(@RequestBody DepartmentParam param) {
+	public @ResponseBody WrapperResponse<String> addDepartment(@RequestBody DepartmentParam param) {
 		if(param.getCompanyId() == null || param.getCompanyId() == 0){
 			throw new JeesuiteBaseException(ExceptionCode.REQUEST_PARAM_REQUIRED.code, "请先选择公司");
 		}
@@ -67,9 +67,9 @@ public class DepartmentController {
 		return new WrapperResponse<>();
 	}
 
-	@ApiOperation(value = "删除账户")
+	@ApiOperation(value = "删除")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
-	public @ResponseBody WrapperResponse<String> deleteAccount(@PathVariable("id") int id) {
+	public @ResponseBody WrapperResponse<String> deleteDepartment(@PathVariable("id") int id) {
 		departmentService.deleteDepartment(id);
 		return new WrapperResponse<>();
 	}
