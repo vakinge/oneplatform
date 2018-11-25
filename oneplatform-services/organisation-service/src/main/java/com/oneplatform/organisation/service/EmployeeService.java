@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.mybatis.plugin.pagination.Page;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
 import com.jeesuite.mybatis.plugin.pagination.PageParams;
 import com.oneplatform.base.exception.AssertUtil;
+import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.organisation.dao.entity.CompanyEntity;
 import com.oneplatform.organisation.dao.entity.DepartmentEntity;
@@ -62,6 +64,9 @@ public class EmployeeService {
 	}
 	
 	public void deleteEmployee(Integer id) {
+		EmployeeEntity entity = employeeMapper.selectByPrimaryKey(id);
+		AssertUtil.notNull(entity);
+		if(entity.getInActive())throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "未离职员工不能删除");
 		employeeMapper.deleteByPrimaryKey(id);
 	}
 	

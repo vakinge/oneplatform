@@ -78,7 +78,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 			error: function(msg) {
 				layer.msg(msg, {shift: 5});
 			},
-			iframeDialog(title,url,scrollDisabled){
+			iframeDialog: function(title,url,scrollDisabled){
 				if(scrollDisabled)url = [url, 'no'];
 				var index = layer.open({
 					  type: 2,
@@ -140,7 +140,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 					//self.removeAttr('bindAttr');
 				});
 			},
-			getQueryParams:function(name){
+			getQueryParams: function(name){
 				var search = location.search;
 				if(!search || search.lengh <=1)return null;
               if(name){
@@ -159,7 +159,69 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 			    	return params;
               }
 			},
-			serializeJson($form){
+			validatorRules: {
+				    required : {expr:/.+/,tip:"必填",errorTip:"该字段不能为空"},
+				    email : {expr:/^\w+([-+.]\w+)*@\w+([-.]\\w+)*\.\w+([-.]\w+)*$/,tip:"电子邮箱",errorTip:"Email格式不正确"},
+				    mobile:{expr:/^(1[3|5|8]{1}\d{9})$/,tip:"手机号码",errorTip:"手机格式不正确"},
+				    telePhone:{expr:/^(((0\d{2,3}-)?\d{7,8}(-\d{4})?))$/,tip:"电话号码",errorTip:"电话号码格式不正确"},
+				    idCard:{expr:/^\d{15}(\d{2}[A-Za-z0-9])?$/,tip:"身份证号码",errorTip:"身份证号码格式不正确"},
+				    integer:{expr:/^\d+$/,tip:"正数",errorTip:"仅支持整数"},
+				    number:{expr:/^-?(\d+|[1-9]\d*\.\d+|0\.\d*[1-9]\d*|0?\.0+|0)$/,tip:"数字字符",errorTip:"仅支持数字"},
+				    english:{expr:/^[A-Za-z]+$/,tip:"英文字符",errorTip:"仅支持英文字符"},
+				    zipCode:{expr:/^[1-9]\d{5}(?!\d)$/,tip:"邮政编码",errorTip:"邮政编码格式不正确"},
+				    chinese:{expr:/^[\u0391-\uFFE5]+$/,tip:"中文字符",errorTip:"仅支持中文字符"},
+				    url:{expr:/^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/,tip:"网址URL",errorTip:"URL地址格式不正确"},
+				    regex:{tip:"",errorTip:"格式不正确"},
+			        compareEquals:function($obj){
+			        	var _compareWith = $obj.attr('compareWith');
+			        	return $obj.val() != '' && $obj.val() == $(_compareWith).val();
+		            }
+			},
+			validateForm: function($form){
+				var settings = oneplatform.validatorRules,$fileds = $('*[lay-verify]',$form); 
+				if($fileds.length == 0)return true;
+				var result = false;
+				$fileds.each(function(index){
+					result = doValidateSingleInput(this,index);
+		            return result;
+				});
+				return result;
+				
+				function doValidateSingleInput(formElement,index) {
+					var _this = $(formElement), _dataType = _this.attr('lay-verify'),
+					    define = eval('settings.'+_dataType),
+					    val = _this.val(), result = false;
+					if(formElement.disabled)return true;
+					if(_this.attr("require") == "false" && val == "")return true;
+					switch (_dataType) {
+					case "Date":
+						result = eval('settings.' + _dataType + '(_this)');
+						break;
+					default:
+						result = define.expr.test(val);
+						break;
+					}
+					if(!result){
+						var errorTip = _this.attr('verify-error-msg') || define.errorTip;
+			          	getTipElement(_this,index).addClass('layui-form-danger').focus();
+			          	oneplatform.error(errorTip);
+			        }else{
+			        	getTipElement(_this,index).removeClass('layui-form-danger');
+			        }
+					return result;
+				}
+				
+				function getTipElement($obj,index){
+					var id = $obj.attr('id');
+					if(!id){
+						id = $obj.attr('name') ||  "obj"+index;
+						id = id.replace(/[^0-9a-zA-Z]/g, "");
+						$obj.attr('id',id);
+					}
+					return $('#'+id);
+				}
+			},
+			serializeJson: function($form){
 				var params = {};
 				var dataArrays = $form.serializeArray();
 				if(dataArrays){
@@ -181,7 +243,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 				}
 				return params;
 			},
-			serializeQueryParams($form){
+			serializeQueryParams: function($form){
 				var params = '';
 				var dataArrays = $form.serializeArray();
 				if(dataArrays){
@@ -198,6 +260,13 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 				url = url.replace("?__rnd=","__rnd=").replace("&__rnd=","__rnd=").split("__rnd=")[0];
 				var rnd = (url.indexOf("?")>0 ? "&" : "?") + "__rnd=" + new Date().getTime();
 				window.location.href = url + rnd;
+			},
+			buildPath:function(url){
+				if(!url || typeof(API_BASE_PATH) == 'undefined'){
+					return url;
+				}else{
+					return API_BASE_PATH + url;
+				}
 			},
 			insertAfterFocus:function(domId,str){//光标出插入文字
 				var obj = document.getElementById(domId);
@@ -247,7 +316,7 @@ exports('oneplatform', oneplatform);
 
 //template
  $('*[dataLoad]').each(function(){
-		var $this = $(this),url = $this.attr('dataLoad'),
+		var $this = $(this),url = oneplatform.buildPath($this.attr('dataLoad')),
 		    renderTemplate = $this.attr('template-id'),
 		    method=$this.attr('ajax-method') || 'GET',
 		    callback = $this.attr('onFinishCallback'),
@@ -327,14 +396,14 @@ exports('oneplatform', oneplatform);
 		while(!$form.is('form')){
 			$form = $form.parent();
 		}
-//		//验证
-//		if(!$form.doFormValidator()){
-//		  return;
-//		}
+		//验证
+		if(!oneplatform.validateForm($form)){
+		  return;
+		}
 		var params = oneplatform.serializeJson($form);
 		$this.attr('disabled',true);
 		var loading = layer.load();
-		var requestURI = $form.attr('action');
+		var requestURI = oneplatform.buildPath($form.attr('action'));
 		$.ajax({
 			dataType:"json",
 		    type: "POST",
@@ -372,7 +441,7 @@ exports('oneplatform', oneplatform);
 	//
 	$('body').on('click','.J_iframe_dialog', function(){
 		var self = $(this),
-	     url = self.attr('data-url'),
+	     url = oneplatform.buildPath(self.attr('data-url')),
 	     dataId = self.attr('data-id'),
 	     title = self.attr('data-title') || '弹窗';
 		if(dataId)url=url.replace('{id}',dataId);
@@ -392,7 +461,7 @@ exports('oneplatform', oneplatform);
 	$('body').on('click','.J_form_dialog', function(){
 		var self = $(this),
 		     templdateurl = self.attr('data-templdate'),
-		     dataurl = self.attr('data-url'),
+		     dataurl = oneplatform.buildPath(self.attr('data-url')),
 		     dialogTitle = self.attr('data-title') || '表单',
 		     onLoadFinished = self.attr('onLoadFinishedCallback');
 		var addBoxIndex = -1;
@@ -474,7 +543,7 @@ exports('oneplatform', oneplatform);
 	//
 	$('body').on('click','.J_confirm', function(){
 		var self = $(this),
-			url = self.attr('data-url'),
+			url = oneplatform.buildPath(self.attr('data-url')),
 			method=self.attr('ajax-method') || 'GET',
 			msg = self.attr('data-msg') || '您确认该操作吗',
 			data = self.attr('data'),
@@ -520,7 +589,7 @@ exports('oneplatform', oneplatform);
 	});
 	
 	$('select[asnycSelect]').each(function(){
-		var $this = $(this),url=$this.attr("asnycSelect"),onLoadFinished = $this.attr('onDataLoadCallback'); 
+		var $this = $(this),url=oneplatform.buildPath($this.attr("asnycSelect")),onLoadFinished = $this.attr('onDataLoadCallback'); 
 		$.getJSON(url,function(result){
 			if(result.code != 200){oneplatform.error(result.msg);return;}
 			var data = result.data;

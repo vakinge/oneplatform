@@ -6,6 +6,23 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	var menu = [];
 	var curMenu;
 	
+	$.ajax({
+	      type: "GET",
+	      async: false,
+	      url: '/api/module/basepaths',
+	      dataType: "json",
+	      success: function(json) {
+	      	if(json.code != 200){
+	      		oneplatform.error(json.msg);
+	      		return;
+	      	}
+	      	basePathMap = json.data;
+	      },
+	      error: function(a, b, c) {
+	    	  nodeDatas = null;
+	      }
+	  }); 
+	
 	//iframe自适应
     $(window).on('resize', function () {
         var $content = $('.admin-nav-card .layui-tab-content');
@@ -143,9 +160,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 					content: '<iframe tab-id="' + id + '" frameborder="0" src="' + url + '" scrolling="yes" class="weIframe"></iframe>',
 					id: id
 				});
-				//当前窗口内容
-				setStorageMenu(title, url, id);
-
 			}
 			CustomRightClick(id); //绑定右键菜单
 			FrameWH(); //计算框架高度
@@ -153,8 +167,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 		},
 		tabDelete: function(id) {
 			element.tabDelete("wenav_tab", id); //删除
-			removeStorageMenu(id);
-
 		},
 		tabChange: function(id) {
 			//切换到指定Tab项
@@ -248,86 +260,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	$('.layui-tab-close').click(function(event) {
 		$('.layui-tab-title li').eq(0).find('i').remove();
 	});
-	/**
-	 *@todo tab切换监听
-	 * tab切换监听不能写字初始化加载$(function())方法内，否则不执行
-	 */
-	element.on('tab(wenav_tab)', function(data) {
-		//console.log(this); //当前Tab标题所在的原始DOM元素
-		setStorageCurMenu();
-	});
-	/*
-	 * @todo 监听layui Tab项的关闭按钮，改变本地存储
-	 */
-	element.on('tabDelete(wenav_tab)', function(data) {
-		var layId = $(this).parent('li').attr('lay-id');
-		//console.log(layId);
-		removeStorageMenu(layId);
-	});
-	/**
-	 *@todo 本地存储 localStorage
-	 * 为了保持统一，将sessionStorage更换为存储周期更长的localStorage
-	 */
-	//本地存储记录所有打开的窗口
-	function setStorageMenu(title, url, id) {
-		var menu = JSON.parse(sessionStorage.getItem('menu'));
-		if(menu) {
-			var deep = false;
-			for(var i = 0; i < menu.length; i++) {
-				if(menu[i].id == id) {
-					deep = true;
-					menu[i].title = title;
-					menu[i].url = url;
-					menu[i].id = id;
-				}
-			}
-			if(!deep) {
-				menu.push({
-					title: title,
-					url: url,
-					id: id
-				})
-			}
-		} else {
-			var menu = [{
-				title: title,
-				url: url,
-				id: id
-			}]
-		}
-		sessionStorage.setItem('menu', JSON.stringify(menu));
-	}
-	//本地存储记录当前打开窗口
-	function setStorageCurMenu() {
-		var curMenu = sessionStorage.getItem('curMenu');
-		var text = $('.layui-tab-title').find('.layui-this').text();
-		text = text.split('ဆ')[0];
-		var url = $('.layui-tab-content').find('.layui-show').find('.weIframe').attr('src');
-		var id = $('.layui-tab-title').find('.layui-this').attr('lay-id');
-		//console.log(text);
-		curMenu = {
-			title: text,
-			url: url,
-			id: id
-		}
-		sessionStorage.setItem('curMenu', JSON.stringify(curMenu));
-	}
-	//本地存储中移除删除的元素
-	function removeStorageMenu(id) {
-		var menu = JSON.parse(sessionStorage.getItem('menu'));
-		if(menu) {
-			var deep = false;
-			for(var i = 0; i < menu.length; i++) {
-				if(menu[i].id == id) {
-					deep = true;
-					menu.splice(i, 1);
-				}
-			}
-		} else {
-			return false;
-		}
-		sessionStorage.setItem('menu', JSON.stringify(menu));
-	}
 
 	/*
 	 *Tab加载后刷新

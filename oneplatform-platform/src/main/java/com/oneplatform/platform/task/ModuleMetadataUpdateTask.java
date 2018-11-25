@@ -94,7 +94,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				moduleEntity = activeModules.get(serviceId);
 				moduleEntity.setName(metadata.getName());
 				if(StringUtils.isNotBlank(metadata.getIdentifier())){
-					moduleEntity.setRouteName(metadata.getIdentifier());
+					moduleEntity.setRouteName(metadata.getRouteName());
 					moduleEntity.setInternal(false);
 				}else{
 					moduleEntity.setInternal(true);
@@ -133,7 +133,6 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				continue;
 			}
 			activeModulesCache.remove(serviceId);
-			moduleMapper.updateByPrimaryKey(moduleEntity);
 		}
 		
 		if(refreshRequired){
@@ -244,6 +243,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 					moduleEntity.setModuleType(metadata.getName());
 					moduleEntity.setName(metadata.getName());
 					moduleEntity.setServiceId(metadata.getIdentifier());
+					moduleEntity.setRouteName(metadata.getRouteName());
 					moduleEntity.setModuleType(metadata.getType());
 					moduleMapper.insertSelective(moduleEntity);
 				}

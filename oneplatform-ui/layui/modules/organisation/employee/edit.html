@@ -2,52 +2,32 @@
 <html>
  <head> 
   <meta charset="UTF-8" /> 
-  <title>编辑模块</title> 
+  <title>编辑员工</title> 
   <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" />
   <link rel="stylesheet" href="/assets/css/global.css" media="all">
   <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css">
  </head> 
  <body> 
-  <div class="admin-main" dataLoad="/api/account/{id}" onFinishCallback="onDataLoadedCallback"> 
-   <form class="layui-form" action="/api/account/update">  
-    <input type="hidden" name="id" bindAttr="id" />
+  <div class="admin-main" dataLoad="/employee/{id}">  
+   <form class="layui-form" action="/employee/update">  
     <div class="layui-form-item">
-		<label class="layui-form-label">用户名</label>
+		<label class="layui-form-label">姓名</label>
 		<div class="layui-input-block">
-		   <input type="text" bindAttr="username" class="layui-input" disabled="disabled">
+		   <input type="text" bindAttr="name"  name="name" placeholder="员工姓名" lay-verify="required" class="layui-input">
 		</div>
 	</div> 
     <div class="layui-form-item">
 		<label class="layui-form-label">手机</label>
 		<div class="layui-input-block">
-		   <input type="text" bindAttr="mobile" name="mobile" placeholder="手机号码" class="layui-input">
+		   <input type="text" name="mobile" bindAttr="mobile" placeholder="手机号码" lay-verify="required" class="layui-input">
 		</div>
 	</div>
     <div class="layui-form-item">
 		<label class="layui-form-label">邮箱</label>
 		<div class="layui-input-block">
-		   <input type="text" bindAttr="email" name="email" placeholder="邮箱" class="layui-input">
+		   <input type="text" name="email" bindAttr="email" placeholder="邮箱" lay-verify="required" class="layui-input">
 		</div>
-	</div>
-	<div class="layui-form-item">
-		<label class="layui-form-label">姓名</label>
-		<div class="layui-input-block">
-		   <input type="text" bindAttr="realname" name="realname" placeholder="可跨域uris(多个;隔开)" class="layui-input">
-		</div>
-	</div>
-	
-	<div class="layui-form-item">
-		<label class="layui-form-label">角色</label>
-		<div class="layui-input-block">
-		   <ul id="rolelist" ></ul>
-           <script type="text/html" id="rolelist_tpl">
-	        {{# layui.each(d, function(index, item){ }}
-            <li style="display: inline;padding-left: 5px;"><input type="checkbox" name="roleIds" lay-skin="primary" title="{{ item.name }}" value="{{ item.id }}"></li>
-	        {{# }); }}
-           </script>
-		</div>
-	</div>
-      
+	</div>		     
     <div class="layui-form-item"> 
      <div class="layui-input-block"> 
         <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存"/>
@@ -55,43 +35,19 @@
      </div> 
     </div> 
    </form> 
-  </div>  
+  </div> 
  </body>
- 
-<script type="text/javascript" src="/assets/js/layui/layui.js"></script>
+ <script type="text/javascript" src="/assets/js/layui/layui.js"></script>
 <script>
-	layui.cache.page = 'account';
+    var actionType = 'employee-edit';
+    var API_BASE_PATH = window.top.basePathMap['organisation-service'];
 	layui.config({
 		version : "1.0.0",
 		base : '/assets/js/modules/'
-	}).use('account');
+	}).use('organisation');
 	
-	function onDataLoadedCallback(data){
-		var roles = {};
-		if(data.roles){
-			var role;
-			for(var index in data.roles){
-				role = data.roles[index];
-				roles[role.id+""] = role;
-			}
-		}
-		
-		var $ = layui.jquery;
-		var $cont = $('#rolelist');
-		  $.getJSON('/api/role/list',function(res){
-			  var tpl = $('#rolelist_tpl').html();
-			  layui.laytpl(tpl).render(res.data, function(html){
-				  $cont.html(html);
-			  });
-			  
-			  $cont.find(':checkbox').each(function(){
-				  var $this = $(this);
-				  if(roles[$this.attr('value')]){
-					  $this.attr('checked',true);
-				  }
-			  });
-			  layui.form.render('checkbox');
-		  });
+	function onFinishCallback(){
+		layui.form.render('checkbox');
 	}
 </script>
 </html>

@@ -2,7 +2,8 @@
     "type": "service",
     "name": "组织架构",
     "menuIcon":"",
-	"identifier": "organisation",
+	"identifier": "organisation-service",
+	"routeName": "organisation",
 	"apiBasePackages": "com.oneplatform.organisation.controller",
 	"menus": [{
 	    "key": "organisation-structure",

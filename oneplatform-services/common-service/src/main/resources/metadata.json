@@ -2,7 +2,8 @@
     "type": "service",
     "name": "通用服务",
     "menuIcon":"",
-	"identifier": "common",
+	"identifier": "common-service",
+	"routeName": "common",
 	"apiBasePackages": "com.oneplatform.common.controller",
 	"menus": [{
 	    "key": "file-list",

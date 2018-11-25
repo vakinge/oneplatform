@@ -1,5 +1,7 @@
 package com.oneplatform.system.dto.param;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ResourceParam {
 
 	private Integer id;
@@ -29,26 +31,26 @@ public class ResourceParam {
 		this.moduleId = moduleId;
 	}
 	public String getName() {
-		return name;
+		return StringUtils.trimToNull(name);
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
 	
 	public String getResource() {
-		return resource;
+		return StringUtils.trimToNull(resource);
 	}
 	public void setResource(String resource) {
 		this.resource = resource;
 	}
 	public String getType() {
-		return type;
+		return StringUtils.trimToNull(type);
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
 	public String getIcon() {
-		return icon;
+		return StringUtils.trimToNull(icon);
 	}
 	public void setIcon(String icon) {
 		this.icon = icon;

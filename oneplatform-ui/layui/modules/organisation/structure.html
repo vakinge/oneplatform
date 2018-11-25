@@ -93,7 +93,7 @@
          <input type="button" class="layui-btn layui-btn-normal J_ajaxSubmit" onsuccesscallback="reloadTree" value="保存" /> 
          <input id="add_branch_btn" type="button" class="layui-btn layui-btn-normal J_iframe_dialog" style="display: none;" data-url="/modules/organisation/branch-add.html" data-title="添加子公司" value="添加子公司" /> 
          <input id="add_depart_btn" type="button" class="layui-btn layui-btn-normal J_iframe_dialog" style="display: none;" data-url="/modules/organisation/department-add.html?companyId={id}" data-title="添加部门" value="添加部门" /> 
-         <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/company/delete/{id}" ajax-method="POST" onsuccesscallback="reloadTree" value="删除" /> 
+         <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/company/delete/{id}" ajax-method="POST" onsuccesscallback="reloadTree" value="删除" /> 
         </div> 
        </div> 
       </form> 
@@ -103,6 +103,7 @@
   </div> 
   <script type="text/javascript" src="/assets/js/layui/layui.js"></script> 
   <script>
+  var API_BASE_PATH = window.top.basePathMap['organisation-service'];
    var actionType = 'structure';
 	layui.config({
 		version : "1.0.0",

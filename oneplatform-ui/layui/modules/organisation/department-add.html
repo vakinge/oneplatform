@@ -9,7 +9,7 @@
  </head> 
  <body> 
   <div class="admin-main">  
-   <form class="layui-form" action="/api/department/save">  
+   <form class="layui-form" action="/department/save">  
        <input type="hidden" name="companyId" id="companyId" />  
        <div class="layui-form-item"> 
         <label class="layui-form-label">名称</label> 
@@ -37,6 +37,7 @@
  </body>
  <script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
 <script>
+    var API_BASE_PATH = window.top.basePathMap['organisation-service'];
 	layui.config({
 		version : "1.0.0",
 		base : '../../assets/js/modules/'

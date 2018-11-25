@@ -1,5 +1,7 @@
 package com.oneplatform.system.dto.param;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class AccountParam {
 
 	private Integer id;
@@ -23,7 +25,7 @@ public class AccountParam {
 	}
 
 	public String getUsername() {
-		return username;
+		return StringUtils.trimToNull(username);
 	}
 
 	public void setUsername(String username) {
@@ -31,7 +33,7 @@ public class AccountParam {
 	}
 
 	public String getEmail() {
-		return email;
+		return StringUtils.trimToNull(email);
 	}
 
 	public void setEmail(String email) {
@@ -39,7 +41,7 @@ public class AccountParam {
 	}
 
 	public String getMobile() {
-		return mobile;
+		return StringUtils.trimToNull(mobile);
 	}
 
 	public void setMobile(String mobile) {
@@ -47,7 +49,7 @@ public class AccountParam {
 	}
 
 	public String getRealname() {
-		return realname;
+		return StringUtils.trimToNull(realname);
 	}
 
 	public void setRealname(String realname) {

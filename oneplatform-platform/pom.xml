@@ -188,11 +188,6 @@
 			<groupId>com.jeesuite.oneplatform</groupId>
 			<artifactId>smartapi-core</artifactId>
 			<version>${project.parent.version}</version>
-		</dependency> 
-		<dependency>
-			<groupId>com.jeesuite.oneplatform</groupId>
-			<artifactId>organisation-service</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>  -->
 		<!-- 系统插件 end-->
 

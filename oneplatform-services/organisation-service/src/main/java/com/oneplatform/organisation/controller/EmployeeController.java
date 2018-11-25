@@ -73,8 +73,8 @@ private @Autowired EmployeeService employeeService;
     public @ResponseBody WrapperResponse<String> updateEmployee(@RequestBody EmployeeParam param) {
 		EmployeeEntity entity = BeanUtils.copy(param, EmployeeEntity.class);
 		LoginSession session = LoginContext.getLoginSession();
-		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
+		entity.setUpdatedAt(new Date());
+		entity.setUpdatedBy(session.getUserId());
 		employeeService.updateEmployee(entity);
 		
 		return new WrapperResponse<>();
@@ -87,5 +87,17 @@ private @Autowired EmployeeService employeeService;
 		return new WrapperResponse<>();
 	}
 	
+	@ApiOperation(value = "离职")
+	@RequestMapping(value = "leave/{id}", method = RequestMethod.POST)
+    public @ResponseBody WrapperResponse<String> setEmployeeNotInActive(@PathVariable("id") int id) {
+		EmployeeEntity entity = new EmployeeEntity();
+		entity.setId(id);
+		entity.setInActive(false);
+		LoginSession session = LoginContext.getLoginSession();
+		entity.setUpdatedAt(new Date());
+		entity.setUpdatedBy(session.getUserId());
+		employeeService.updateEmployee(entity);
+		return new WrapperResponse<>();
+	}
 	
 }

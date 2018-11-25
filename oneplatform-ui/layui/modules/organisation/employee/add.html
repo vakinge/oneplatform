@@ -2,14 +2,14 @@
 <html>
  <head> 
   <meta charset="UTF-8" /> 
-  <title>新增账号</title> 
+  <title>新增员工</title> 
   <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" />
   <link rel="stylesheet" href="/assets/css/global.css" media="all">
   <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css">
  </head> 
  <body> 
   <div class="admin-main">  
-   <form class="layui-form" action="/api/employee/add">  
+   <form class="layui-form" action="/employee/add">  
     <div class="layui-form-item">
 		<label class="layui-form-label">姓名</label>
 		<div class="layui-input-block">
@@ -31,13 +31,13 @@
 	<div class="layui-form-item"> 
      <label class="layui-form-label">所在部门</label> 
      <div class="layui-input-block"> 
-      <select id="departmentId" name="departmentId" lay-verify="required" asnycselect="/api/department/options" lay-filter="department"> <option value="">请选择部门</option> </select> 
+      <select id="departmentId" name="departmentId" lay-verify="required" asnycselect="/department/options" lay-filter="department"> <option value="">请选择部门</option> </select> 
      </div> 
     </div>
     <div class="layui-form-item"> 
      <label class="layui-form-label">职位</label> 
      <div class="layui-input-block"> 
-      <select id="positionId" name="positionId" lay-verify="required" asnycselect="/api/position/options" lay-filter="position"> <option value="">请选择职位</option> </select> 
+      <select id="positionId" name="positionId" lay-verify="required" asnycselect="/position/options" lay-filter="position"> <option value="">请选择职位</option> </select> 
      </div> 
     </div>
 		     
@@ -53,6 +53,7 @@
  <script type="text/javascript" src="/assets/js/layui/layui.js"></script>
 <script>
     var actionType = 'employee-add';
+    var API_BASE_PATH = window.top.basePathMap['organisation-service'];
 	layui.config({
 		version : "1.0.0",
 		base : '/assets/js/modules/'

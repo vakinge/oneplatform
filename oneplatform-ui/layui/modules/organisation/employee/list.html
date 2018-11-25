@@ -27,14 +27,19 @@
       <input type="checkbox" data-id="{{d.id}}" value="{{d.inActive}}" lay-skin="switch" lay-text="是|否" {{ d.inActive ? 'checked' : '' }} disabled>          
     </script>    
 	<script type="text/html" id="toolBar">
-      <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="switch">{{#  if(d.enabled){ }}禁用{{#  } else { }}启用{{#  } }} </a>
-      <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+       {{#  if(d.inActive){ }}
+       <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+       <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="changePost">岗位调整</a>
+       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="leave">离职</a>
+      {{#  } else { }}
       <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+      {{#  } }}
     </script>
 </body>
 <script type="text/javascript" src="/assets/js/layui/layui.js"></script>
 <script>
     var actionType = 'employee-list';
+    var API_BASE_PATH = window.top.basePathMap['organisation-service'];
 	layui.config({
 		version : "1.0.0",
 		base : '/assets/js/modules/'

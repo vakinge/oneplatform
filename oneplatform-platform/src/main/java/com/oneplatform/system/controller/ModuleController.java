@@ -1,7 +1,9 @@
 package com.oneplatform.system.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.springweb.model.WrapperResponse;
+import com.oneplatform.base.GlobalContants.ModuleType;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.annotation.ApiScanIgnore;
 import com.oneplatform.base.model.ApiInfo;
@@ -71,6 +74,26 @@ public class ModuleController {
     public @ResponseBody WrapperResponse<List<ApiInfo>> getApis(@PathVariable("moduleId") int moduleId) {
 		List<ApiInfo> list = moduleService.findNotPermModuleApis(moduleId);
 		return new WrapperResponse<>(list);
+	}
+	
+	@ApiOperation(value = "查询所有模块路径")
+	@RequestMapping(value = "basepaths", method = RequestMethod.GET)
+    public @ResponseBody WrapperResponse<Map<String, String>> getAllBasePaths() {
+		Map<String, String> resDatas = new HashMap<>();
+		List<ModuleEntity> modules = moduleService.findActiveModules();
+		String path;
+		String name;
+		for (ModuleEntity module : modules) {
+			if(module.getId() == 1)continue;
+			if(ModuleType.plugin.name().equals(module.getModuleType())){
+				path = "/api";
+			}else{
+				path = "/api/" + module.getRouteName();
+			}
+			name = module.getMetadata() != null ? module.getMetadata().getIdentifier() : module.getServiceId().toLowerCase();
+			resDatas.put(name, path);
+		}
+		return new WrapperResponse<>(resDatas);
 	}
     
 }

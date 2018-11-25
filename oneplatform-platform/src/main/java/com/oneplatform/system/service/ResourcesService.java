@@ -233,7 +233,7 @@ public class ResourcesService {
 		ResourceEntity entity = resourceMapper.selectByPrimaryKey(id);
 		AssertUtil.notNull(entity);
 		if(entity.getIsDefault()){
-			throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "默认的不允许删除不允许删除");
+			throw new JeesuiteBaseException(ExceptionCode.OPTER_NOT_ALLOW.code, "默认数据不允许删除");
 		}
 		resourceMapper.deleteResourceRalations(id);
 		resourceMapper.deleteByPrimaryKey(id);

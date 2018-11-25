@@ -15,7 +15,7 @@
  <body> 
   <fieldset class="layui-elem-field"> 
    <legend>新增职位</legend> 
-   <form id="addform" action="/api/position/add" class="layui-form" style="margin: 10px;"> 
+   <form id="addform" action="/position/add" class="layui-form" style="margin: 10px;"> 
     <div class="layui-inline"> 
      <input class="layui-input" name="name" placeholder="职位名称" /> 
     </div> 
@@ -28,7 +28,7 @@
    <legend>职位列表</legend> 
   </fieldset> 
   <div>
-      <ul class="layui-field-box layui-form option-items" dataload="/api/position/list" template-id="option_tpl"></ul>
+      <ul class="layui-field-box layui-form option-items" dataload="/position/list" template-id="option_tpl"></ul>
   </div>  
   <script type="text/html" id="option_tpl">
 	{{# layui.each(d, function(index, item){ }}
@@ -38,6 +38,7 @@
 </script> 
   <script type="text/javascript" src="/assets/js/layui/layui.js"></script> 
   <script>
+    var API_BASE_PATH = window.top.basePathMap['organisation-service'];
 	layui.config({
 		version : "1.0.0",
 		base : '/assets/js/'

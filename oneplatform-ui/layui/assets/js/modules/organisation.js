@@ -17,7 +17,7 @@ layui.define(['form','oneplatform', 'layer', 'tree','element', 'table'], functio
 	  $.ajax({
 	      type: "GET",
 	      async: false,
-	      url: '/api/company/structure',
+	      url: API_BASE_PATH + '/company/structure',
 	      dataType: "json",
 	      success: function(json) {
 	      	if(json.code != 200){
@@ -39,7 +39,7 @@ layui.define(['form','oneplatform', 'layer', 'tree','element', 'table'], functio
 			    	var type;
 			    	if(item.extraAttr === 'company'){
 			    		$('.company-filter',$form).show();
-			    		$form.attr('action','/api/company/save');
+			    		$form.attr('action',API_BASE_PATH + '/company/save');
 			    		$('#add_depart_btn',$form).show();
 			    		$('#add_depart_btn',$form).attr('data-id',item.id+'');
 			    		if(!item.originData || item.originData.isBranch == false){
@@ -54,7 +54,7 @@ layui.define(['form','oneplatform', 'layer', 'tree','element', 'table'], functio
 			    		$('#add_depart_btn',$form).hide();
 			    		$('#add_branch_btn',$form).hide();
 			    		$('.company-filter input',$form).val("");
-			    		$form.attr('action','/api/department/save');
+			    		$form.attr('action',API_BASE_PATH + '/department/save');
 			    	}
 			    	var formdata = item.originData ? item.originData : item;
 			    	if(formdata.id == 0){
@@ -76,7 +76,7 @@ layui.define(['form','oneplatform', 'layer', 'tree','element', 'table'], functio
 		    elem: '#tablecont'
 		    ,height: 430
 		    ,width:1150
-		    ,url: '/api/employee/list'
+		    ,url: API_BASE_PATH + '/employee/list'
 		    ,method: 'POST'
 		    ,page: true //开启分页
 		    ,request: {
@@ -103,21 +103,19 @@ layui.define(['form','oneplatform', 'layer', 'tree','element', 'table'], functio
 		  //监听工具条
 		  table.on('tool(table)', function(obj){ 
 			  var data = obj.data,layEvent = obj.event; 
-			  if(layEvent === 'switch'){
-			      layer.confirm('确认'+(data.enabled ? '禁用' : '启用' )+'么?', function(index){
-			    	    var param = {};
-			    	    param.id = data.id;
-			    	    param.value = !data.enabled;
-				    	oneplatform.post('/api/account/switch',param,function(data){
+			  if(layEvent === 'leave'){
+			      layer.confirm('确认设置为离职状态么?', function(index){
+				    	oneplatform.post(API_BASE_PATH + '/employee/leave/'+data.id,null,function(data){
+				    		obj.del(); 
 					        layer.close(index);
-					        window.location.reload();
-					        oneplatform.success('操作成功');
+					        oneplatform.success('设置为离职状态成功');
 				    	});
 				       
 				      });
-				}else if(layEvent === 'del'){
+				    }
+			  else if(layEvent === 'del'){
 			      layer.confirm('确认删除么?', function(index){
-			    	oneplatform.post('/api/account/delete/'+data.id,null,function(data){
+			    	oneplatform.post(API_BASE_PATH + '/employee/delete/'+data.id,null,function(data){
 			    		obj.del(); 
 				        layer.close(index);
 				        oneplatform.success('删除成功');
@@ -125,7 +123,7 @@ layui.define(['form','oneplatform', 'layer', 'tree','element', 'table'], functio
 			       
 			      });
 			    }else if(layEvent === 'edit'){
-			    	oneplatform.iframeDialog('编辑模块','/modules/account/edit.html?id='+data.id);
+			    	oneplatform.iframeDialog('编辑员工','./edit.html?id='+data.id);
 			    }
 		  });
   }

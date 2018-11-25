@@ -3,11 +3,14 @@ package com.oneplatform.base.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ModuleMetadata {
 
 	private String type;
 	private String name;
 	private String identifier;
+	private String routeName;
 	private String menuIcon;
 	private String apiBasePackages;
 	private List<ApiInfo> apis = new ArrayList<>();
@@ -34,6 +37,15 @@ public class ModuleMetadata {
 		this.identifier = identifier;
 	}
 	
+	public String getRouteName() {
+		if(routeName == null){
+			routeName = StringUtils.splitByWholeSeparator(identifier, "-")[0];
+		}
+		return routeName;
+	}
+	public void setRouteName(String routeName) {
+		this.routeName = routeName;
+	}
 	public String getMenuIcon() {
 		return menuIcon;
 	}
