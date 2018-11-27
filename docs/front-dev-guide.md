@@ -5,7 +5,7 @@
  - ....
 #### 提交form表单，
 - lay-verify：表单验证规则(沿用了layui的标签，自己实现验证逻辑)
-只需要一个样式名称`J_ajaxSubmit`搞定
+- 表单提交：只需要一个样式名称`J_ajaxSubmit`搞定
 ```html
 <form class="layui-form" action="/api/account/add">  
     <div class="layui-form-item">
