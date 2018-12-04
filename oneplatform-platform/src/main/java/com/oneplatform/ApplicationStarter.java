@@ -18,6 +18,7 @@ import com.jeesuite.springboot.starter.kafka.EnableJeesuiteKafkaProducer;
 import com.jeesuite.springboot.starter.mybatis.EnableJeesuiteMybatis;
 import com.jeesuite.springboot.starter.scheduler.EnableJeesuiteSchedule;
 import com.oneplatform.base.BaseApplicationStarter;
+import com.oneplatform.base.boot.SpringBootBanner;
 import com.oneplatform.platform.filter.AuthFilter;
 
 
@@ -37,7 +38,7 @@ public class ApplicationStarter extends BaseApplicationStarter{
 
 	public static void main(String[] args) {
 		long starTime = before();
-		new SpringApplicationBuilder(ApplicationStarter.class).web(WebApplicationType.SERVLET).run(args);
+		new SpringApplicationBuilder(ApplicationStarter.class).web(WebApplicationType.SERVLET).banner(new SpringBootBanner()).run(args);
 		after(starTime);
 	}
 	
