@@ -13,17 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jeesuite.common.json.JsonUtils;
+import com.jeesuite.security.RequestContextHolder;
 import com.jeesuite.springweb.WebConstants;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.jeesuite.springweb.utils.IpUtils;
 import com.jeesuite.springweb.utils.WebUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.util.SecurityCryptUtils;
 import com.oneplatform.platform.PlatformConfigManager;
-import com.oneplatform.platform.auth.AuthSessionHelper;
-import com.oneplatform.platform.auth.LoginHelper;
 
 /**
  * 
@@ -53,6 +51,9 @@ public class GlobalFilter extends ZuulFilter{
 		RequestContext ctx = RequestContext.getCurrentContext();
 		try {
 			HttpServletRequest request = ctx.getRequest();
+			
+			RequestContextHolder.set(request, ctx.getResponse());
+			
 			ctx.put(PlatformConfigManager.CONTEXT_CLIENT_IP, IpUtils.getIpAddr(request)); 
 			
 			String invokeIp = request.getHeader(WebConstants.HEADER_INVOKER_IP);
@@ -73,9 +74,6 @@ public class GlobalFilter extends ZuulFilter{
 				if(routeName.contains("/"))routeName = routeName.substring(0,routeName.indexOf("/"));
 				ctx.put(PlatformConfigManager.CONTEXT_ROUTE_NAME, routeName);
 			}
-			
-			LoginSession session = AuthSessionHelper.getSessionIfNotCreateAnonymous(request,ctx.getResponse(),LoginHelper.ssoEnabled);
-			ctx.put(CONTEXT_SESSION_KEY, session);
 			//
 			Cookie[] cookies = request.getCookies();
 			if(cookies != null){

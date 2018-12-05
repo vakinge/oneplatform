@@ -126,6 +126,11 @@
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-scheduler</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.jeesuite</groupId>
+			<artifactId>jeesuite-security</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>

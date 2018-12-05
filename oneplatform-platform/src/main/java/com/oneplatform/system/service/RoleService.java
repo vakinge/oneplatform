@@ -29,7 +29,6 @@ import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.BeanUtils;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
-import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dao.mapper.RoleEntityMapper;
@@ -103,10 +102,8 @@ public class RoleService {
 		List<Integer> deleteList = new ArrayList<>(assignedIds);
 		deleteList.removeAll(newIds);
 		
-		boolean acted = false;
 		if(!deleteList.isEmpty()){
 			resourceMapper.deleteRoleResources(param.getRoleId(), deleteList.toArray(new Integer[0]));
-			acted = true;
 		}
 		
 		List<Integer> addList = new ArrayList<>(newIds);
@@ -114,10 +111,6 @@ public class RoleService {
 		
 		if(!addList.isEmpty()){
 			resourceMapper.addRoleResources(param.getRoleId(), addList.toArray(new Integer[0]));
-			acted = true;
-		}
-		if(acted){
-			AuthPermHelper.reset();
 		}
 	}
 }

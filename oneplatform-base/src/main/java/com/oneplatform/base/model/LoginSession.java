@@ -1,8 +1,5 @@
 package com.oneplatform.base.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,36 +7,28 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.jeesuite.common.json.JsonUtils;
-import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.common.util.TokenGenerator;
-import com.oneplatform.base.GlobalContants.UserScope;
 import com.oneplatform.base.util.SecurityCryptUtils;
 
 @JsonInclude(Include.NON_NULL)
 public class LoginSession {
 
-	public static final int SESSION_EXPIRE_SECONDS = ResourceUtils.getInt("auth.session.expire.seconds", 7200);
 	private static final String CONTACT_CHAR = "#";
 	
 	private Integer userId;
 	private String userName;
-	private List<String> scopes = new ArrayList<>();
-
 	private String sessionId;
-	private Integer expiresIn;
-	private Long expiresAt;
-	
-	private UserInfo userInfo;
 	
 	public LoginSession() {}
 	
-	public static LoginSession create(){
-		LoginSession session = new LoginSession();
-		session.sessionId = TokenGenerator.generate("auth");
-		session.expiresIn = 1800;
-		session.expiresAt = System.currentTimeMillis()/1000 + session.expiresIn;
-		return session;
+	public LoginSession(String sessionId, Integer userId, String userName) {
+		super();
+		this.sessionId = sessionId;
+		this.userId = userId;
+		this.userName = userName;
 	}
+
+
 
 	public Integer getUserId() {
 		return userId;
@@ -55,22 +44,6 @@ public class LoginSession {
 		this.userName = userName;
 	}
 
-	public List<String> getScopes() {
-		return scopes;
-	}
-
-	public void setScopes(List<String> scopes) {
-		this.scopes = scopes;
-	}
-
-	public Integer getExpiresIn() {
-		return expiresIn;
-	}
-	public void setExpiresIn(Integer expiresIn) {
-		this.expiresIn = expiresIn;
-		this.expiresAt = System.currentTimeMillis()/1000 + this.expiresIn;
-	}
-
 	public boolean isAnonymous(){
 		return userId == null || userId == 0;
 	}
@@ -82,27 +55,6 @@ public class LoginSession {
 
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
-	}
-
-	
-	public Long getExpiresAt() {
-		return expiresAt;
-	}
-
-	public void setExpiresAt(Long expiresAt) {
-		this.expiresAt = expiresAt;
-	}
-	
-	public UserInfo getUserInfo() {
-		return userInfo;
-	}
-
-	public void setUserInfo(UserInfo userInfo) {
-		this.userInfo = userInfo;
-	}
-	
-	public boolean isSuperAdmin(){
-		return scopes.contains(UserScope.sa.name());
 	}
 
 	public String toEncodeString(){
@@ -146,18 +98,15 @@ public class LoginSession {
 	}
 
 	 public static void main(String[] args) {
-		LoginSession session = LoginSession.create();
+		LoginSession session = new LoginSession();
+		session.setSessionId(TokenGenerator.generate());
 		session.setUserId(1000);
 		session.setUserName("周大福");
 		String encodeString = session.toEncodeString();
 		System.out.println(encodeString);
 		LoginSession session2 = decode(encodeString);
 		System.out.println(session2);
-		System.out.println("---------------------");
-		session = LoginSession.create();
-		encodeString = session.toEncodeString();
-		session2 = decode(encodeString);
-		System.out.println(session2);
+
 		
 	}
 	

@@ -118,7 +118,7 @@
 			});
 		    $.getJSON('/api/user/profile',function(data){
               if(data.code == 200){
-               	 $("#userName").html(data.data.username);
+               	 $("#userName").html(data.data.userName);
                	 id = data.data.id;
               }else{
                	location.href='login.html';

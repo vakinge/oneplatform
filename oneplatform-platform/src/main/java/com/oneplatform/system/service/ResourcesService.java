@@ -16,11 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.BeanUtils;
+import com.oneplatform.base.GlobalContants;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.TreeModel;
-import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.platform.task.ModuleMetadataUpdateTask;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
@@ -152,7 +152,7 @@ public class ResourcesService {
 		List<ResourceEntity> resources = resourceMapper.findNotLeafResources(ResourceType.menu.name());
 		Map<Integer, ResourceEntity> resourceMap = resources.stream().collect(Collectors.toMap(ResourceEntity::getId, entity -> entity));
 		
-		if(currentUser.isSuperAdmin()){
+		if(GlobalContants.SUPER_ADMIN_NAME.equalsIgnoreCase(currentUser.getUserName())){
 			resources = resourceMapper.findDefaultResources(ResourceType.menu.name());
 		}else{			
 			resources = resourceMapper.findUserResources(currentUser.getUserId(), ResourceType.menu.name());
@@ -237,8 +237,6 @@ public class ResourcesService {
 		}
 		resourceMapper.deleteResourceRalations(id);
 		resourceMapper.deleteByPrimaryKey(id);
-		
-		AuthPermHelper.reset();
 	}
 	
 	public void switchResource(int operUserId,Integer id,boolean enable){

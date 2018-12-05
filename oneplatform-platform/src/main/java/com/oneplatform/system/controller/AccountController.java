@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.JeesuiteBaseException;
+import com.jeesuite.security.SecurityDelegating;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.base.model.SwitchParam;
-import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.AccountEntity;
 import com.oneplatform.system.dto.param.AccountParam;
 import com.oneplatform.system.dto.param.AccountQueryParam;
@@ -88,7 +88,7 @@ public class AccountController {
 		AssertUtil.notInitData(param.getId());
 		accountService.assignmentRoles(LoginContext.getLoginUserId(), param.getId(), param.getAssignmentIds());
 		//
-		AuthPermHelper.refreshPermData(param.getId());
+		SecurityDelegating.refreshUserPermssion(param.getId());
 		return new WrapperResponse<>();
 	}
     

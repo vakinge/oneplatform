@@ -32,14 +32,13 @@ import org.springframework.core.env.Environment;
 public class SpringBootBanner implements Banner {
 
 	private static final String[] BANNER = { "",
-			"  .   ____          _            __ _ _",
-			" /\\\\ / ___'_ __ _ _(_)_ __  __ _ \\ \\ \\ \\",
-			"( ( )\\___ | '_ | '_| | '_ \\/ _` | \\ \\ \\ \\",
-			" \\\\/  ___)| |_)| | | | | || (_| |  ) ) ) )",
-			"  '  |____| .__|_| |_|_| |_\\__, | / / / /",
-			" =========|_|==============|___/=/_/_/_/" };
+			"   ___                _      _    __  ",
+			"  / _ \\ _ _  ___ _ __| |__ _| |_ / _|___ _ _ _ __  ",
+			" | (_) | ' \\/ -_) '_ \\ / _` |  _|  _/ _ \\ '_| '  \\ ",
+			"  \\___/|_||_\\___| .__/_\\__,_|\\__|_| \\___/_| |_|_|_|",
+			"                |_|" };
 
-	private static final String SPRING_BOOT = " :: Spring Boot :: ";
+	private static final String SPRING_BOOT = "Jeesuite-libs With Spring Boot";
 
 	private static final int STRAP_LINE_SIZE = 42;
 

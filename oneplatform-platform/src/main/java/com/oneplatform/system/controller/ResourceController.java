@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.security.SecurityDelegating;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
@@ -65,6 +66,8 @@ public class ResourceController {
 	@RequestMapping(value = "add", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> addResource(@RequestBody ResourceParam param) {
 		resourcesService.addResource(LoginContext.getLoginUserId(), param);
+		//刷新资源
+		SecurityDelegating.refreshResources();
 		return new WrapperResponse<>();
 	}
 	
@@ -81,6 +84,8 @@ public class ResourceController {
     public @ResponseBody WrapperResponse<String> deleteResource(@PathVariable("id") int id) {
 		AssertUtil.notInitData(id);
 		resourcesService.deleteResource(LoginContext.getLoginUserId(), id);
+		//刷新资源
+		SecurityDelegating.refreshResources();
 		return new WrapperResponse<>();
 	}
 	

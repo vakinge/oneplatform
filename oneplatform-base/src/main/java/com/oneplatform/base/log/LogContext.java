@@ -9,12 +9,10 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
-import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.common.util.TokenGenerator;
 import com.jeesuite.springweb.utils.IpUtils;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.model.LoginSession;
-import com.oneplatform.base.model.UserInfo;
 
 /**
  * 

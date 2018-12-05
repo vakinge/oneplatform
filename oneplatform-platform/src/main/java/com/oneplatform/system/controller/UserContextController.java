@@ -14,15 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.JeesuiteBaseException;
+import com.jeesuite.security.SecurityDelegating;
+import com.jeesuite.security.model.BaseUserInfo;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.annotation.ApiScanIgnore;
-import com.oneplatform.base.exception.AssertUtil;
-import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.TreeModel;
-import com.oneplatform.base.model.UserInfo;
-import com.oneplatform.platform.auth.LoginHelper;
-import com.oneplatform.system.dao.entity.AccountEntity;
 import com.oneplatform.system.dto.param.LoginParam;
 import com.oneplatform.system.dto.param.UpdatepasswordParam;
 import com.oneplatform.system.service.AccountService;
@@ -42,33 +39,24 @@ public class UserContextController {
 
 	@ApiOperation(value = "处理登录请求")
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<UserInfo> doLogin(HttpServletRequest request,HttpServletResponse response,@RequestBody LoginParam param) {
-		AccountEntity entity = accountService.findByLoginAccount(param.getLoginName());
-		AssertUtil.notNull(entity, "用户不存在");
-		String password = AccountEntity.encryptPassword(param.getPassword());
-		AssertUtil.isTrue(password.equals(entity.getPassword()), ExceptionCode.REQUEST_PARAM_ERROR.code, "密码错误");
-		
-		//login add cookies
-		UserInfo userInfo = LoginHelper.login(request, response, entity);
+    public @ResponseBody WrapperResponse<BaseUserInfo> doLogin(HttpServletRequest request,HttpServletResponse response,@RequestBody LoginParam param) {
+		BaseUserInfo userInfo = SecurityDelegating.doAuthentication(param.getLoginName(), param.getPassword());
 		return new WrapperResponse<>(userInfo);
 	} 
 	
 	@ApiOperation(value = "退出登录")
 	@RequestMapping(value = "logout", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> logout(HttpServletRequest request,HttpServletResponse response) {
-		LoginHelper.logout(request, response);
+		SecurityDelegating.doLogout();
 		return new WrapperResponse<>();
 	} 
 	
 	@ApiOperation(value = "查询当前登录用户信息")
 	@RequestMapping(value = "profile", method = RequestMethod.GET)
-    public @ResponseBody WrapperResponse<UserInfo> getCurrentUser() {
-		UserInfo user= LoginContext.getLoginSession().getUserInfo();
-		//敏感信息不返回前端
-		user.setRealname(null);
-		user.setEmail(null);
-		user.setMobile(null);
-		return new WrapperResponse<>(user);
+    public @ResponseBody WrapperResponse<BaseUserInfo> getCurrentUser() {
+		BaseUserInfo userInfo = SecurityDelegating.getCurrentSession().getUserInfo();
+		//TODO 敏感信息不返回前端
+		return new WrapperResponse<>(userInfo);
 	} 
 	
 	

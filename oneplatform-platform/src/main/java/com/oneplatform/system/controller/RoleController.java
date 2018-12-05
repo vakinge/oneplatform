@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.security.SecurityDelegating;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.SwitchParam;
-import com.oneplatform.platform.auth.AuthPermHelper;
 import com.oneplatform.system.dao.entity.ResourceEntity;
 import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.RoleEntityMapper;
@@ -84,8 +84,8 @@ public class RoleController {
 	@RequestMapping(value = "assignment", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> assignmentRoles(@RequestBody AssignResourceParam param) {		
 		roleService.assignmentResources(LoginContext.getLoginUserId(), param);
-		//
-		AuthPermHelper.refreshPermData();
+		//刷新所有在线用户的权限数据
+		SecurityDelegating.refreshUserPermssion();
 		return new WrapperResponse<>();
 	}
 	

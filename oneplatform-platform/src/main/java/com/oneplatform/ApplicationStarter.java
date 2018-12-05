@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.jeesuite.security.DelegatingFilter;
 import com.jeesuite.springboot.starter.cache.EnableJeesuiteCache;
 import com.jeesuite.springboot.starter.kafka.EnableJeesuiteKafkaConsumer;
 import com.jeesuite.springboot.starter.kafka.EnableJeesuiteKafkaProducer;
@@ -19,7 +20,6 @@ import com.jeesuite.springboot.starter.mybatis.EnableJeesuiteMybatis;
 import com.jeesuite.springboot.starter.scheduler.EnableJeesuiteSchedule;
 import com.oneplatform.base.BaseApplicationStarter;
 import com.oneplatform.base.boot.SpringBootBanner;
-import com.oneplatform.platform.filter.AuthFilter;
 
 
 @EnableZuulProxy
@@ -43,13 +43,13 @@ public class ApplicationStarter extends BaseApplicationStarter{
 	}
 	
 	@Bean
-	public FilterRegistrationBean<AuthFilter> someFilterRegistration() {
-	    FilterRegistrationBean<AuthFilter> registration = new FilterRegistrationBean<>();
-	    registration.setFilter(new AuthFilter());
+	public FilterRegistrationBean<DelegatingFilter> someFilterRegistration() {
+	    FilterRegistrationBean<DelegatingFilter> registration = new FilterRegistrationBean<>();
+	    registration.setFilter(new DelegatingFilter());
 	    registration.addUrlPatterns("/*");
-	    registration.addInitParameter("urlPrefix", "/smartapi");
+	   // registration.addInitParameter("urlPrefix", "/s");
 	    registration.setName("authFilter");
-	    registration.setOrder(1);
+	    registration.setOrder(0);
 	    return registration;
 	} 
 	

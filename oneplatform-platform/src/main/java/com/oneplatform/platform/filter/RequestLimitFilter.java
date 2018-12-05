@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -16,12 +15,12 @@ import org.springframework.http.HttpStatus;
 import com.google.common.util.concurrent.RateLimiter;
 import com.jeesuite.common.json.JsonUtils;
 import com.jeesuite.common.util.ResourceUtils;
+import com.jeesuite.security.SecurityDelegating;
+import com.jeesuite.security.model.UserSession;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.jeesuite.springweb.utils.WebUtils;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
-import com.oneplatform.base.model.LoginSession;
-import com.oneplatform.platform.PlatformConfigManager;
 import com.oneplatform.platform.filter.internal.PerFrequencyLimiter;
 
 /**
@@ -40,11 +39,7 @@ public class RequestLimitFilter extends ZuulFilter implements InitializingBean,D
 	
 	private static final String MSG_TOO_MANY_REQUESTS = "{\"code\": 429,\"msg\":\"Too Many Requests\"}";
 	private static final String MSG_REQUEST_TOO_FAST = "{\"code\": 429,\"msg\":\"Request Too Fast\"}";
-	private static final String MSG_403_IP_FORBIDDEEN = "{\"code\": 403,\"msg\":\"IP forbidden\"}";
-	
-	@Autowired
-	private PlatformConfigManager configManager;
-	
+
 	//令牌桶算法，每秒允许最大并发限制
 	private RateLimiter gloabalLimiter; 
 	//单个用户频率限制
@@ -99,7 +94,7 @@ public class RequestLimitFilter extends ZuulFilter implements InitializingBean,D
 
     		//后台系统不限制
     		if(perLimiter != null){
-    			LoginSession session = (LoginSession) ctx.get(GlobalFilter.CONTEXT_SESSION_KEY);
+    			UserSession session = SecurityDelegating.getCurrentSession();
     			if(!perLimiter.tryAcquire(request,session.getSessionId())){
     				ctx.setSendZuulResponse(false);
     				ctx.setResponseStatusCode(HttpStatus.TOO_MANY_REQUESTS.value());
