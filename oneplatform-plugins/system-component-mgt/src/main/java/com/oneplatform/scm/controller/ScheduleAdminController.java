@@ -110,8 +110,11 @@ public class ScheduleAdminController implements InitializingBean{
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if(ResourceUtils.containsProperty("zookeeper.servers")){
-			monitor = new SchedulerMonitor("zookeeper", ResourceUtils.getProperty("zookeeper.servers"));
+		if("zookeeper".equals(ResourceUtils.getProperty("jeesuite.task.registryType")) && 
+				ResourceUtils.containsProperty("jeesuite.task.registryServers")){
+			monitor = new SchedulerMonitor("zookeeper", ResourceUtils.getProperty("jeesuite.task.registryServers"));
+		}else{
+			monitor = new SchedulerMonitor(null, null);
 		}
 	}
 }

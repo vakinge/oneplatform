@@ -126,7 +126,7 @@
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-scheduler</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-security</artifactId>
@@ -181,15 +181,21 @@
 			<artifactId>oneplatform-base</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
- 
-       <!-- 以下是系统插件，按需加载 -->
+
+		<!-- 以下是系统插件，按需加载 -->
 		<dependency>
 			<groupId>com.jeesuite.oneplatform</groupId>
 			<artifactId>system-component-mgt</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 
-		<!-- 系统插件 end-->
+		<dependency>
+			<groupId>com.jeesuite.oneplatform</groupId>
+			<artifactId>smartapi-core</artifactId>
+			<version>1.0.0</version> 
+		</dependency>
+
+		<!-- 系统插件 end -->
 
 	</dependencies>
 
