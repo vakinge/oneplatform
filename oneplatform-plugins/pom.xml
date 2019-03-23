@@ -42,12 +42,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!--通用Mapper -->
-		<dependency>
-			<groupId>tk.mybatis</groupId>
-			<artifactId>mapper</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-spring</artifactId>

@@ -12,6 +12,8 @@
 	<modules>
 		<module>common-service</module>
 		<module>organisation-service</module>
+		<module>user-service</module>
+		<module>weixin-service</module>
 	</modules>
 
 	<dependencies>
@@ -79,12 +81,6 @@
 			<groupId>org.mybatis.generator</groupId>
 			<artifactId>mybatis-generator-core</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<!--通用Mapper -->
-		<dependency>
-			<groupId>tk.mybatis</groupId>
-			<artifactId>mapper</artifactId>
 		</dependency>
 
 		<dependency>

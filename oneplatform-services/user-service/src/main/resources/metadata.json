@@ -1,0 +1,14 @@
+{
+    "type": "service",
+    "name": "用户服务",
+    "menuIcon":"",
+	"identifier": "user",
+	"apiBasePackages": "com.oneplatform.user.controller",
+	"menus": [{
+	    "key": "menu-1",
+		"uri": "/modules/user/menu-1.html",
+		"text": "菜单1",
+		"icon": "",
+		"sort": 1
+	}]
+}

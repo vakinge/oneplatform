@@ -91,12 +91,6 @@
 			<artifactId>mybatis-generator-core</artifactId>
 		</dependency>
 
-		<!--通用Mapper -->
-		<dependency>
-			<groupId>tk.mybatis</groupId>
-			<artifactId>mapper</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
