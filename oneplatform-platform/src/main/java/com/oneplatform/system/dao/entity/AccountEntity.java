@@ -257,5 +257,8 @@ public class AccountEntity extends BaseEntity {
 	}
 	
 
+	public static void main(String[] args) {
+		System.out.println(encryptPassword("138002"));
+	}
     
 }
