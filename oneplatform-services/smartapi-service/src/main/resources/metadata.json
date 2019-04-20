@@ -1,6 +1,7 @@
 {
     "type": "service",
-    "identifier": "smartapi",
+    "identifier": "smartapi-service",
+    "routeName": "smartapi",
     "name": "智能接口管理",
     "menuIcon":"",
     "apiBasePackages": "com.oneplatform.smartapi.web",

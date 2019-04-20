@@ -119,4 +119,9 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 				loginSession.toEncodeString());
 	}
 
+	@Override
+	public String superAdminName() {
+		return GlobalContants.SUPER_ADMIN_NAME;
+	}
+
 }

@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css" /> 
  </head> 
  <body> 
-  <div class="admin-main" dataload="/api/apiconfig/details/{id}" onfinishcallback="onDataLoadedCallback"> 
+  <div class="admin-main" dataload="/apiconfig/details/{id}" onfinishcallback="onDataLoadedCallback"> 
    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> 
     <legend>基本信息</legend> 
    </fieldset> 
@@ -117,6 +117,7 @@
   </div>  
   <script type="text/javascript" src="/assets/js/layui/layui.js"></script> 
   <script>
+  var moduleName = 'smartapi';
 	var tables = {};
 	layui.config({
 		version : "1.0.0",

@@ -1,3 +1,4 @@
+var API_BASE_PATH = (typeof(moduleName) !="undefined") ? window.top.basePathMap[moduleName] : null;
 layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
   var $ = layui.jquery
   ,layer = layui.layer
@@ -262,7 +263,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 				window.location.href = url + rnd;
 			},
 			buildPath:function(url){
-				if(!url || typeof(API_BASE_PATH) == 'undefined'){
+				if(!url || !API_BASE_PATH){
 					return url;
 				}else{
 					return API_BASE_PATH + url;

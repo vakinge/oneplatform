@@ -190,7 +190,10 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
     
     private void createModuleMenusIfNotExist(ModuleEntity moduleEntity){
     	ModuleMetadata metadata = moduleEntity.getMetadata();
-    	if(metadata.getMenus() == null || metadata.getMenus().isEmpty())return;
+    	if(metadata == null){
+    		System.out.println();
+    	}
+    	if(metadata == null || metadata.getMenus() == null || metadata.getMenus().isEmpty())return;
     	ResourceEntity parent = resourceMapper.findModuleParent(moduleEntity.getId());
     	if(parent == null){
     		parent = new ResourceEntity();

@@ -82,7 +82,6 @@ public class ModuleController {
 		Map<String, String> resDatas = new HashMap<>();
 		List<ModuleEntity> modules = moduleService.findActiveModules();
 		String path;
-		String name;
 		for (ModuleEntity module : modules) {
 			if(module.getId() == 1)continue;
 			if(ModuleType.plugin.name().equals(module.getModuleType())){
@@ -90,8 +89,7 @@ public class ModuleController {
 			}else{
 				path = "/api/" + module.getRouteName();
 			}
-			name = module.getMetadata() != null ? module.getMetadata().getIdentifier() : module.getServiceId().toLowerCase();
-			resDatas.put(name, path);
+			resDatas.put(module.getRouteName(), path);
 		}
 		return new WrapperResponse<>(resDatas);
 	}

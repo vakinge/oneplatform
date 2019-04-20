@@ -20,7 +20,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 	    elem: '#ds_tablecont'
 	    ,height: 430
 	    ,width:1000
-	    ,url: '/api/dsconfig/list'
+	    ,url: API_BASE_PATH + '/dsconfig/list'
 	    ,method: 'POST'
 	    ,page: false 
 	    ,response: {
@@ -48,7 +48,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 		    	    var param = {};
 		    	    param.id = data.id;
 		    	    param.value = !data.enabled;
-			    	oneplatform.post('/api/dsconfig/switch',param,function(data){
+			    	oneplatform.post(API_BASE_PATH + '/dsconfig/switch',param,function(data){
 				        layer.close(index);
 				        window.location.reload();
 				        oneplatform.success('操作成功');
@@ -57,7 +57,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 			      });
 			}else if(layEvent === 'del'){
 		      layer.confirm('确认删除么?', function(index){
-		    	oneplatform.post('/api/dsconfig/delete/'+data.id,null,function(data){
+		    	oneplatform.post(API_BASE_PATH + '/dsconfig/delete/'+data.id,null,function(data){
 		    		obj.del(); 
 			        layer.close(index);
 			        oneplatform.success('删除成功');
@@ -74,7 +74,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 		    elem: '#api_tablecont'
 		    ,height: 430
 		    ,width:1150
-		    ,url: '/api/apiconfig/list'
+		    ,url: API_BASE_PATH + '/apiconfig/list'
 		    ,method: 'POST'
 		    ,page: false 
 		    ,response: {
@@ -102,7 +102,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 			    	    var param = {};
 			    	    param.id = data.id;
 			    	    param.value = !data.enabled;
-				    	oneplatform.post('/api/apiconfig/switch',param,function(data){
+				    	oneplatform.post(API_BASE_PATH + '/apiconfig/switch',param,function(data){
 					        layer.close(index);
 					        window.location.reload();
 					        oneplatform.success('操作成功');
@@ -111,7 +111,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 				      });
 				}else if(layEvent === 'del'){
 			      layer.confirm('确认删除么?', function(index){
-			    	oneplatform.post('/api/apiconfig/delete/'+data.id,null,function(data){
+			    	oneplatform.post(API_BASE_PATH + '/apiconfig/delete/'+data.id,null,function(data){
 			    		obj.del(); 
 				        layer.close(index);
 				        oneplatform.success('删除成功');
@@ -120,7 +120,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 			      });
 			    }else if(layEvent === 'publish'){
 				      layer.confirm('发布后将不能修改,确认发布么?', function(index){
-					    	oneplatform.post('/api/apiconfig/delete/'+data.id,null,function(data){
+					    	oneplatform.post(API_BASE_PATH + '/apiconfig/delete/'+data.id,null,function(data){
 					    		obj.del(); 
 						        layer.close(index);
 						        oneplatform.success('发布成功');
@@ -134,7 +134,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 		  });
   
   form.on('select(datasource)',function(data) {
-      var dataurl = '/api/dsconfig/tables/' + data.value;
+      var dataurl = API_BASE_PATH + '/dsconfig/tables/' + data.value;
       $.getJSON(dataurl,
       function(result) {
       	if(result.code && result.code != 200){
@@ -294,7 +294,7 @@ layui.define(['oneplatform','laytpl', 'form', 'table'], function(exports){
 	  if(requiredParams.length > 0){
 		  params.requiredParameters = requiredParams;
 	  }
-	  oneplatform.post('/api/apiconfig/add',params,function(d){
+	  oneplatform.post(API_BASE_PATH + '/apiconfig/add',params,function(d){
 		  oneplatform.success('新增接口成功');
 		  //清空
 		  apiActionList.splice(0,apiActionList.length); 
