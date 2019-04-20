@@ -1,0 +1,20 @@
+{
+    "type": "service",
+    "identifier": "smartapi",
+    "name": "智能接口管理",
+    "menuIcon":"",
+    "apiBasePackages": "com.oneplatform.smartapi.web",
+	"menus": [{
+	    "key": "datasource-list",
+		"uri": "/modules/smartapi/datasource/list.html",
+		"text": "数据源管理",
+		"icon": "",
+		"sort": 1
+	},{
+	    "key": "apiconfig-list",
+		"uri": "/modules/smartapi/apiconfig/list.html",
+		"text": "智能接口管理",
+		"icon": "",
+		"sort": 1
+	}]
+}

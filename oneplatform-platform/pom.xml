@@ -182,13 +182,6 @@
 			<artifactId>system-component-mgt</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.jeesuite.oneplatform</groupId>
-			<artifactId>smartapi-core</artifactId>
-			<version>1.0.0</version> 
-		</dependency>
-
 		<!-- 系统插件 end -->
 
 	</dependencies>
