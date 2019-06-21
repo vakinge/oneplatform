@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.security.SecurityDelegating;
 import com.jeesuite.security.model.BaseUserInfo;
+import com.jeesuite.security.model.UserSession;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.annotation.ApiScanIgnore;
@@ -39,9 +40,9 @@ public class UserContextController {
 
 	@ApiOperation(value = "处理登录请求")
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<BaseUserInfo> doLogin(HttpServletRequest request,HttpServletResponse response,@RequestBody LoginParam param) {
-		BaseUserInfo userInfo = SecurityDelegating.doAuthentication(param.getLoginName(), param.getPassword());
-		return new WrapperResponse<>(userInfo);
+    public @ResponseBody WrapperResponse<String> doLogin(HttpServletRequest request,HttpServletResponse response,@RequestBody LoginParam param) {
+		SecurityDelegating.doAuthentication(param.getLoginName(), param.getPassword());
+		return new WrapperResponse<>();
 	} 
 	
 	@ApiOperation(value = "退出登录")

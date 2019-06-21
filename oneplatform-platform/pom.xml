@@ -176,6 +176,12 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.jeesuite</groupId>
+			<artifactId>bff-smartapi-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<!-- 以下是系统插件，按需加载 -->
 		<dependency>
 			<groupId>com.jeesuite.oneplatform</groupId>

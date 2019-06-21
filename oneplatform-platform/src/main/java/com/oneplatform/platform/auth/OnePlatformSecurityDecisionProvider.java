@@ -67,7 +67,7 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 	}
 	
 	@Override
-	public String[] anonymousUris() {
+	public String[] anonymousUrlPatterns() {
 		return StringUtils.splitByWholeSeparator(ResourceUtils.getProperty("anonymous.uris"), ";");
 	}
 
@@ -79,7 +79,7 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 		if(!password.equals(entity.getPassword()))throw new UserPasswordWrongException();
 		
 		LoginUserInfo userInfo = new LoginUserInfo();
-		userInfo.setId(entity.getId());
+		userInfo.setId(entity.getId().toString());
 		userInfo.setUserName(entity.getUsername());
 		
 		return userInfo;
@@ -113,7 +113,7 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 
 	@Override
 	public void authorizedPostHandle(UserSession session) {
-		LoginSession loginSession = new LoginSession(session.getSessionId(),(int)session.getUserId() , session.getUserName());
+		LoginSession loginSession = new LoginSession(session.getSessionId(),Integer.parseInt(session.getUserId()) , session.getUserName());
 		LoginContext.setLoginSession(loginSession);
 		RequestContext.getCurrentContext().addZuulRequestHeader(WebConstants.HEADER_AUTH_USER,
 				loginSession.toEncodeString());
@@ -122,6 +122,21 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 	@Override
 	public String superAdminName() {
 		return GlobalContants.SUPER_ADMIN_NAME;
+	}
+
+	@Override
+	public String[] protectedUrlPatterns() {
+		return null;
+	}
+
+	@Override
+	public String _401_Error_Page() {
+		return null;
+	}
+
+	@Override
+	public String _403_Error_Page() {
+		return null;
 	}
 
 }

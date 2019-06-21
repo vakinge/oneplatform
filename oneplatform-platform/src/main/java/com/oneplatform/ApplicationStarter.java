@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.jeesuite.security.DelegatingFilter;
+import com.jeesuite.security.SecurityDelegatingFilter;
 import com.jeesuite.springboot.starter.cache.EnableJeesuiteCache;
 import com.jeesuite.springboot.starter.kafka.EnableJeesuiteKafkaConsumer;
 import com.jeesuite.springboot.starter.kafka.EnableJeesuiteKafkaProducer;
@@ -43,9 +43,9 @@ public class ApplicationStarter extends BaseApplicationStarter{
 	}
 	
 	@Bean
-	public FilterRegistrationBean<DelegatingFilter> someFilterRegistration() {
-	    FilterRegistrationBean<DelegatingFilter> registration = new FilterRegistrationBean<>();
-	    registration.setFilter(new DelegatingFilter());
+	public FilterRegistrationBean<SecurityDelegatingFilter> someFilterRegistration() {
+	    FilterRegistrationBean<SecurityDelegatingFilter> registration = new FilterRegistrationBean<>();
+	    registration.setFilter(new SecurityDelegatingFilter());
 	    registration.addUrlPatterns("/*");
 	   // registration.addInitParameter("urlPrefix", "/s");
 	    registration.setName("authFilter");

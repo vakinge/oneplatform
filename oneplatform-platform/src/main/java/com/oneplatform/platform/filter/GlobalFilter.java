@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jeesuite.common.json.JsonUtils;
-import com.jeesuite.security.RequestContextHolder;
+import com.jeesuite.springweb.RequestContextHelper;
 import com.jeesuite.springweb.WebConstants;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.jeesuite.springweb.utils.IpUtils;
@@ -52,7 +52,7 @@ public class GlobalFilter extends ZuulFilter{
 		try {
 			HttpServletRequest request = ctx.getRequest();
 			
-			RequestContextHolder.set(request, ctx.getResponse());
+			RequestContextHelper.set(request, ctx.getResponse());
 			
 			ctx.put(PlatformConfigManager.CONTEXT_CLIENT_IP, IpUtils.getIpAddr(request)); 
 			

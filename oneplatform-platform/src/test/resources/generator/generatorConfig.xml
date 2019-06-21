@@ -10,7 +10,7 @@
 		<property name="endingDelimiter" value="`" />
 
 		<!-- 为继承的BaseMapper接口添加对应的实现类 -->
-		<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+		<plugin type="com.jeesuite.mybatis.codegen.CrudSupportPlugin">
 			<property name="mappers" value="com.oneplatform.base.dao.CustomBaseMapper" />
 		</plugin>
 

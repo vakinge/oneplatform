@@ -13,8 +13,6 @@
 		<module>common-service</module>
 		<module>organisation-service</module>
 		<module>user-service</module>
-		<module>weixin-service</module>
-		<module>smartapi-service</module>
 	</modules>
 
 	<dependencies>
