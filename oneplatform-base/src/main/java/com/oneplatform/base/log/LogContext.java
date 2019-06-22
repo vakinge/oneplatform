@@ -10,9 +10,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 
 import com.jeesuite.common.util.TokenGenerator;
+import com.jeesuite.security.client.LoginContext;
+import com.jeesuite.security.model.UserSession;
 import com.jeesuite.springweb.utils.IpUtils;
-import com.oneplatform.base.LoginContext;
-import com.oneplatform.base.model.LoginSession;
 
 /**
  * 
@@ -53,10 +53,10 @@ public class LogContext {
 		log.setRequestIp(IpUtils.getIpAddr(request));
 		log.setUri(request.getRequestURI());
 		log.setOrigin(request.getHeader(HttpHeaders.REFERER));
-		LoginSession loginUser = LoginContext.getLoginSession();
-		if(loginUser != null){
-			log.setRequestUid(loginUser.getUserId());
-			log.setRequestUname(loginUser.getUserName());
+		UserSession session = LoginContext.getUserSession();
+		if(session != null && !session.isAnonymous()){
+			log.setRequestUid(LoginContext.getIntFormatUserId());
+			log.setRequestUname(LoginContext.getUserName());
 		}
 	}
 	

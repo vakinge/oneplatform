@@ -13,6 +13,8 @@
 		<module>common-service</module>
 		<module>organisation-service</module>
 		<module>user-service</module>
+		<module>weixin-service</module>
+		<module>cms-service</module>
 	</modules>
 
 	<dependencies>

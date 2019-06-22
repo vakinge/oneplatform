@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.util.BeanUtils;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
-import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.organisation.dao.entity.CompanyEntity;
 import com.oneplatform.organisation.dto.param.CompanyParam;
@@ -54,14 +53,13 @@ public class CompanyController {
 			AssertUtil.notNull(companyService.findHeadCompany(),"请先保存总公司信息");
 		}
 		CompanyEntity entity = BeanUtils.copy(param, CompanyEntity.class);
-		LoginSession session = LoginContext.getLoginSession();
 		if(param.getId() == null || param.getId() == 0){
 			entity.setCreatedAt(new Date());
-			entity.setCreatedBy(session.getUserId());
+			entity.setCreatedBy(LoginContext.getIntFormatUserId());
 			companyService.addCompany(entity);
 		}else{
 			entity.setUpdatedAt(new Date());
-			entity.setUpdatedBy(session.getUserId());
+			entity.setUpdatedBy(LoginContext.getIntFormatUserId());
 			companyService.updateCompany(entity);
 		}
 		

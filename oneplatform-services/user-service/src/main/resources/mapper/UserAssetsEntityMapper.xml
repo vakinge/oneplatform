@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.user.dao.mapper.UserAssetsEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.user.dao.entity.UserAssetsEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="available" property="available" jdbcType="DECIMAL" />
+    <result column="frozen" property="frozen" jdbcType="DECIMAL" />
+    <result column="sign" property="sign" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+   <select id="findListByQueryParam" parameterType="com.oneplatform.user.dto.param.UserAssetsQueryParam"  resultMap="BaseResultMap">
+	  SELECT  * FROM USER_ASSETS where 1=1
+      order by id desc
+   </select>
+   
+</mapper>

@@ -36,8 +36,6 @@ import com.jeesuite.springweb.WebConstants;
 import com.netflix.zuul.context.RequestContext;
 import com.oneplatform.base.GlobalContants;
 import com.oneplatform.base.GlobalContants.ModuleType;
-import com.oneplatform.base.LoginContext;
-import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.AccountEntity;
 import com.oneplatform.system.dao.entity.ModuleEntity;
@@ -113,10 +111,8 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 
 	@Override
 	public void authorizedPostHandle(UserSession session) {
-		LoginSession loginSession = new LoginSession(session.getSessionId(),Integer.parseInt(session.getUserId()) , session.getUserName());
-		LoginContext.setLoginSession(loginSession);
 		RequestContext.getCurrentContext().addZuulRequestHeader(WebConstants.HEADER_AUTH_USER,
-				loginSession.toEncodeString());
+				session.toEncodeString());
 	}
 
 	@Override

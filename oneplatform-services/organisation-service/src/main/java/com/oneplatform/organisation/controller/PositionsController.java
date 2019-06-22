@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.model.SelectOption;
-import com.jeesuite.common.util.BeanUtils;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.ExceptionCode;
-import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.organisation.dao.entity.PositionEntity;
 import com.oneplatform.organisation.dto.param.PositionParam;
 import com.oneplatform.organisation.service.PositionsService;
@@ -49,9 +47,8 @@ public class PositionsController {
 		}
 		PositionEntity entity = new PositionEntity();
 		entity.setName(param.getName());
-		LoginSession session = LoginContext.getLoginSession();
 		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
+		entity.setCreatedBy(LoginContext.getIntFormatUserId());
 		positionsService.addPositions(entity);
 
 		return new WrapperResponse<>();

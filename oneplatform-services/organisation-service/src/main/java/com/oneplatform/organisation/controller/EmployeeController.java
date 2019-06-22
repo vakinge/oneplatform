@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.mybatis.plugin.pagination.PageParams;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.ExceptionCode;
-import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.PageQueryParam;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.organisation.dao.entity.EmployeeEntity;
@@ -59,9 +58,8 @@ private @Autowired EmployeeService employeeService;
 			throw new JeesuiteBaseException(ExceptionCode.REQUEST_PARAM_REQUIRED.code, "请先选择职位");
 		}
 		EmployeeEntity entity = BeanUtils.copy(param, EmployeeEntity.class);
-		LoginSession session = LoginContext.getLoginSession();
 		entity.setCreatedAt(new Date());
-		entity.setCreatedBy(session.getUserId());
+		entity.setCreatedBy(LoginContext.getIntFormatUserId());
 		
 		employeeService.addEmployee(entity,param.getDepartmentId(),param.getPositionId());
 		
@@ -72,9 +70,8 @@ private @Autowired EmployeeService employeeService;
 	@RequestMapping(value = "update", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> updateEmployee(@RequestBody EmployeeParam param) {
 		EmployeeEntity entity = BeanUtils.copy(param, EmployeeEntity.class);
-		LoginSession session = LoginContext.getLoginSession();
 		entity.setUpdatedAt(new Date());
-		entity.setUpdatedBy(session.getUserId());
+		entity.setUpdatedBy(LoginContext.getIntFormatUserId());
 		employeeService.updateEmployee(entity);
 		
 		return new WrapperResponse<>();
@@ -93,9 +90,8 @@ private @Autowired EmployeeService employeeService;
 		EmployeeEntity entity = new EmployeeEntity();
 		entity.setId(id);
 		entity.setInActive(false);
-		LoginSession session = LoginContext.getLoginSession();
 		entity.setUpdatedAt(new Date());
-		entity.setUpdatedBy(session.getUserId());
+		entity.setUpdatedBy(LoginContext.getIntFormatUserId());
 		employeeService.updateEmployee(entity);
 		return new WrapperResponse<>();
 	}

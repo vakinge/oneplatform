@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.cms.dao.mapper.DemoOrderEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.cms.dao.entity.DemoOrderEntity" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="seller_id" property="sellerId" jdbcType="INTEGER" />
+    <result column="seller_name" property="sellerName" jdbcType="VARCHAR" />
+    <result column="buyer_id" property="buyerId" jdbcType="INTEGER" />
+    <result column="buyer_name" property="buyerName" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="created_by" property="createdBy" jdbcType="INTEGER" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="findByQueryParam" parameterType="map"  resultMap="BaseResultMap">
+	  SELECT  * 
+	  FROM demo_order where 1 = 1
+	  <if test="condition.sellerId != null and condition.sellerId gt 0"> and seller_id = #{condition.sellerId}</if>
+	  <if test="condition.sellerId != null and condition.sellerId gt 0"> and buyer_id = #{condition.sellerId}</if>
+	  <if test="condition.orderNo != null"> and order_no = #{condition.orderNo}</if>
+	  <if test="condition.status != null"> and status = #{condition.status}</if>
+      order by id desc
+   </select>
+</mapper>

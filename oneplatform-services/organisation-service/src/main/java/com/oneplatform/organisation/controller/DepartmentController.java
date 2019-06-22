@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.util.BeanUtils;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.ExceptionCode;
-import com.oneplatform.base.model.LoginSession;
 import com.oneplatform.base.model.SelectOptGroup;
 import com.oneplatform.organisation.dao.entity.CompanyEntity;
 import com.oneplatform.organisation.dao.entity.DepartmentEntity;
@@ -53,14 +52,13 @@ public class DepartmentController {
 			throw new JeesuiteBaseException(ExceptionCode.REQUEST_PARAM_REQUIRED.code, "请先选择公司");
 		}
 		DepartmentEntity entity = BeanUtils.copy(param, DepartmentEntity.class);
-		LoginSession session = LoginContext.getLoginSession();
 		if (param.getId() == null || param.getId() == 0) {
 			entity.setCreatedAt(new Date());
-			entity.setCreatedBy(session.getUserId());
+			entity.setCreatedBy(LoginContext.getIntFormatUserId());
 			departmentService.addDepartment(entity);
 		} else {
 			entity.setUpdatedAt(new Date());
-			entity.setUpdatedBy(session.getUserId());
+			entity.setUpdatedBy(LoginContext.getIntFormatUserId());
 			departmentService.updateDepartment(entity);
 		}
 

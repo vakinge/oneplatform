@@ -1,6 +1,6 @@
 {
     "type": "service",
-    "name": "用户服务",
+    "name": "${project.chineseName}",
     "menuIcon":"",
 	"identifier": "user",
 	"apiBasePackages": "com.oneplatform.user.controller",

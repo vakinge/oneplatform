@@ -29,6 +29,11 @@
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-springweb</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.jeesuite</groupId>
+			<artifactId>jeesuite-security</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.jeesuite</groupId>

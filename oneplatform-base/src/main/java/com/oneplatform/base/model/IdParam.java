@@ -24,6 +24,12 @@ package com.oneplatform.base.model;
 public class IdParam {
 
 	private int id;
+	public IdParam() {}
+
+	public IdParam(int id) {
+		super();
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;

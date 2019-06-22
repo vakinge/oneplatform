@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.security.SecurityDelegating;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.system.dao.entity.ResourceEntity;
@@ -53,7 +53,7 @@ public class RoleController {
 	@ApiOperation(value = "新增角色")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> addRole(@RequestBody RoleParam param) {
-		roleService.addRole(LoginContext.getLoginUserId(), param);
+		roleService.addRole(LoginContext.getIntFormatUserId(), param);
 		return new WrapperResponse<>();
 	}
 	
@@ -61,7 +61,7 @@ public class RoleController {
 	@RequestMapping(value = "update", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> updateRole(@RequestBody RoleParam param) {
 		AssertUtil.notInitData(param.getId());
-		roleService.updateRole(LoginContext.getLoginUserId(), param);
+		roleService.updateRole(LoginContext.getIntFormatUserId(), param);
 		return new WrapperResponse<>();
 	}
 	
@@ -69,21 +69,21 @@ public class RoleController {
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> deleteRole(@PathVariable("id") int id) {
 		AssertUtil.notInitData(id);
-		roleService.deleteRole(LoginContext.getLoginUserId(), id);
+		roleService.deleteRole(LoginContext.getIntFormatUserId(), id);
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "启用/停止角色")
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchRole(@RequestBody SwitchParam param) {
-		roleService.switchRole(LoginContext.getLoginUserId(), param.getId(), param.getValue());
+		roleService.switchRole(LoginContext.getIntFormatUserId(), param.getId(), param.getValue());
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "分配资源")
 	@RequestMapping(value = "assignment", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> assignmentRoles(@RequestBody AssignResourceParam param) {		
-		roleService.assignmentResources(LoginContext.getLoginUserId(), param);
+		roleService.assignmentResources(LoginContext.getIntFormatUserId(), param);
 		//刷新所有在线用户的权限数据
 		SecurityDelegating.refreshUserPermssion();
 		return new WrapperResponse<>();

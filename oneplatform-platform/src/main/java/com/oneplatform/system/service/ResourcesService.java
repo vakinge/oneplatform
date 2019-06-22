@@ -145,17 +145,17 @@ public class ResourcesService {
 		return result;
 	}
 	
-	public List<TreeModel> findUserMenus(LoginSession currentUser){
+	public List<TreeModel> findUserMenus(Integer userId){
 		//
 		Map<Integer, ModuleEntity> modules = ModuleMetadataUpdateTask.getActiveModules().values().stream().collect(Collectors.toMap(ModuleEntity::getId, module -> module));
 		
 		List<ResourceEntity> resources = resourceMapper.findNotLeafResources(ResourceType.menu.name());
 		Map<Integer, ResourceEntity> resourceMap = resources.stream().collect(Collectors.toMap(ResourceEntity::getId, entity -> entity));
 		
-		if(GlobalContants.SUPER_ADMIN_NAME.equalsIgnoreCase(currentUser.getUserName())){
+		if(userId < 0){//超级管理员
 			resources = resourceMapper.findDefaultResources(ResourceType.menu.name());
 		}else{			
-			resources = resourceMapper.findUserResources(currentUser.getUserId(), ResourceType.menu.name());
+			resources = resourceMapper.findUserResources(userId, ResourceType.menu.name());
 		}
 		
 		List<TreeModel> models = new ArrayList<>();

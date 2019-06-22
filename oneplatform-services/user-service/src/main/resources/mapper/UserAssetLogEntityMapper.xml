@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.user.dao.mapper.UserAssetLogEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.user.dao.entity.UserAssetLogEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="trade_name" property="tradeName" jdbcType="VARCHAR" />
+    <result column="asset_type" property="assetType" jdbcType="VARCHAR" />
+    <result column="sub_type" property="subType" jdbcType="VARCHAR" />
+    <result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="current_available" property="currentAvailable" jdbcType="DECIMAL" />
+    <result column="current_frozen" property="currentFrozen" jdbcType="DECIMAL" />
+    <result column="sign" property="sign" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="hidden" property="hidden" jdbcType="BIT" />
+    <result column="trade_at" property="tradeAt" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="findListByQueryParam" parameterType="com.oneplatform.user.dto.param.UserAssetLogQueryParam"  resultMap="BaseResultMap">
+	  SELECT  * FROM USER_ASSET_LOG where 1=1
+      order by id desc
+   </select>
+   
+</mapper>

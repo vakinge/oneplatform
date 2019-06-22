@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.security.SecurityDelegating;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.security.model.BaseUserInfo;
-import com.jeesuite.security.model.UserSession;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.annotation.ApiScanIgnore;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.system.dto.param.LoginParam;
@@ -64,7 +63,7 @@ public class UserContextController {
 	@ApiOperation(value = "查询当前登录用户菜单")
 	@RequestMapping(value = "menus", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<List<TreeModel>> getCurrentMenus() {
-		List<TreeModel> menus = roleResourcesService.findUserMenus(LoginContext.getLoginSession());
+		List<TreeModel> menus = roleResourcesService.findUserMenus(LoginContext.getIntFormatUserId());
 		return new WrapperResponse<>(menus);
 	}
 	
@@ -74,7 +73,7 @@ public class UserContextController {
 		if(StringUtils.isAnyBlank(param.getPassword(),param.getOldPassword())){
 			throw new JeesuiteBaseException(4001, "新旧密码必填");
 		}
-		Integer loginUserId = LoginContext.getLoginUserId();
+		Integer loginUserId = LoginContext.getIntFormatUserId();
 		param.setUserId(loginUserId);
 		accountService.updatePassword(loginUserId, param);
 		return new WrapperResponse<>();

@@ -26,7 +26,7 @@
 		<javaClientGenerator targetPackage="com.oneplatform.user.dao.mapper"
 			targetProject="src/main/java" type="XMLMAPPER" />
 
-		<table tableName="user_info" domainObjectName="UserInfoEntity">
+		<table tableName="demo_order" domainObjectName="DemoOrderEntity">
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
 		</table>
 		

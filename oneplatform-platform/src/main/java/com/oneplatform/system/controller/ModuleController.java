@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.model.SelectOption;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.GlobalContants.ModuleType;
-import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.annotation.ApiScanIgnore;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.SwitchParam;
@@ -51,7 +51,7 @@ public class ModuleController {
 	@ApiOperation(value = "启用/停止模块")
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchModule(@RequestBody SwitchParam param) {
-		moduleService.switchModule(LoginContext.getLoginUserId(), param.getId(),param.getValue());
+		moduleService.switchModule(LoginContext.getIntFormatUserId(), param.getId(),param.getValue());
 		return new WrapperResponse<>();
 	}
 	

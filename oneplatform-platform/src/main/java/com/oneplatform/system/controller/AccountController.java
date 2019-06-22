@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.security.SecurityDelegating;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.LoginContext;
 import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.base.model.SwitchParam;
@@ -54,14 +54,14 @@ public class AccountController {
 		if(StringUtils.isAnyBlank(param.getMobile(),param.getEmail(),param.getUsername())){
 			throw new JeesuiteBaseException(4001, "用户名、手机、邮箱必填");
 		}
-		accountService.addAccount(LoginContext.getLoginUserId(), param);
+		accountService.addAccount(LoginContext.getIntFormatUserId(), param);
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "更新账号")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> updateAccount(@RequestBody AccountParam param) {
-		accountService.updateAccount(LoginContext.getLoginUserId(), param);
+		accountService.updateAccount(LoginContext.getIntFormatUserId(), param);
 		return new WrapperResponse<>();
 	}
 	
@@ -69,7 +69,7 @@ public class AccountController {
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> deleteAccount(@PathVariable("id") int id) {
 		AssertUtil.notInitData(id);
-		accountService.deleteAccount(LoginContext.getLoginUserId(), id);
+		accountService.deleteAccount(LoginContext.getIntFormatUserId(), id);
 		return new WrapperResponse<>();
 	}
 	
@@ -78,7 +78,7 @@ public class AccountController {
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchAccount(@RequestBody SwitchParam param) {
 		AssertUtil.notInitData(param.getId());
-		accountService.switchAccount(LoginContext.getLoginUserId(), param.getId(),param.getValue());
+		accountService.switchAccount(LoginContext.getIntFormatUserId(), param.getId(),param.getValue());
 		return new WrapperResponse<>();
 	}
 	
@@ -86,7 +86,7 @@ public class AccountController {
 	@RequestMapping(value = "assignment/roles", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> assignmentRoles(@RequestBody AssignmentParam param) {
 		AssertUtil.notInitData(param.getId());
-		accountService.assignmentRoles(LoginContext.getLoginUserId(), param.getId(), param.getAssignmentIds());
+		accountService.assignmentRoles(LoginContext.getIntFormatUserId(), param.getId(), param.getAssignmentIds());
 		//
 		SecurityDelegating.refreshUserPermssion(param.getId());
 		return new WrapperResponse<>();
