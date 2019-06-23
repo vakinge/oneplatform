@@ -13,6 +13,8 @@ import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 
 import com.jeesuite.common.json.JsonUtils;
 import com.jeesuite.spring.InstanceFactory;
+import com.oneplatform.base.GlobalContants;
+import com.oneplatform.base.GlobalContants.ModuleType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;  
   
@@ -54,7 +56,10 @@ public class CustomRouteLocator extends SimpleRouteLocator   {
         String path = null;
         ZuulProperties.ZuulRoute zuulRoute = null;
         for (ModuleEntity module : serviceModules) {
-        	if(module.getEnabled() == false || module.getId() == 1 || module.getInternal())continue;
+        	if(module.getEnabled() == false 
+        			|| module.getId() == 1 
+        			|| module.getName().equalsIgnoreCase(GlobalContants.MODULE_NAME) 
+        			|| ModuleType.plugin.name().equals(module.getModuleType()))continue;
         	path = String.format("/%s/**", module.getRouteName());
         	
         	zuulRoute = new ZuulProperties.ZuulRoute();  
