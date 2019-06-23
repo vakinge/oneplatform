@@ -49,6 +49,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
   var jeesuitelayui = {
 		    //Ajax
 		  get: function(url,success) {
+			  url = jeesuitelayui.buildPath(url);
 			  $.getJSON(url,function(res){
 				    if(res.code == 401){top.location.href = "/login";return;}
 					if(res.code == 403){jeesuitelayui.error('无接口权限');return;}
@@ -66,6 +67,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 		    post: function(url, data, success) {
 		    	data = data || {};
 		    	success = success || 'alert';
+				url = jeesuitelayui.buildPath(url);
 		        return $.ajax({
 		        	dataType:"json",
 				    type: "POST",
@@ -364,11 +366,13 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
 				window.location.href = url + rnd;
 			},
 			buildPath:function(url){
-				if(!url || !API_BASE_PATH){
+				if(!API_BASE_PATH){
 					return url;
-				}else{
+				}
+				if(url.indexOf('/') == 1){
 					return API_BASE_PATH + url;
 				}
+				return API_BASE_PATH + '/' + url;
 			},
 			insertAfterFocus:function(domId,str){//光标出插入文字
 				var obj = document.getElementById(domId);

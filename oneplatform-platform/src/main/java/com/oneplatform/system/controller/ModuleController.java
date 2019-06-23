@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
+import com.oneplatform.base.GlobalContants;
 import com.oneplatform.base.GlobalContants.ModuleType;
 import com.oneplatform.base.annotation.ApiPermOptions;
 import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.model.SwitchParam;
+import com.oneplatform.platform.PlatformConfigManager;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.service.ModuleService;
 
@@ -34,11 +36,12 @@ import io.swagger.annotations.ApiOperation;
 public class ModuleController {
 
 	private @Autowired ModuleService moduleService;
+	private @Autowired PlatformConfigManager configManager;
 	
 	@ApiOperation(value = "查询所有模块")
 	@RequestMapping(value = "list", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<List<ModuleEntity>> getAllModules() {
-		List<ModuleEntity> modules = moduleService.findActiveModules();
+		List<ModuleEntity> modules = moduleService.findEnabledModules();
 		return new WrapperResponse<>(modules);
 	}
 	
@@ -60,7 +63,7 @@ public class ModuleController {
 	@RequestMapping(value = "options", method = RequestMethod.GET)
 	@ApiPermOptions(perms = PermissionType.Logined)
     public @ResponseBody WrapperResponse<List<SelectOption>> getAllModulesAsSelectOption() {
-		List<ModuleEntity> modules = moduleService.findActiveModules();
+		List<ModuleEntity> modules = moduleService.findEnabledModules();
 		
 		List<SelectOption> options = new ArrayList<>();
 		for (ModuleEntity moduleEntity : modules) {
@@ -75,14 +78,16 @@ public class ModuleController {
 	@ApiPermOptions(perms = PermissionType.Logined)
     public @ResponseBody WrapperResponse<Map<String, String>> getAllBasePaths() {
 		Map<String, String> resDatas = new HashMap<>();
-		List<ModuleEntity> modules = moduleService.findActiveModules();
+		resDatas.put("_default", configManager.getContextpth());
+		List<ModuleEntity> modules = moduleService.findEnabledModules();
 		String path;
 		for (ModuleEntity module : modules) {
-			if(module.getId() == 1)continue;
-			if(ModuleType.plugin.name().equals(module.getModuleType())){
-				path = "/api";
+			if(ModuleType.plugin.name().equals(module.getModuleType()))continue;
+			if(module.getServiceId().equalsIgnoreCase(GlobalContants.MODULE_NAME))continue;
+			if(module.isIndependentDeploy()){				
+				path = configManager.getContextpth() + "/" + module.getRouteName();
 			}else{
-				path = "/api/" + module.getRouteName();
+				path = configManager.getContextpth();
 			}
 			resDatas.put(module.getRouteName(), path);
 		}

@@ -4,11 +4,9 @@
   <meta charset="UTF-8" /> 
   <title>接口明细</title> 
   <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all" /> 
-  <link rel="stylesheet" href="/assets/css/global.css" media="all" /> 
-  <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css" /> 
  </head> 
  <body> 
-  <div class="admin-main" dataload="/apiconfig/details/{id}" onfinishcallback="onDataLoadedCallback"> 
+  <div class="admin-main" dataload="/api/apiconfig/details/{id}" onfinishcallback="onDataLoadedCallback"> 
    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;"> 
     <legend>基本信息</legend> 
    </fieldset> 
@@ -116,14 +114,9 @@
    <form id="configForm" class="layui-form" action="" style="padding: 20px;" lay-filter="configForm"></form> 
   </div>  
   <script type="text/javascript" src="/assets/layui/layui.js"></script> 
+  <script type="text/javascript" src="../smartapi.js"></script> 
   <script>
-  var moduleName = 'smartapi';
-	var tables = {};
-	layui.config({
-		version : "1.0.0",
-		base : '/assets/js/modules/'
-	}).use('smartapi');
-	
+	var tables = {};	
 	function onDataLoadedCallback(data){
 		
 	}

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,23 +31,17 @@ public class ModuleService  {
 
 	private @Autowired ModuleEntityMapper moduleMapper;
 	
-	public List<ModuleEntity> findActiveModules(){
+	public List<ModuleEntity> findEnabledModules(){
 		List<ModuleEntity> allModules = moduleMapper.findAllEnabled();
-		
 		Map<String, ModuleEntity> activeModules = ModuleMetadataUpdateTask.getActiveModules();
 		for (ModuleEntity module : allModules) {
-			
+			if(ModuleType.service.name().equals(module.getModuleType()) && activeModules.containsKey(module.getServiceId())){				
+				module.setIndependentDeploy(activeModules.get(module.getServiceId()).isIndependentDeploy());
+			}
 		}
 		return allModules;
 	}
-	
-	public List<ModuleEntity> findActiveServiceModules(){
-		return ModuleMetadataUpdateTask.getActiveModules().values()
-		        .stream()
-		        .filter( e -> ModuleType.service.name().equals(e.getModuleType()))
-		        .collect(Collectors.toList());
-	}
-	
+
 	public ModuleEntity getmoduleDetails(int moduleId){
 		Optional<ModuleEntity> optional = ModuleMetadataUpdateTask.getActiveModules().values()
 				.stream()

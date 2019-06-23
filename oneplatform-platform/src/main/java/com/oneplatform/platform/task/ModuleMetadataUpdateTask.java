@@ -117,6 +117,8 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				
 				if(!refreshRequired)refreshRequired = !moduleEntity.getInternal();
 			}
+			//设置为独立部署标识
+			activeModulesCache.get(serviceId).setIndependentDeploy(true);
 		}
 		
 		for (String serviceId : historyModules.keySet()) {

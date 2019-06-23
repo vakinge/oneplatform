@@ -15,6 +15,9 @@
  */
 package com.oneplatform.system.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.JeesuiteBaseException;
+import com.jeesuite.common.json.JsonUtils;
 import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.annotation.ApiPermOptions;
@@ -32,6 +36,8 @@ import com.oneplatform.base.model.IdParam;
 import com.oneplatform.system.dto.param.AddPermGroupParam;
 import com.oneplatform.system.dto.param.AddResourceParam;
 import com.oneplatform.system.dto.param.AddUserGroupParam;
+import com.oneplatform.system.dto.param.BatchCreateResourceParam;
+import com.oneplatform.system.dto.param.BatchCreateResourceParam.ApiDefine;
 import com.oneplatform.system.dto.param.GrantPermissionParam;
 import com.oneplatform.system.dto.param.SetBindingParam;
 import com.oneplatform.system.dto.param.UpdatePermGroupParam;
@@ -133,5 +139,25 @@ public class PermissionController {
 		permissionService.setMenuRelateApis(param.getTargetId(), param.getSoureIds());
 		return new WrapperResponse<>();
 	}
+	
+	@RequestMapping(value = "perm/batch_create", method = RequestMethod.POST)
+	public @ResponseBody WrapperResponse<String> batchCreatePermResources(HttpServletRequest request,@RequestBody BatchCreateResourceParam param){
+		String[] menuNames = StringUtils.splitByWholeSeparator(param.getMenuName(), ">");
+		if(param.getApis() == null)throw new JeesuiteBaseException(400,"请填写关联接口");
+		for (int i = 0; i < param.getApis().size(); i++) {
+			ApiDefine apiDefine = param.getApis().get(i);
+			if(StringUtils.isAnyBlank(apiDefine.getMethod(),apiDefine.getName(),apiDefine.getUri())){
+				param.getApis().remove(i);
+				i--;
+			}
+		}
+		if(param.getApis().isEmpty())throw new JeesuiteBaseException(400,"请完整填写关联接口");
+		
+		permissionService.batchCreatePermResources(param.getPlatformType(), menuNames, param.getMenuUri(), param.getApis());
+		
+		boolean jsonSubmit = Boolean.parseBoolean(request.getParameter("jsonSubmit"));
+		return new WrapperResponse<>(jsonSubmit == false ? JsonUtils.toPrettyJson(param) : null);
+	}
+	
 	
 }

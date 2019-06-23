@@ -123,7 +123,7 @@ public class PermissionQueryController {
     		,@RequestParam(value="moduleId",required=false) Integer moduleId) {
 		
 		if("module".equals(type)){
-			List<TreeModel> treeModels = moduleService.findActiveModules().stream().map(e -> {
+			List<TreeModel> treeModels = moduleService.findEnabledModules().stream().map(e -> {
 				return new TreeModel(e.getId(), e.getName(), e.getServiceId(), null, null, false);
 			}).collect(Collectors.toList());
 			return new WrapperResponse<>(TreeModel.build(treeModels).getChildren());

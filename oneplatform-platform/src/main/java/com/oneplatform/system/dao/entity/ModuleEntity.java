@@ -71,6 +71,10 @@ public class ModuleEntity extends BaseEntity {
     
     @Transient
     private Date fetchMetaDataTime;
+    
+    //是否独立部署
+    @Transient
+    private boolean independentDeploy;
 
 	/**
      * @return id
@@ -276,6 +280,14 @@ public class ModuleEntity extends BaseEntity {
 
 	public void setFetchMetaDataTime(Date fetchMetaDataTime) {
 		this.fetchMetaDataTime = fetchMetaDataTime;
+	}
+	
+	public boolean isIndependentDeploy() {
+		return independentDeploy;
+	}
+
+	public void setIndependentDeploy(boolean independentDeploy) {
+		this.independentDeploy = independentDeploy;
 	}
 
 	@Override
