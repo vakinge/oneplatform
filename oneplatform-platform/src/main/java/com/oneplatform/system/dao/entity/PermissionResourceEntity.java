@@ -382,7 +382,7 @@ public class PermissionResourceEntity extends BaseEntity {
     }
     
     public void buildPermssionCode(ModuleEntity module){
-    	this.permissionCode = String.format("%s:%s_%s", module.getServiceId().toLowerCase(),getUri(),getHttpMethod());
+    	this.permissionCode = String.format("%s:%s:%s", getHttpMethod(),module.getServiceId().toLowerCase(),getUri());
     }
     
     public static TreeModel buildTree(List<PermissionResourceEntity> resoures){

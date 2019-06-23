@@ -102,7 +102,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 					moduleEntity.setInternal(true);
 				}
 				
-				moduleEntity.setServiceId(serviceId);
+				moduleEntity.setServiceId(serviceId.toLowerCase());
 				moduleEntity.setModuleType(metadata.getType());
 				moduleEntity.setApidocUrl(String.format("/api/%s/swagger-ui.html", moduleEntity.getRouteName()));
 				moduleEntity.setEnabled(true);
@@ -110,8 +110,8 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				moduleEntity.setMetadata(metadata);
 				moduleMapper.insertSelective(moduleEntity);
 				//
-				historyModules.put(serviceId, moduleEntity);
-				activeModulesCache.put(serviceId, moduleEntity);
+				historyModules.put(serviceId.toLowerCase(), moduleEntity);
+				activeModulesCache.put(serviceId.toLowerCase(), moduleEntity);
 				//
 				updateModuleApis(moduleEntity);
 				
@@ -124,7 +124,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 			moduleEntity = historyModules.get(serviceId);
 			if(ModuleType.plugin.name().equals(moduleEntity.getModuleType()))continue;
 			if(activeModules.containsKey(serviceId)){
-				activeModulesCache.put(serviceId, moduleEntity);
+				activeModulesCache.put(serviceId.toLowerCase(), moduleEntity);
 				moduleEntity.setServiceInstances(activeModules.get(serviceId).getServiceInstances());
 				if(moduleEntity.getFetchMetaDataTime() == null || DateUtils.getDiffMinutes(new Date(), moduleEntity.getFetchMetaDataTime()) > 15){					
 					moduleEntity.setMetadata(fetchModuleMetadata(serviceId));
@@ -152,12 +152,12 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
     	if(applications == null)return result;
     	ModuleEntity module;
     	for (Application application : applications) {
-    		String serviceId = application.getName().toUpperCase();
+    		String serviceId = application.getName().toLowerCase();
 			module = result.get(serviceId);
     		if(module == null){
     			module = new ModuleEntity();
     			module.setServiceId(serviceId);
-    			result.put(serviceId, module);
+    			result.put(serviceId.toLowerCase(), module);
     		}
     		
     		for (InstanceInfo instanceInfo : application.getInstances()) {
@@ -236,8 +236,8 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 	public void onApplicationStarted(ApplicationContext applicationContext) {
 		
 		historyModules = moduleMapper.findAll().stream().collect(Collectors.toMap((ModuleEntity::getServiceId), module -> module));
-		ModuleEntity platform = historyModules.get(GlobalContants.MODULE_NAME.toUpperCase());
-		activeModulesCache.put(platform.getServiceId(), platform);
+		ModuleEntity platform = historyModules.get(GlobalContants.MODULE_NAME.toLowerCase());
+		activeModulesCache.put(platform.getServiceId().toLowerCase(), platform);
 		
 		List<ModuleMetadata> metadatas = ModuleMetadataHolder.getMetadatas();
 		ModuleEntity moduleEntity;
@@ -246,18 +246,22 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				platform.setMetadata(metadata);
 				moduleEntity = platform;
 			}else{
-				moduleEntity = moduleMapper.findByServiceId(metadata.getIdentifier().toUpperCase());
+				moduleEntity = moduleMapper.findByServiceId(metadata.getIdentifier().toLowerCase());
 				if(moduleEntity == null){
 					moduleEntity = new ModuleEntity();
 					moduleEntity.setModuleType(metadata.getName());
 					moduleEntity.setName(metadata.getName());
-					moduleEntity.setServiceId(metadata.getIdentifier());
-					moduleEntity.setRouteName(metadata.getRouteName());
+					moduleEntity.setServiceId(metadata.getIdentifier().toLowerCase());
+					if(metadata.getType().equals(ModuleType.plugin.name())){
+						moduleEntity.setRouteName("/");
+					}else{
+						moduleEntity.setRouteName(metadata.getRouteName());
+					}
 					moduleEntity.setModuleType(metadata.getType());
 					moduleMapper.insertSelective(moduleEntity);
 				}
 				moduleEntity.setMetadata(metadata);
-				activeModulesCache.put(moduleEntity.getServiceId(), moduleEntity);
+				activeModulesCache.put(moduleEntity.getServiceId().toLowerCase(), moduleEntity);
 			}
 			//
 			updateModuleApis(moduleEntity);

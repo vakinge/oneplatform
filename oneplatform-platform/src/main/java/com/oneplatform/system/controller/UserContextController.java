@@ -32,7 +32,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Controller
-@RequestMapping("/user/")
+@RequestMapping("/u/")
 @Api("User Login API")
 @ApiPermOptions(ignore = true)
 public class UserContextController {

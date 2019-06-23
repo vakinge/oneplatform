@@ -1,4 +1,4 @@
-package com.oneplatform.common.conf;
+package com.oneplatform.base.conf;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.async.DeferredResult;
+
+import com.jeesuite.common.util.ResourceUtils;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -30,16 +31,17 @@ public class Swagger2 {
 
     @Bean
     public Docket createRestApi(@Value("${swagger.enable:false}") boolean enable) {
+    	String basePackage = ResourceUtils.getProperty("controller.base-package","com.oneplatform");
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .enable(enable)
                 .groupName("oneplatform")  
                 .genericModelSubstitutes(DeferredResult.class)  
                 .useDefaultResponseMessages(false)  
-                .globalResponseMessage(RequestMethod.GET,customerResponseMessage())  
+                //.globalResponseMessage(RequestMethod.GET,customerResponseMessage())  
                 .forCodeGeneration(true)  
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.oneplatform.common.controller"))
+                .apis(RequestHandlerSelectors.basePackage(basePackage))
                 .paths(PathSelectors.any())
                 .build();
     }

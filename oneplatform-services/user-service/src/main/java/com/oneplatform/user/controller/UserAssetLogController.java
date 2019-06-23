@@ -26,7 +26,7 @@ public class UserAssetLogController {
 
     private @Autowired UserAssetLogService userAssetLogService;
 	
-	@ApiOperation(value = "分页查询")
+	@ApiOperation(value = "分页查询账户流水")
 	@RequestMapping(value = "list", method = RequestMethod.POST)
     public @ResponseBody Page<UserAssetLogEntity> pageQueryUserAssetLogs(@RequestBody UserAssetLogQueryParam param) {
 		Page<UserAssetLogEntity> page = userAssetLogService.pageQuery(param,param);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.oneplatform.cms.dao.mapper.CmsArticleEntityMapper" >
-  <resultMap id="BaseResultMap" type="com.oneplatform.cms.dao.entity.CmsArticleEntity" >
+<mapper namespace="com.oneplatform.cms.dao.mapper.ArticleEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.oneplatform.cms.dao.entity.ArticleEntity" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="cover" property="cover" jdbcType="VARCHAR" />

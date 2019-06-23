@@ -46,7 +46,7 @@ public class ArticleController {
 		return new WrapperResponse<>(entity);
 	}
 	
-	@ApiOperation(value = "新增")
+	@ApiOperation(value = "新增文章")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	@ApiPermOptions(perms = PermissionType.Authorized)
     public @ResponseBody WrapperResponse<String> addCmsArticle(@RequestBody CmsArticleParam param) {
@@ -58,7 +58,7 @@ public class ArticleController {
 		return new WrapperResponse<>();
 	}
 	
-	@ApiOperation(value = "更新")
+	@ApiOperation(value = "更新文章")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	@ApiPermOptions(perms = PermissionType.Authorized)
     public @ResponseBody WrapperResponse<String> updateCmsArticle(@RequestBody CmsArticleParam param) {
@@ -70,7 +70,7 @@ public class ArticleController {
 		return new WrapperResponse<>();
 	}
 	
-	@ApiOperation(value = "删除")
+	@ApiOperation(value = "删除文章")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
 	@ApiPermOptions(perms = PermissionType.Authorized)
     public @ResponseBody WrapperResponse<String> deleteCmsArticle(@RequestBody IdParam param) {

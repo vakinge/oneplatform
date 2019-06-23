@@ -15,6 +15,8 @@
  */
 package com.oneplatform.platform.auth;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -58,8 +60,16 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 	}
 	
 	@Override
-	public String[] anonymousUrlPatterns() {
-		return StringUtils.splitByWholeSeparator(ResourceUtils.getProperty("anonymous.uris"), ";");
+	public List<String> anonymousUrlPatterns() {
+		List<String> result = permissionService.buildGlobalPermissionCodes().get(PermissionType.Anonymous);
+		if(result == null)result = new ArrayList<>();
+		result.addAll(Arrays.asList(StringUtils.splitByWholeSeparator(ResourceUtils.getProperty("anonymous.uris"), ";")));
+		return result;
+	}
+	
+	@Override
+	public List<String> protectedUrlPatterns() {
+		return null;
 	}
 
 	@Override
@@ -106,10 +116,6 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 		return GlobalContants.SUPER_ADMIN_NAME;
 	}
 
-	@Override
-	public String[] protectedUrlPatterns() {
-		return null;
-	}
 
 	@Override
 	public String _401_Error_Page() {

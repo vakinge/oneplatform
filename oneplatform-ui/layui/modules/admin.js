@@ -28,7 +28,7 @@ layui.define(['jquery', 'form', 'layer', 'element', 'jeesuitelayui'], function(e
 		}
 	});
 
-	$.getJSON('/api/user/profile', function(data) {
+	$.getJSON('/api/u/profile', function(data) {
 		if (data.code == 200) {
 			$("#userName").html(data.data.userName);
 			id = data.data.id;
@@ -47,7 +47,7 @@ layui.define(['jquery', 'form', 'layer', 'element', 'jeesuitelayui'], function(e
 	});
 
 	$('#logout_btn').on('click', function() {
-		layui.oneplatform.post('/api/user/logout', {}, function() {
+		layui.oneplatform.post('/api/u/logout', {}, function() {
 			location.href = './login.html';
 		});
 	});

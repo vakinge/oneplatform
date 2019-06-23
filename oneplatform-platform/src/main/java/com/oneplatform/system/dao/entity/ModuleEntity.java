@@ -104,7 +104,7 @@ public class ModuleEntity extends BaseEntity {
      * @return service_id
      */
     public String getServiceId() {
-        return StringUtils.isBlank(serviceId) ? serviceId : serviceId.toUpperCase();
+        return StringUtils.isBlank(serviceId) ? serviceId : serviceId.toLowerCase();
     }
 
     /**

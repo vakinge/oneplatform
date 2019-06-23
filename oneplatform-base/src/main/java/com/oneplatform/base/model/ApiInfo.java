@@ -63,6 +63,6 @@ public class ApiInfo {
 	}
 	
 	public String getPermCode() {
-		return String.format("%s:%s_%s", serviceId.toLowerCase(),url,method);
+		return String.format("%s:%s:%s", method,serviceId.toLowerCase(),url);
 	}
 }

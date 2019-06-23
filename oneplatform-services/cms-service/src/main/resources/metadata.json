@@ -1,6 +1,6 @@
 {
     "type": "service",
     "name": "CMS服务",
-	"identifier": "cms",
+	"identifier": "cms-service",
 	"apiBasePackages": "com.oneplatform.cms.controller"
 }

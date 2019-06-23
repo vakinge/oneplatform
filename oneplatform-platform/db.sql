@@ -153,25 +153,37 @@ CREATE TABLE `sys_logs` (
 
 
 INSERT INTO `sys_account` (`id`,`username`, `email`, `mobile`, `password`, `enabled`,`created_at`) VALUES ('1','sa', 'sa@oneplatform.com', '13800138001', '5d10ac96f72efe7c0b984e8283518ac6', '1','2018-03-03 12:55:30');
-INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`) VALUES ('1','基础平台', 'oneplatform', '/', '0', '1','/api/swagger-ui.html');
-INSERT INTO `sys_resources` (`id`,`parent_id`,`module_id`,`name`,`code`,`resource`,`type`,`sort`) VALUES 
-(1000,0,1,'系统管理',NULL,NULL,'menu',1),
-(1001,1000,1,'模块管理',NULL,'/modules/module/list.html','menu',1),
-(1002,1000,1,'日志管理',NULL,'/modules/log/list.html','menu',2),
-(2000,0,1,'权限管理',NULL,NULL,'menu',2),
-(2001,2000,1,'用户管理',NULL,'/modules/account/list.html','menu',1),
-(2002,2000,1,'角色管理',NULL,'/modules/role/list.html','menu',2),
-(2003,2000,1,'权限管理',NULL,'/modules/resource/permissions.html','menu',3),
-(2004,2000,1,'菜单管理',NULL,'/modules/resource/menus.html','menu',4);
+INSERT INTO `sys_module` (`id`,`name`, `service_id`, `route_name`, `internal`, `enabled`,`apidoc_url`,`module_type`) VALUES 
+('1','基础平台', 'oneplatform', '/', '0', '1','/api/swagger-ui.html','service'),
+('1001','通用服务', 'common-service', 'common', '0', '1','/api/common/swagger-ui.html','service'),
+('1002','用户服务', 'user-service', 'user', '0', '1','/api/user/swagger-ui.html','service'),
+('1003','微信服务', 'weixin-service', 'weixin', '0', '1','/api/weixin/swagger-ui.html','service'),
+('1004','内容管理服务', 'cms-service', 'cms', '0', '1','/api/cms/swagger-ui.html','service'),
+('1005','人事管理服务网', 'organisation-service', 'organisation', '0', '1','/api/organisation/swagger-ui.html','service'),
+('1006','智能API', 'smart-api', '/', '0', '1',NULL,'plugin'),
+('1007','系统监控', 'system-mgt', '/', '0', '1',NULL,'plugin');
 
 INSERT INTO `sys_permission_resource` (`id`,`parent_id`, `module_id`, `name`, `type`, `uri`, `http_method`, `platform_type`) VALUES 
-(1000,'0', '1', '系统管理', 'menu', NULL, 'GET', 'admin'),
+(1000,'0', '0', '系统管理', 'menu', NULL, NULL, 'admin'),
 (1001,'1000', '1', '模块管理', 'menu', '/modules/module/list.html', 'GET', 'admin'),
 (1002,'1000', '1', '日志管理', 'menu', '/modules/log/list.html', 'GET', 'admin'),
-(2000,'0', '1', '权限管理', 'menu', NULL, 'GET', 'admin'),
+(1003,'1000', '1001', '文件管理', 'menu', '/modules/common/files.html', 'GET', 'admin'),
+(2000,'0', '0', '权限管理', 'menu', NULL, NULL, 'admin'),
 (2001,'2000', '1', 'API管理', 'menu', '/modules/resource/apis.html', 'GET', 'admin'),
 (2002,'2000', '1', '菜单管理', 'menu', '/modules/resource/menus.html', 'GET', 'admin'),
 (2003,'2000', '1', '权限组管理', 'menu', '/modules/permgroup/list.html', 'GET', 'admin'),
 (2004,'2000', '1', '用户组管理', 'menu', '/modules/usergroup/list.html', 'GET', 'admin'),
-(2005,'2000', '1', '快捷创建模式', 'menu', '/modules/resource/quick_create.html', 'GET', 'admin');
+(2005,'2000', '1', '快捷创建模式', 'menu', '/modules/resource/quick_create.html', 'GET', 'admin'),
+(3000,'0', '0', '用户管理', 'menu', NULL, NULL, 'admin'),
+(3001,'3000', '1002', '用户列表', 'menu', '/modules/user/list.html', 'GET', 'admin'),
+(4000,'0', '0', '人事管理', 'menu', NULL, NULL, 'admin'),
+(4001,'4000', '1005', '组织架构', 'menu', '/modules/organisation/structure.html', 'GET', 'admin'),
+(4002,'4000', '1005', '员工管理', 'menu', '/modules/organisation/employee/list.html', 'GET', 'admin'),
+(4003,'4000', '1005', '职位管理', 'menu', '/modules/organisation/positon/list.html', 'GET', 'admin'),
+(5000,'0', '0', '智能API', 'menu', NULL, NULL, 'admin'),
+(5001,'5000', '1006', '数据源管理', 'menu', '/modules/smartapi/datasource/list.html', 'GET', 'admin'),
+(5002,'5000', '1006', '接口管理', 'menu', '/modules/smartapi/apiconfig/list.html', 'GET', 'admin'),
+(6000,'0', '0', '系统监控', 'menu', NULL, NULL, 'admin'),
+(6001,'6000', '1007', '定时任务监控', 'menu', '/modules/scm/schedule.html', 'GET', 'admin'),
+(6002,'6000', '1007', 'kafka监控', 'menu', '/modules/scm/kafka.html', 'GET', 'admin');
 

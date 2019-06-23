@@ -31,8 +31,8 @@ import com.oneplatform.base.boot.SpringBootBanner;
 @EnableJeesuiteKafkaProducer
 @EnableJeesuiteKafkaConsumer
 @EnableJeesuiteSchedule
-@MapperScan(basePackages = {"com.oneplatform.*.dao.mapper"})
-@ComponentScan(value = {"com.oneplatform"})
+@MapperScan(basePackages = {"com.oneplatform.*.dao.mapper","com.jeesuite.smartapi.dao.mapper"})
+@ComponentScan(value = {"com.oneplatform","com.jeesuite"})
 @ServletComponentScan({ "com.oneplatform" })
 public class ApplicationStarter extends BaseApplicationStarter{
 

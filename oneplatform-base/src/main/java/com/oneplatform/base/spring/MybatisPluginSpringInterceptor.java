@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.oneplatform.cms.interceptor;
+package com.oneplatform.base.spring;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -35,7 +35,7 @@ import com.jeesuite.mybatis.spring.MybatisPluginBaseSpringInterceptor;
 public class MybatisPluginSpringInterceptor extends MybatisPluginBaseSpringInterceptor {
 
 	@Override
-	@Pointcut("execution(* com.oneplatform.cms.service.*.*(..))")
+	@Pointcut("execution(* com.oneplatform.user.service.*.*(..))")
 	public void pointcut() {}
 
 }
