@@ -3,9 +3,7 @@
  <head> 
   <meta charset="UTF-8" /> 
   <title>新增账号</title> 
-  <link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
-  <link rel="stylesheet" href="../../assets/css/global.css" media="all">
-  <link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../../assets/layui/css/layui.css" media="all" />
  </head> 
  <body> 
   <div class="admin-main">  
@@ -55,14 +53,9 @@
    </form> 
   </div> 
  </body>
- <script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
+ <script type="text/javascript" src="../../assets/layui/layui.js"></script>
+ <script type="text/javascript" src="./account.js"></script>
 <script>
-	layui.cache.page = 'account';
-	layui.config({
-		version : "1.0.0",
-		base : '../../assets/js/modules/'
-	}).use('account');
-	
 	function onFinishCallback(){
 		layui.form.render('checkbox');
 	}

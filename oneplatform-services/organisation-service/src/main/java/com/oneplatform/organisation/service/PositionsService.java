@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jeesuite.common.util.AssertUtil;
 import com.jeesuite.common.util.BeanUtils;
-import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.organisation.dao.entity.PositionEntity;
 import com.oneplatform.organisation.dao.mapper.PositionEntityMapper;
 

@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.json.JsonUtils;
-import com.jeesuite.security.model.BaseUserInfo;
 import com.jeesuite.springweb.model.WrapperResponse;
+import com.oneplatform.base.annotation.ApiPermOptions;
+import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.model.IdParam;
 import com.oneplatform.weixin.component.WeixinAppManager;
 import com.oneplatform.weixin.dto.param.WxappLoginParam;
@@ -42,6 +43,7 @@ public class WxUserController {
     
 
     @PostMapping("/code2userid")
+    @ApiPermOptions(perms = PermissionType.Anonymous)
     public WrapperResponse<IdParam> codeToUser(HttpServletRequest request,@RequestBody WxappLoginParam param) {
         if (StringUtils.isBlank(param.getGroup())) {
             throw new JeesuiteBaseException(4001, "参数group必填");
@@ -56,6 +58,7 @@ public class WxUserController {
      * </pre>
      */
     @GetMapping("/info")
+    @ApiPermOptions(perms = PermissionType.Logined)
     public String info(@PathVariable String appid, String sessionKey,
                        String signature, String rawData, String encryptedData, String iv) {
         final WxMaService wxService = weixinAppManager.getMaService(appid);
@@ -77,6 +80,7 @@ public class WxUserController {
      * </pre>
      */
     @GetMapping("/phone")
+    @ApiPermOptions(perms = PermissionType.Logined)
     public String phone(@PathVariable String appid, String sessionKey, String signature,
                         String rawData, String encryptedData, String iv) {
         final WxMaService wxService = weixinAppManager.getMaService(appid);

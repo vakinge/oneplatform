@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.oneplatform.base.annotation.ApiPermOptions;
+import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.model.IdNamePair;
 import com.oneplatform.common.dao.entity.RegionEntity;
 import com.oneplatform.common.dao.mapper.RegionEntityMapper;
@@ -18,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/region")
+@ApiPermOptions(ignore = true)
 public class RegionController {
 
 	@Autowired

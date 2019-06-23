@@ -1,15 +1,7 @@
 {
     "type": "service",
     "name": "通用服务",
-    "menuIcon":"",
 	"identifier": "common-service",
 	"routeName": "common",
-	"apiBasePackages": "com.oneplatform.common.controller",
-	"menus": [{
-	    "key": "file-list",
-		"uri": "/modules/common/files.html",
-		"text": "文件管理",
-		"icon": "",
-		"sort": 1
-	}]
+	"apiBasePackages": "com.oneplatform.common.controller"
 }

@@ -3,10 +3,7 @@
  <head> 
   <meta charset="UTF-8" /> 
   <title>职位管理</title> 
-  <link rel="stylesheet" href="/assets/js/layui/css/layui.css" media="all" /> 
-  <link rel="stylesheet" href="/assets/css/global.css" media="all" /> 
-  <link rel="stylesheet" href="/assets/js/font-awesome/css/font-awesome.min.css" /> 
-  <link rel="stylesheet" href="/assets/css/table.css" /> 
+  <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all" /> 
   <style type="text/css">
  ul{padding-left: 15px;width: 100%;float:left;}
  li{float:left;width: 19%;display: inline;height: 40px; }
@@ -36,14 +33,11 @@
 	   </ul>
 	{{# }); }}
 </script> 
-  <script type="text/javascript" src="/assets/js/layui/layui.js"></script> 
+  <script type="text/javascript" src="/assets/layui/layui.js"></script> 
+  <script type="text/javascript" src="../organisation.js"></script>
   <script>
     var moduleName = 'organisation';
-	layui.config({
-		version : "1.0.0",
-		base : '/assets/js/'
-	}).use('oneplatform');
-	
+
 	function reloadPage(data){
 		setTimeout(function(){window.location.reload();},500);
 	}

@@ -11,16 +11,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.JeesuiteBaseException;
-import com.jeesuite.security.SecurityDelegating;
 import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.exception.AssertUtil;
+import com.oneplatform.base.annotation.ApiPermOptions;
+import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.system.dao.entity.AccountEntity;
 import com.oneplatform.system.dto.param.AccountParam;
 import com.oneplatform.system.dto.param.AccountQueryParam;
-import com.oneplatform.system.dto.param.AssignmentParam;
 import com.oneplatform.system.service.AccountService;
 
 import io.swagger.annotations.Api;
@@ -30,6 +29,7 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @RequestMapping("/account")
 @Api("Account Management API")
+@ApiPermOptions(perms = PermissionType.Authorized)
 public class AccountController {
 
 	private @Autowired AccountService accountService;
@@ -68,7 +68,7 @@ public class AccountController {
 	@ApiOperation(value = "删除账户")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> deleteAccount(@PathVariable("id") int id) {
-		AssertUtil.notInitData(id);
+		if(id == 0)throw new JeesuiteBaseException(500, "超级管理员不能删除");
 		accountService.deleteAccount(LoginContext.getIntFormatUserId(), id);
 		return new WrapperResponse<>();
 	}
@@ -77,19 +77,10 @@ public class AccountController {
 	@ApiOperation(value = "启用/停止账号")
 	@RequestMapping(value = "switch", method = RequestMethod.POST)
     public @ResponseBody WrapperResponse<String> switchAccount(@RequestBody SwitchParam param) {
-		AssertUtil.notInitData(param.getId());
+		if(param.getId() == 0)throw new JeesuiteBaseException(500, "超级管理员不能删除");
 		accountService.switchAccount(LoginContext.getIntFormatUserId(), param.getId(),param.getValue());
 		return new WrapperResponse<>();
 	}
-	
-	@ApiOperation(value = "分配角色")
-	@RequestMapping(value = "assignment/roles", method = RequestMethod.POST)
-    public @ResponseBody WrapperResponse<String> assignmentRoles(@RequestBody AssignmentParam param) {
-		AssertUtil.notInitData(param.getId());
-		accountService.assignmentRoles(LoginContext.getIntFormatUserId(), param.getId(), param.getAssignmentIds());
-		//
-		SecurityDelegating.refreshUserPermssion(param.getId());
-		return new WrapperResponse<>();
-	}
+
     
 }

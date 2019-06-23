@@ -17,8 +17,8 @@ import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.GlobalContants.ModuleType;
-import com.oneplatform.base.annotation.ApiScanIgnore;
-import com.oneplatform.base.model.ApiInfo;
+import com.oneplatform.base.annotation.ApiPermOptions;
+import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.model.SwitchParam;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.service.ModuleService;
@@ -30,6 +30,7 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @RequestMapping("/module")
 @Api("Module Management API")
+@ApiPermOptions(perms = PermissionType.Authorized)
 public class ModuleController {
 
 	private @Autowired ModuleService moduleService;
@@ -57,6 +58,7 @@ public class ModuleController {
 	
 	@ApiOperation(value = "查询所有模块（下拉框选项）")
 	@RequestMapping(value = "options", method = RequestMethod.GET)
+	@ApiPermOptions(perms = PermissionType.Logined)
     public @ResponseBody WrapperResponse<List<SelectOption>> getAllModulesAsSelectOption() {
 		List<ModuleEntity> modules = moduleService.findActiveModules();
 		
@@ -68,16 +70,9 @@ public class ModuleController {
 		return new WrapperResponse<>(options);
 	}
 	
-	@ApiScanIgnore
-	@ApiOperation(value = "查询无需鉴权接口列表")
-	@RequestMapping(value = "notperm_apis/{moduleId}", method = RequestMethod.GET)
-    public @ResponseBody WrapperResponse<List<ApiInfo>> getApis(@PathVariable("moduleId") int moduleId) {
-		List<ApiInfo> list = moduleService.findNotPermModuleApis(moduleId);
-		return new WrapperResponse<>(list);
-	}
-	
 	@ApiOperation(value = "查询所有模块路径")
 	@RequestMapping(value = "basepaths", method = RequestMethod.GET)
+	@ApiPermOptions(perms = PermissionType.Logined)
     public @ResponseBody WrapperResponse<Map<String, String>> getAllBasePaths() {
 		Map<String, String> resDatas = new HashMap<>();
 		List<ModuleEntity> modules = moduleService.findActiveModules();

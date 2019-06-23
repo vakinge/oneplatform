@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oneplatform.system.dao.mapper.RelationCommonMapper">
+
+	<resultMap id="GrantRelationResultMap" type="com.oneplatform.system.dao.entity.GrantRelationEntity">
+		<result column="source_id" property="sourceId" jdbcType="INTEGER" />
+		<result column="target_id" property="targetId" jdbcType="VARCHAR" />
+		<result column="relation_type" property="relationType" jdbcType="VARCHAR" />
+		<result column="platform_type" property="platformType" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="SubRelationResultMap" type="com.oneplatform.system.dao.entity.SubordinateRelationEntity">
+		<result column="parent_id" property="parentId" jdbcType="INTEGER" />
+		<result column="child_id" property="childId" jdbcType="VARCHAR" />
+		<result column="relation_type" property="relationType" jdbcType="VARCHAR" />
+		<result column="platform_type" property="platformType" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="insertSubordinateRelation" parameterType="com.oneplatform.system.dao.entity.SubordinateRelationEntity">
+		INSERT INTO sys_subordinate_relations
+		 (parent_id, child_id,relation_type,platform_type)
+		VALUES
+		 (#{parentId}, #{childId},#{relationType},#{platformType})
+	</insert>
+
+	<insert id="insertSubordinateRelations" parameterType="java.util.List">
+		INSERT INTO sys_subordinate_relations
+		 (parent_id, child_id,relation_type,platform_type)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+		(#{item.parentId}, #{item.childId},#{item.relationType}, #{item.platformType})
+		</foreach>
+	</insert>
+	
+	<insert id="insertGrantRelation" parameterType="com.oneplatform.system.dao.entity.GrantRelationEntity">
+		INSERT INTO sys_grant_relations
+		 (source_id, target_id,relation_type,platform_type)
+		VALUES
+		 (#{sourceId}, #{targetId},#{relationType}, #{platformType})
+	</insert>
+
+	<insert id="insertGrantRelations" parameterType="java.util.List">
+		INSERT INTO sys_grant_relations
+		 (source_id, target_id,relation_type,platform_type)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+		(#{item.sourceId}, #{item.targetId},#{item.relationType}, #{item.platformType})
+		</foreach>
+	</insert>
+	
+	<select id="findSubRelationsByParentId" parameterType="map" resultMap="SubRelationResultMap">
+      SELECT * FROM sys_subordinate_relations WHERE relation_type=#{relationType}
+       AND platform_type = #{platformType}
+       AND parent_id = #{parentId} 
+   </select>
+   
+	<select id="findSubRelationsByParentIds" parameterType="map" resultMap="SubRelationResultMap">
+      SELECT * FROM sys_subordinate_relations WHERE relation_type=#{relationType}
+       AND platform_type = #{platformType}
+       AND parent_id IN
+	  <foreach collection="parentIds" index="index" item="item" open="(" separator="," close=")">
+	     #{parentIds[${index}]}
+	  </foreach>  
+   </select>
+   
+   <select id="findSubRelationsByChildId" parameterType="map" resultMap="SubRelationResultMap">
+      SELECT * FROM sys_subordinate_relations WHERE relation_type=#{relationType} and child_id = #{childId}
+      AND platform_type = #{platformType}
+   </select>
+   
+   <delete id="deleteSubordinateRelation" parameterType="com.oneplatform.system.dao.entity.SubordinateRelationEntity">
+       delete FROM sys_subordinate_relations WHERE relation_type=#{relationType}
+       <if test="parentId != null">AND parent_id = #{parentId}</if>
+       <if test="childId != null">AND child_id = #{childId}</if>
+   </delete>
+   
+   <delete id="deleteGrantRelation" parameterType="com.oneplatform.system.dao.entity.GrantRelationEntity">
+       delete FROM sys_grant_relations WHERE relation_type=#{relationType}
+       <if test="sourceId != null">AND source_id = #{sourceId}</if>
+       <if test="targetId != null">AND target_id = #{targetId}</if>
+   </delete>
+   
+   <select id="findGrantRelationsByTargetId" parameterType="map" resultMap="GrantRelationResultMap">
+      SELECT * FROM sys_grant_relations WHERE platform_type = #{platformType} AND relation_type=#{relationType} and target_id = #{targetId}
+   </select>
+   
+   <select id="findUserRelatePlatform" parameterType="int" resultType="String">
+      SELECT platform_type FROM ayg_identity.sys_grant_relations where target_id=#{userId} and relation_type IN(1,2)
+      UNION 
+      SELECT platform_type FROM sys_subordinate_relations where child_id=#{userId} and relation_type=1
+   </select>
+
+</mapper>

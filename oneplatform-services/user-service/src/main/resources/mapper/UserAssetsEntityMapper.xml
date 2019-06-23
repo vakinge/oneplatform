@@ -11,10 +11,6 @@
     <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
     <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
   </resultMap>
-  
-   <select id="findListByQueryParam" parameterType="com.oneplatform.user.dto.param.UserAssetsQueryParam"  resultMap="BaseResultMap">
-	  SELECT  * FROM USER_ASSETS where 1=1
-      order by id desc
-   </select>
+
    
 </mapper>

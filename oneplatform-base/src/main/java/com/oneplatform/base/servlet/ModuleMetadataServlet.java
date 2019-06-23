@@ -48,9 +48,6 @@ public class ModuleMetadataServlet extends HttpServlet {
 					moduleMetadata.setName(md.getName());
 				}
 			}
-			if(!md.getMenus().isEmpty()){
-				moduleMetadata.getMenus().addAll(md.getMenus());
-			}
 		}
 		metadataJSON = JSON.toJSONString(moduleMetadata);
 	}

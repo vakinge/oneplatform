@@ -3,17 +3,16 @@
     "identifier": "system-component-mgt",
     "name": "系统监控管理",
     "apiBasePackages": "com.oneplatform.scm.controller",
-    "menuIcon":"",
 	"menus": [{
 	    "key": "schedule-mgt",
 		"uri": "/modules/scm/schedule.html",
-		"text": "定时任务管理",
+		"text": "系统监控管理>定时任务管理",
 		"icon": "",
 		"sort": 1
 	},{
 	    "key": "kafka-mgt",
 		"uri": "/modules/scm/kafka.html",
-		"text": "kafka监控管理",
+		"text": "系统监控管理>kafka监控管理",
 		"icon": "",
 		"sort": 2
 	}]

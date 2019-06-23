@@ -8,13 +8,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jeesuite.common.util.AssertUtil;
 import com.jeesuite.common.util.BeanUtils;
-import com.jeesuite.mybatis.plugin.pagination.Page;
-import com.jeesuite.mybatis.plugin.pagination.PageExecutor;
-import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
-import com.jeesuite.mybatis.plugin.pagination.PageParams;
-import com.oneplatform.base.exception.AssertUtil;
-import com.oneplatform.base.model.PageResult;
 import com.oneplatform.organisation.dao.entity.DepartmentEntity;
 import com.oneplatform.organisation.dao.mapper.DepartmentEntityMapper;
 

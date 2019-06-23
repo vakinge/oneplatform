@@ -3,6 +3,7 @@
  */
 package com.oneplatform.platform.task;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -29,16 +30,17 @@ import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import com.oneplatform.base.GlobalContants;
 import com.oneplatform.base.GlobalContants.ModuleType;
-import com.oneplatform.base.model.Menu;
+import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.ModuleMetadata;
 import com.oneplatform.base.util.ModuleMetadataHolder;
 import com.oneplatform.platform.zuul.CustomRouteLocator;
-import com.oneplatform.system.constants.ResourceType;
+import com.oneplatform.system.constants.PermissionResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
-import com.oneplatform.system.dao.entity.ResourceEntity;
+import com.oneplatform.system.dao.entity.PermissionResourceEntity;
 import com.oneplatform.system.dao.entity.submodel.ServiceInstance;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
-import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
+import com.oneplatform.system.dao.mapper.PermissionResourceEntityMapper;
+import com.oneplatform.system.dto.param.QueryResourceParam;
 
 /**
  * 
@@ -53,7 +55,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 	private final static Logger logger = LoggerFactory.getLogger("com.oneplatform.system.task");
 	
 	private @Autowired ModuleEntityMapper moduleMapper;
-	private @Autowired ResourceEntityMapper resourceMapper;
+	private @Autowired PermissionResourceEntityMapper resourceMapper;
 	private @Autowired(required=false) CustomRouteLocator routeLocator; 
 	private @Autowired RestTemplate restTemplate;
 	private @Autowired(required=false) EurekaClient eurekaClient;
@@ -61,7 +63,6 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 	Map<String, ModuleEntity> historyModules;
 	//注册中心当前可用的模块信息
 	private static Map<String, ModuleEntity> activeModulesCache = new HashMap<>();
-	
 	
 	public static Map<String, ModuleEntity> getActiveModules() {
 		return activeModulesCache;
@@ -79,6 +80,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 	
 	private void updateModulesFromEureka(){
 		if(historyModules == null)return;
+		if(eurekaClient == null)return;
         //
 		Map<String, ModuleEntity> activeModules = getActiveModulesFromEureka();
 		
@@ -110,12 +112,12 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				//
 				historyModules.put(serviceId, moduleEntity);
 				activeModulesCache.put(serviceId, moduleEntity);
-				//创建菜单
-				createModuleMenusIfNotExist(moduleEntity);
+				//
+				updateModuleApis(moduleEntity);
+				
 				if(!refreshRequired)refreshRequired = !moduleEntity.getInternal();
 			}
 		}
-		
 		
 		for (String serviceId : historyModules.keySet()) {
 			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(serviceId))continue;
@@ -127,8 +129,8 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 				if(moduleEntity.getFetchMetaDataTime() == null || DateUtils.getDiffMinutes(new Date(), moduleEntity.getFetchMetaDataTime()) > 15){					
 					moduleEntity.setMetadata(fetchModuleMetadata(serviceId));
 					moduleEntity.setFetchMetaDataTime(new Date());
-					//创建菜单
-					createModuleMenusIfNotExist(moduleEntity);
+					//
+					updateModuleApis(moduleEntity);
 				}
 				continue;
 			}
@@ -167,15 +169,57 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
     	return result;
     }
     
-    private void getInstanceFromEureka(ModuleEntity module){
-    	Application application = eurekaClient.getApplication(module.getServiceId());
-    	if(application != null){
-    		List<InstanceInfo> instances = application.getInstances();
-    		if(instances == null)return;
-    		for (InstanceInfo instance : instances) {
-    			module.getServiceInstances().add(new ServiceInstance(instance));
+    private void updateModuleApis(ModuleEntity module){
+    	if(module.getMetadata() == null)return;
+    	List<ApiInfo> apis = module.getMetadata().getApis();
+    	if(apis == null || apis.isEmpty())return;
+    	Map<String, ApiInfo> newApiMap = apis.stream().collect(Collectors.toMap(ApiInfo::getPermCode, e -> e));
+    	
+    	QueryResourceParam param = new QueryResourceParam();
+    	param.setModuleId(module.getId());
+    	param.setType(PermissionResourceType.api.name());
+    	Map<String, PermissionResourceEntity> existApiMap = resourceMapper.findListByParam(param)
+    			                                            .stream()
+    			                                            .collect(Collectors.toMap(PermissionResourceEntity::getPermissionCode, e -> e));
+ 
+    	List<String> addUriList;
+		List<String> removeUriList = null;
+		if (!existApiMap.isEmpty()) {
+			addUriList = new ArrayList<>(newApiMap.keySet());
+			addUriList.removeAll(existApiMap.keySet());
+			removeUriList = new ArrayList<>(existApiMap.keySet());
+			removeUriList.removeAll(newApiMap.keySet());
+		} else {
+			addUriList = new ArrayList<>(newApiMap.keySet());
+		}
+		
+		if(!addUriList.isEmpty()){
+			List<PermissionResourceEntity> addList = new ArrayList<>();
+			PermissionResourceEntity entity;
+			for (String permCode : addUriList) {
+				entity = new PermissionResourceEntity();
+				entity.setModuleId(module.getId());
+				entity.setType(PermissionResourceType.api.name());
+				entity.setName(newApiMap.get(permCode).getName());
+				entity.setUri(newApiMap.get(permCode).getUrl());
+				entity.setEnabled(true);
+				entity.setGrantType(newApiMap.get(permCode).getPermissionType().name());
+				entity.setHttpMethod(newApiMap.get(permCode).getMethod());
+				entity.buildPermssionCode(module);
+				entity.setCreatedAt(new Date());
+				addList.add(entity);
 			}
-    	}
+			resourceMapper.insertList(addList);
+		}
+		
+		if(removeUriList != null){
+			for (String uri : removeUriList) {
+				PermissionResourceEntity removeEntity = existApiMap.get(uri);
+				removeEntity.setEnabled(false);
+				resourceMapper.updateByPrimaryKey(removeEntity);
+			}
+		}
+		
     }
     
     private ModuleMetadata fetchModuleMetadata(String serviceId){
@@ -188,45 +232,6 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 		}
     }
     
-    private void createModuleMenusIfNotExist(ModuleEntity moduleEntity){
-    	ModuleMetadata metadata = moduleEntity.getMetadata();
-    	if(metadata == null){
-    		System.out.println();
-    	}
-    	if(metadata == null || metadata.getMenus() == null || metadata.getMenus().isEmpty())return;
-    	ResourceEntity parent = resourceMapper.findModuleParent(moduleEntity.getId());
-    	if(parent == null){
-    		parent = new ResourceEntity();
-    		parent.setModuleId(moduleEntity.getId());
-    		parent.setName(metadata.getName());
-    		parent.setIcon(metadata.getMenuIcon());
-    		parent.setType(ResourceType.menu.name());
-    		parent.setParentId(0);
-    		parent.setEnabled(true);
-    		parent.setCreatedAt(new Date());
-    		resourceMapper.insertSelective(parent);
-    	}
-    	ResourceEntity child;
-		for (Menu menu : metadata.getMenus()) {
-			
-			child = resourceMapper.findByModuleAndCode(moduleEntity.getId(), menu.getKey());
-			if(child == null){
-				child = new ResourceEntity();
-				child.setModuleId(moduleEntity.getId());
-				child.setName(menu.getText());
-				child.setCode(menu.getKey());
-				child.setResource(menu.getUri());
-				child.setIcon(menu.getIcon());
-				child.setType(ResourceType.menu.name());
-				child.setParentId(parent.getId());
-				parent.setSort(child.getSort());
-				child.setEnabled(true);
-				child.setCreatedAt(new Date());
-				resourceMapper.insertSelective(child);
-			}
-		}
-    }
-
 	@Override
 	public void onApplicationStarted(ApplicationContext applicationContext) {
 		
@@ -239,6 +244,7 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 		for (ModuleMetadata metadata : metadatas) {
 			if(metadata.getIdentifier().equalsIgnoreCase(GlobalContants.MODULE_NAME)){
 				platform.setMetadata(metadata);
+				moduleEntity = platform;
 			}else{
 				moduleEntity = moduleMapper.findByServiceId(metadata.getIdentifier().toUpperCase());
 				if(moduleEntity == null){
@@ -251,10 +257,10 @@ public class ModuleMetadataUpdateTask extends AbstractJob implements Application
 					moduleMapper.insertSelective(moduleEntity);
 				}
 				moduleEntity.setMetadata(metadata);
-				//
-				createModuleMenusIfNotExist(moduleEntity);
 				activeModulesCache.put(moduleEntity.getServiceId(), moduleEntity);
 			}
+			//
+			updateModuleApis(moduleEntity);
 		}
 		//
 		updateModulesFromEureka();

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>批量创建权限资源</title> 
+  <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all" />
+ </head> 
+ <body> 
+  <div class="admin-main">  
+  <blockquote class="layui-elem-quote layui-text" style="margin-top: 5px;">
+  建议开发环境首次创建请用方式二，创建成功会返回json数据格式，其他环境直接用返回json数据通过方式一创建即可。
+</blockquote>
+  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+     <legend>创建方式一(JSON格式数据)</legend>
+   </fieldset>
+   <form class="layui-form" action="/admin/api/perm/batch_create">  
+   <div class="layui-form-item layui-form-text">
+    <label class="layui-form-label">JSON内容</label>
+    <div class="layui-input-block">
+      <textarea id="json_data_text" placeholder="请输入JSON内容" class="layui-textarea"></textarea>
+    </div>
+  </div>
+   <div class="layui-form-item"> 
+    <div class="layui-input-block"> 
+        <input type="button" id="submitJsonBtn" class="layui-btn layui-btn-normal" value="保存"  />
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form>
+   <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+     <legend>创建方式二(自定义输入)</legend>
+   </fieldset>
+   <form class="layui-form" action="/admin/api/perm/batch_create">   
+    <div class="layui-form-item">
+		<label class="layui-form-label">平台</label>
+		<div class="layui-input-block" style="width: 700px;">
+		   <select name="platformType" lay-filter="platformType">
+              <option value="admin">后台管理端</option>
+          </select> 
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">菜单名</label>
+		<div class="layui-input-block" style="width: 700px;">
+		   <input type="text" name="menuName" placeholder="如:系统管理>用户管理" lay-verify="required" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">菜单链接</label>
+		<div class="layui-input-block" style="width: 700px;">
+		   <input type="text" name="menuUri" placeholder="菜单链接" lay-verify="required" class="layui-input">
+		</div>
+	</div>	
+	<div class="layui-form-item" id="apiList">
+		<label class="layui-form-label">关联接口</label>
+		<div class="layui-input-block" style="width: 730px;"> 
+		  <div class="layui-input-inline" style="width: 100px;">
+            <select name="apis.method">
+              <option value="POST">POST</option>
+              <option value="GET">GET</option>
+            </select>
+          </div>
+          <div class="layui-input-inline" style="width: 120px;"><input type="text" name="apis.moduleName" placeholder="模块标识" class="layui-input"></div>
+          <div class="layui-input-inline" style="width: 120px;"><input type="text" name="apis.name" placeholder="接口名称" class="layui-input"></div>
+          <div class="layui-input-inline" style="width: 120px;"><input type="text" name="apis.uri" placeholder="接口uri" class="layui-input"></div>
+		  <div class="layui-input-inline" style="width: 120px;">
+            <select name="apis.grantType">
+              <option value="Authorized">需接口授权</option>
+              <option value="Logined">需登录</option>
+              <option value="Anonymous">匿名接口</option>
+            </select>
+          </div>
+          <div class="layui-input-inline" style="width: 40px;">
+             <i class="layui-icon layui-icon-add-1"></i> 
+          </div>
+		</div>		
+	</div>	     
+    <div class="layui-form-item"> 
+    <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" onSuccessCallback="setJsonData" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+ <script type="text/javascript" src="/assets/layui/layui.js"></script>
+ <script type="text/javascript" src="/modules/resource/resource.js"></script>
+ <script id="apiItemTpl" type="text/html">
+   		<div class="layui-input-block" style="width: 745px;margin-top: 5px;"> 
+		  <div class="layui-input-inline" style="width: 100px;">
+            <select name="apis.method">
+              <option value="POST">POST</option>
+              <option value="GET">GET</option>
+            </select>
+          </div>
+          <div class="layui-input-inline" style="width: 120px;"><input type="text" name="apis.moduleName" placeholder="模块标识" class="layui-input"></div>
+          <div class="layui-input-inline" style="width: 120px;"><input type="text" name="apis.name" placeholder="接口名称" class="layui-input"></div>
+          <div class="layui-input-inline" style="width: 120px;"><input type="text" name="apis.uri" placeholder="接口uri" class="layui-input"></div>
+		  <div class="layui-input-inline" style="width: 120px;">
+            <select name="apis.grantType">
+              <option value="Authorized">需接口授权</option>
+              <option value="Logined">需登录</option>
+              <option value="Anonymous">匿名接口</option>
+            </select>
+          </div>
+          <div class="layui-input-inline" style="width: 40px;">
+             <i class="layui-icon layui-icon-add-1"></i> 
+             <i class="layui-icon layui-icon-delete"></i> 
+          </div>
+		</div>	
+ </script>
+<script>
+	function onFinishCallback(){
+		layui.form.render('checkbox');
+	}
+	
+	function setJsonData(data){
+		layui.jquery('#json_data_text').val(data);
+	}
+	
+	layui.use(['layer', 'laytpl','form','jeesuitelayui'], function() {
+		var layer = layui.layer,$ = layui.jquery,laytpl = layui.laytpl,form = layui.form,jeesuitelayui = layui.jeesuitelayui;
+		$('#apiList').on('click','.layui-icon-add-1',function(){
+			var html = $('#apiItemTpl').html();
+			$("#apiList").append(html);
+			form.render();
+		});
+		$('#apiList').on('click','.layui-icon-delete',function(){
+			$(this).parent().parent().remove();
+		});
+		
+		$("#submitJsonBtn").click(function(){
+			var jsonText = $('#json_data_text').val();
+			if(jsonText === ''){
+				jeesuitelayui.error('json不能为空');
+				return;
+			}
+			var loading = layer.load();
+			$.ajax({
+				dataType:"json",
+			    type: "POST",
+		        url: "/admin/api/perm/batch_create?jsonSubmit=true",
+		        contentType: "application/json",
+		        data:jsonText ,
+				complete: function(){layer.close(loading);},
+				success: function(data){
+					if(data.code==401){top.location.href = "/login";return;}
+			        if(data.code==200){
+			        	 jeesuitelayui.success(data.msg || '操作成功');
+			          }else{
+			        	 $this.removeAttr('disabled');
+			        	 jeesuitelayui.error(data.msg);
+			          }
+			        },
+				error: function(xhr, type){
+					if(xhr.status == 401){top.location.href = "/login";return;}
+					if(xhr.status == 403){jeesuitelayui.error('无接口权限');return;}
+					jeesuitelayui.error('系统错误');
+				}
+			});
+		});
+	});
+</script>
+</html>

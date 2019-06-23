@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>模块列表</title>
-<link rel="stylesheet" href="../../assets/js/layui/css/layui.css" media="all" />
-<link rel="stylesheet" href="../../assets/css/global.css" media="all">
-<link rel="stylesheet" href="../../assets/js/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="../../assets/css/table.css" />
+<link rel="stylesheet" href="../../assets/layui/css/layui.css" media="all" />
 <style type="text/css">
 .node-up {
 	font-size: 75%;
@@ -53,13 +50,9 @@
       <a class="layui-btn layui-btn-danger layui-btn-xs {{# if(d.id == 1){ }}layui-btn-disabled{{#  } }}" lay-event="del">删除</a>
     </script>
 </body>
-<script type="text/javascript" src="../../assets/js/layui/layui.js"></script>
+<script type="text/javascript" src="../../assets/layui/layui.js"></script>
+<script type="text/javascript" src="./module.js"></script>
 <script>
-	layui.cache.page = 'module';
-	layui.config({
-		version : "1.0.0",
-		base : '../../assets/js/modules/'
-	}).use('module');
 </script>
 
 </html>

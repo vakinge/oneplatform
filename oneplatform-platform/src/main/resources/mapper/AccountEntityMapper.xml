@@ -10,7 +10,7 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="mobile" property="mobile" jdbcType="CHAR" />
     <result column="password" property="password" jdbcType="CHAR" />
-    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="enabled" property="enabled" jdbcType="BIT" />
     <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
     <result column="last_login_at" property="lastLoginAt" jdbcType="TIMESTAMP" />

@@ -1,14 +1,6 @@
 {
     "type": "service",
-    "name": "${project.chineseName}",
-    "menuIcon":"",
+    "name": "CMS服务",
 	"identifier": "cms",
-	"apiBasePackages": "com.oneplatform.cms.controller",
-	"menus": [{
-	    "key": "menu-1",
-		"uri": "/modules/cms/menu-1.html",
-		"text": "菜单1",
-		"icon": "",
-		"sort": 1
-	}]
+	"apiBasePackages": "com.oneplatform.cms.controller"
 }

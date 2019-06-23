@@ -2,7 +2,6 @@ package com.oneplatform.system.service;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,15 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jeesuite.common.JeesuiteBaseException;
+import com.jeesuite.common.util.AssertUtil;
 import com.oneplatform.base.GlobalContants.ModuleType;
-import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.platform.task.ModuleMetadataUpdateTask;
-import com.oneplatform.system.constants.ResourceType;
 import com.oneplatform.system.dao.entity.ModuleEntity;
 import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
-import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dto.param.ModuleParam;
 
 
@@ -34,13 +31,15 @@ import com.oneplatform.system.dto.param.ModuleParam;
 public class ModuleService  {
 
 	private @Autowired ModuleEntityMapper moduleMapper;
-	private @Autowired ResourceEntityMapper resourceMapper;
-	
 	
 	public List<ModuleEntity> findActiveModules(){
-		return ModuleMetadataUpdateTask.getActiveModules().values()
-		        .stream()
-		        .collect(Collectors.toList());
+		List<ModuleEntity> allModules = moduleMapper.findAllEnabled();
+		
+		Map<String, ModuleEntity> activeModules = ModuleMetadataUpdateTask.getActiveModules();
+		for (ModuleEntity module : allModules) {
+			
+		}
+		return allModules;
 	}
 	
 	public List<ModuleEntity> findActiveServiceModules(){
@@ -121,23 +120,4 @@ public class ModuleService  {
 		if(!optional.isPresent())throw new JeesuiteBaseException(ExceptionCode.RECORD_NOT_EXIST.code, "模块不存在或者未运行");
 		return optional.get().getMetadata().getApis();
 	}
-	
-	public List<ApiInfo> findNotPermModuleApis(int moduleId){
-		List<ApiInfo> apis = findModuleApis(moduleId);
-		List<String> permCodes = resourceMapper.findResourceFieldByModule(moduleId,ResourceType.uri.name());
-		
-		if(permCodes.isEmpty()){
-			return apis;
-		}
-		Iterator<ApiInfo> iterator = apis.iterator();
-		while(iterator.hasNext()){
-			ApiInfo apiInfo = iterator.next();
-			if(permCodes.contains(apiInfo.getUrl())){
-				iterator.remove();
-			}
-		}
-		return apis;
-	}
-
-
 }

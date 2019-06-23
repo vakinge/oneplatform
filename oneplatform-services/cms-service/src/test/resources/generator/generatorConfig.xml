@@ -26,7 +26,11 @@
 		<javaClientGenerator targetPackage="com.oneplatform.cms.dao.mapper"
 			targetProject="src/main/java" type="XMLMAPPER" />
 
-		<table tableName="demo_order" domainObjectName="DemoOrderEntity">
+		<table tableName="cms_category" domainObjectName="CategoryEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		
+		<table tableName="cms_tag" domainObjectName="TagEntity">
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
 		</table>
 		

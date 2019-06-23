@@ -17,13 +17,16 @@ import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.security.SecurityDelegating;
 import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.security.model.BaseUserInfo;
+import com.jeesuite.security.model.UserSession;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.annotation.ApiScanIgnore;
+import com.oneplatform.base.annotation.ApiPermOptions;
 import com.oneplatform.base.model.TreeModel;
+import com.oneplatform.system.constants.PermissionResourceType;
+import com.oneplatform.system.dao.entity.PermissionResourceEntity;
 import com.oneplatform.system.dto.param.LoginParam;
 import com.oneplatform.system.dto.param.UpdatepasswordParam;
 import com.oneplatform.system.service.AccountService;
-import com.oneplatform.system.service.ResourcesService;
+import com.oneplatform.system.service.PermissionService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,11 +34,11 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @RequestMapping("/user/")
 @Api("User Login API")
-@ApiScanIgnore
+@ApiPermOptions(ignore = true)
 public class UserContextController {
 
 	private @Autowired AccountService accountService;
-	private @Autowired ResourcesService roleResourcesService;
+	private @Autowired PermissionService permissionService;
 
 	@ApiOperation(value = "处理登录请求")
 	@RequestMapping(value = "login", method = RequestMethod.POST)
@@ -63,8 +66,9 @@ public class UserContextController {
 	@ApiOperation(value = "查询当前登录用户菜单")
 	@RequestMapping(value = "menus", method = RequestMethod.GET)
     public @ResponseBody WrapperResponse<List<TreeModel>> getCurrentMenus() {
-		List<TreeModel> menus = roleResourcesService.findUserMenus(LoginContext.getIntFormatUserId());
-		return new WrapperResponse<>(menus);
+		UserSession session = LoginContext.getAndValidateCurrentSession();
+		List<PermissionResourceEntity> menus = permissionService.findUserPermissionResource(session.getProfile(), Integer.parseInt(session.getUserId()), PermissionResourceType.menu);
+		return new WrapperResponse<>(PermissionResourceEntity.buildTree(menus).getChildren());
 	}
 	
 	@ApiOperation(value = "更新密码")

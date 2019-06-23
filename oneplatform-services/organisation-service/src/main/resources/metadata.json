@@ -1,27 +1,7 @@
 {
     "type": "service",
     "name": "组织架构",
-    "menuIcon":"",
 	"identifier": "organisation-service",
 	"routeName": "organisation",
-	"apiBasePackages": "com.oneplatform.organisation.controller",
-	"menus": [{
-	    "key": "organisation-structure",
-		"uri": "/modules/organisation/structure.html",
-		"text": "组织架构管理",
-		"icon": "",
-		"sort": 1
-	},{
-	    "key": "employee-list",
-		"uri": "/modules/organisation/employee/list.html",
-		"text": "员工管理",
-		"icon": "",
-		"sort": 2
-	},{
-	    "key": "positon-list",
-		"uri": "/modules/organisation/positon/list.html",
-		"text": "职位管理",
-		"icon": "",
-		"sort": 3
-	}]
+	"apiBasePackages": "com.oneplatform.organisation.controller"
 }

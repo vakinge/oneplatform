@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>新增用户组</title> 
+  <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all" />
+ </head> 
+ <body> 
+  <div class="admin-main">  
+   <form class="layui-form" action="/api/perm/usergroup/add" style="width: 700px;margin-top: 20px;" >  
+    <div class="layui-form-item">
+		<label class="layui-form-label">组名称</label>
+		<div class="layui-input-block">
+		   <input type="text" name="name" placeholder="权限组名称" lay-verify="required" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">所属平台</label>
+		<div class="layui-input-block">
+		   <select name="platformType" lay-filter="platformType" changeJoinEvent='{"renderType":"checkbox","target":"#permGroupList","dataUrl":"/api/perm/permgroup/options?platformType=","attrName":"permGroupIds","noneMessage":"请先创建权限组"}'>
+              <option value="">选择平台</option>
+              <option value="admin">后台管理系统</option>
+          </select> 
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">分配权限组</label>
+		<div class="layui-input-block" id="permGroupList">
+			<select></select>
+		</div>
+	</div>
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+<script type="text/javascript" src="/assets/layui/layui.js"></script>
+<script type="text/javascript" src="/modules/usergroup/usergroup.js"></script>
+<script>
+var moduleName = "add";
+</script>
+</html>

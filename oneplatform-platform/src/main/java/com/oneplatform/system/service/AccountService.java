@@ -1,7 +1,5 @@
 package com.oneplatform.system.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -11,18 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeesuite.common.JeesuiteBaseException;
+import com.jeesuite.common.util.AssertUtil;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.mybatis.plugin.pagination.Page;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
 import com.jeesuite.mybatis.plugin.pagination.PageParams;
-import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.system.dao.entity.AccountEntity;
-import com.oneplatform.system.dao.entity.RoleEntity;
 import com.oneplatform.system.dao.mapper.AccountEntityMapper;
-import com.oneplatform.system.dao.mapper.RoleEntityMapper;
 import com.oneplatform.system.dto.param.AccountParam;
 import com.oneplatform.system.dto.param.AccountQueryParam;
 import com.oneplatform.system.dto.param.UpdatepasswordParam;
@@ -31,13 +27,10 @@ import com.oneplatform.system.dto.param.UpdatepasswordParam;
 public class AccountService {
 
 	private @Autowired AccountEntityMapper accountMapper;
-	private @Autowired RoleEntityMapper roleMapper;
 
 	public AccountEntity findById(int id) {
 		AccountEntity entity = accountMapper.selectByPrimaryKey(id);
 		AssertUtil.notNull(entity);
-		List<RoleEntity> roles = roleMapper.findUserRoles(entity.getId());
-		entity.setRoles(roles);
 		return entity;
 	}
 	
@@ -70,10 +63,7 @@ public class AccountService {
 		entity.setCreatedBy(operUserId);
 		entity.setPassword(AccountEntity.encryptPassword(param.getMobile().substring(5)));
 		accountMapper.insertSelective(entity);
-		
-        if(param.getRoleIds() != null && param.getRoleIds().length > 0){			
-        	roleMapper.addAccountRoles(entity.getId(), param.getRoleIds());
-		}
+
 	}
 
 	@Transactional
@@ -88,15 +78,10 @@ public class AccountService {
 		AccountEntity entity = findById(param.getId());
 		entity.setEmail(StringUtils.trimToNull(param.getEmail()));
 		entity.setMobile(StringUtils.trimToNull(param.getMobile()));
-		entity.setRealname(StringUtils.trimToNull(param.getRealname()));
 		entity.setUpdatedAt(new Date());
 		entity.setUpdatedBy(operUserId);
 		accountMapper.updateByPrimaryKeySelective(entity);
-		
-		if(param.getRoleIds() != null && param.getRoleIds().length > 0){			
-			assignmentRoles(operUserId, entity.getId(), param.getRoleIds());
-		}
-		
+
 	}
 	
 	public void deleteAccount(int operUserId, int id) {
@@ -126,24 +111,5 @@ public class AccountService {
 			accountMapper.updateByPrimaryKeySelective(entity);
 		}
 	}
-	
-	@Transactional
-	public void  assignmentRoles(int operUserId,int accountId,Integer[] roleIds){
-		List<Integer> newRoleIds = new ArrayList<Integer>(Arrays.asList(roleIds));
-		List<Integer> assignedRoleIds = roleMapper.findAccountRoleIds(accountId);
-		
-		List<Integer> deleteList = new ArrayList<>(assignedRoleIds);
-		deleteList.removeAll(newRoleIds);
-		
-		if(!deleteList.isEmpty()){
-			roleMapper.deleteAccountRoles(accountId, deleteList.toArray(new Integer[0]));
-		}
-		
-		List<Integer> addList = new ArrayList<>(newRoleIds);
-		addList.removeAll(assignedRoleIds);
-		
-		if(!addList.isEmpty()){
-			roleMapper.addAccountRoles(accountId, addList.toArray(new Integer[0]));
-		}
-	}
+
 }

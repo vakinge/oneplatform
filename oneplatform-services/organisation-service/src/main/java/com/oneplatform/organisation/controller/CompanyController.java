@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jeesuite.common.util.AssertUtil;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
-import com.oneplatform.base.exception.AssertUtil;
 import com.oneplatform.base.model.TreeModel;
 import com.oneplatform.organisation.dao.entity.CompanyEntity;
 import com.oneplatform.organisation.dto.param.CompanyParam;

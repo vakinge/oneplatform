@@ -1,14 +1,12 @@
 package com.oneplatform.system.dao.entity;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.jeesuite.common.util.DigestUtils;
 import com.jeesuite.mybatis.core.BaseEntity;
@@ -29,7 +27,8 @@ public class AccountEntity extends BaseEntity {
 
     private String password;
 
-    private String realname;
+    @Column(name = "user_id")
+    private Integer userId;
 
     private Boolean enabled;
     /**
@@ -53,8 +52,6 @@ public class AccountEntity extends BaseEntity {
     @Column(name = "updated_by")
     private Integer updatedBy;
     
-    @Transient
-    private List<RoleEntity> roles;
 
     /**
      * @return id
@@ -126,22 +123,16 @@ public class AccountEntity extends BaseEntity {
         this.password = password;
     }
 
-    /**
-     * @return realname
-     */
-    public String getRealname() {
-        return realname;
-    }
-
-    /**
-     * @param realname
-     */
-    public void setRealname(String realname) {
-        this.realname = realname;
-    }
-
     
-    public Boolean getEnabled() {
+    public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public Boolean getEnabled() {
 		return enabled;
 	}
 
@@ -237,15 +228,6 @@ public class AccountEntity extends BaseEntity {
         this.updatedBy = updatedBy;
     }
 
-	public List<RoleEntity> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<RoleEntity> roles) {
-		this.roles = roles;
-	}
-    
-	
 	
 	public static String encryptPassword(String password) {
 		StringBuilder sb = new StringBuilder();

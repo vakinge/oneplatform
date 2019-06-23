@@ -16,6 +16,8 @@
  */
 package com.oneplatform.base.model;
 
+import com.oneplatform.base.constants.PermissionType;
+
 /**
  * @description <br>
  * @author <a href="mailto:vakinge@gmail.com">vakin</a>
@@ -26,7 +28,8 @@ public class ApiInfo {
 	private String url;
 	private String method;
 	private String name;
-	private String key;
+	private String serviceId;
+	private PermissionType PermissionType;
 	
 	public String getUrl() {
 		return url;
@@ -46,12 +49,20 @@ public class ApiInfo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getKey() {
-		return key;
+	public String getServiceId() {
+		return serviceId;
 	}
-	public void setKey(String key) {
-		this.key = key;
+	public void setServiceId(String serviceId) {
+		this.serviceId = serviceId;
 	}
-
+	public PermissionType getPermissionType() {
+		return PermissionType;
+	}
+	public void setPermissionType(PermissionType permissionType) {
+		PermissionType = permissionType;
+	}
 	
+	public String getPermCode() {
+		return String.format("%s:%s_%s", serviceId.toLowerCase(),url,method);
+	}
 }

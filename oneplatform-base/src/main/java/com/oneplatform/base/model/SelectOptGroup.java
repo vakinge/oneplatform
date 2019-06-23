@@ -30,6 +30,13 @@ public class SelectOptGroup {
 	private String label;
 	private String value;
 	private List<SelectOption> options = new ArrayList<>();
+	
+	public SelectOptGroup() {}
+	
+	public SelectOptGroup(String label) {
+		this.label = label;
+	}
+
 	public String getLabel() {
 		return label;
 	}

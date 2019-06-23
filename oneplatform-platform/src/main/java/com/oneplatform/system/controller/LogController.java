@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.mybatis.plugin.pagination.PageParams;
+import com.oneplatform.base.annotation.ApiPermOptions;
+import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.model.PageQueryParam;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.system.dao.entity.SysLogEntity;
@@ -19,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @RequestMapping("/log")
 @Api("Log Management API")
+@ApiPermOptions(perms = PermissionType.Authorized)
 public class LogController {
 
 	private @Autowired SysMonitorService sysMonitorService;

@@ -49,6 +49,8 @@ import com.jeesuite.mybatis.plugin.pagination.Page;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
 import com.jeesuite.springweb.model.WrapperResponse;
+import com.oneplatform.base.annotation.ApiPermOptions;
+import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.exception.ExceptionCode;
 import com.oneplatform.base.model.PageResult;
 import com.oneplatform.base.model.UploadResult;
@@ -69,6 +71,7 @@ import io.swagger.annotations.ApiOperation;
  */
 @Controller
 @RequestMapping("/file")
+@ApiPermOptions(perms = PermissionType.Logined)
 public class FileController implements InitializingBean{
 
 	private @Autowired UploadFileEntityMapper uploadFileMapper;
@@ -223,6 +226,7 @@ public class FileController implements InitializingBean{
 	
 	@ApiOperation(value = "删除文件")
 	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
+	@ApiPermOptions(perms = PermissionType.Authorized)
     public @ResponseBody WrapperResponse<String> deleteFile(@PathVariable("id") int id) {
 		
 		UploadFileEntity uploadFileEntity = uploadFileMapper.selectByPrimaryKey(id);

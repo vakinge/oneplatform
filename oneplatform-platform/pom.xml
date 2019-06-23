@@ -189,6 +189,24 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 		<!-- 系统插件 end -->
+		
+		<!-- 以下是业务模块，分布式部署请移除 -->
+		<dependency>
+		    <groupId>com.jeesuite.oneplatform</groupId>
+		    <artifactId>weixin-service</artifactId>
+		    <version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.jeesuite.oneplatform</groupId>
+		    <artifactId>user-service</artifactId>
+		    <version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.jeesuite.oneplatform</groupId>
+		    <artifactId>cms-service</artifactId>
+		    <version>${project.parent.version}</version>
+		</dependency>
+		<!-- 业务模块 end -->
 
 	</dependencies>
 

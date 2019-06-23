@@ -30,21 +30,28 @@
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
 		</table>
 		
-		<table tableName="sys_resources" domainObjectName="ResourceEntity">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
-		<table tableName="sys_role" domainObjectName="RoleEntity">
-			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table>
-		
 		<table tableName="sys_module" domainObjectName="ModuleEntity">
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
 		</table>
-		<table tableName="sys_api_statistics" domainObjectName="ApiStatisticsEntity">
+
+		 <table tableName="sys_logs" domainObjectName="SysLogEntity">
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
-		</table> -->
+		</table>
+		 -->
 		
-		<table tableName="sys_logs" domainObjectName="SysLogEntity">
+		<table tableName="sys_user_group" domainObjectName="UserGroupEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		<table tableName="sys_permission_resource" domainObjectName="PermissionResourceEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		<table tableName="sys_permission_group" domainObjectName="PermissionGroupEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		<table tableName="sys_subordinate_relations" domainObjectName="SubordinateRelationEntity">
+			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
+		</table>
+		<table tableName="sys_grant_relations" domainObjectName="GrantRelationEntity">
 			<generatedKey column="id" sqlStatement="Mysql" identity="true" />
 		</table>
 		

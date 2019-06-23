@@ -11,10 +11,8 @@ public class ModuleMetadata {
 	private String name;
 	private String identifier;
 	private String routeName;
-	private String menuIcon;
 	private String apiBasePackages;
 	private List<ApiInfo> apis = new ArrayList<>();
-	private List<Menu> menus = new ArrayList<>();
 	
 	
 	public String getType() {
@@ -46,12 +44,6 @@ public class ModuleMetadata {
 	public void setRouteName(String routeName) {
 		this.routeName = routeName;
 	}
-	public String getMenuIcon() {
-		return menuIcon;
-	}
-	public void setMenuIcon(String menuIcon) {
-		this.menuIcon = menuIcon;
-	}
 	public String getApiBasePackages() {
 		return apiBasePackages;
 	}
@@ -64,13 +56,5 @@ public class ModuleMetadata {
 	public void setApis(List<ApiInfo> apis) {
 		this.apis = apis;
 	}
-	public List<Menu> getMenus() {
-		return menus;
-	}
-	public void setMenus(List<Menu> menus) {
-		this.menus = menus;
-	}
-	
-	
-	
+
 }

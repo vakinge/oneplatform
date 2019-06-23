@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Table</title>
+<link rel="stylesheet" href="/assets/layui/css/layui.css" media="all" />
+</head>
+
+<body>
+	<div class="admin-main">
+		<blockquote class="layui-elem-quote layui-quote-nm">
+			<a class="layui-btn layui-btn-normal J_iframe_dialog" href="javascript:;" data-url="./add.html" data-title="新增API"> 
+			  <i class="layui-icon">&#xe608;</i> 新增权限组
+			</a>
+		</blockquote>
+		<fieldset class="layui-elem-field">
+			<legend>权限组列表</legend>
+			<div class="content-search">
+			<form id="searchform" action="" class="layui-form">
+              <div class="layui-inline">
+                <select name="platformType">
+                  <option value="console-admin">运营端</option>
+                  <option value="console-company">企业端</option>
+                </select>     
+              </div>
+              <div class="layui-inline">
+                <input type="button" class="layui-btn layui-btn-normal J_search" lay-submit lay-filter="search" value="查询"/>    
+              </div>                           
+           </form>
+		</div>
+			<div class="layui-field-box layui-form">
+				<table class="layui-hide" id="tablecont" lay-filter="table"></table>
+			</div>
+		</fieldset>
+	</div>
+	<script type="text/html" id="apiListTpl">
+       {{# layui.each(d.apis, function(index, item){ }}
+          <span class="layui-badge">{{ item.name }}</span>
+	    {{# }); }}          
+    </script>    
+	<script type="text/html" id="toolBar">
+      <a class="layui-btn {{#  if(d.enabled){ }}layui-btn-danger{{#  } else { }}layui-btn-warm{{#  } }} layui-btn-xs" lay-event="switch">{{#  if(d.enabled){ }}禁用{{#  } else { }}启用{{#  } }} </a>
+      <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+</body>
+<script type="text/javascript" src="/assets/layui/layui.js"></script>
+<script type="text/javascript" src="/modules/permgroup/permgroup.js"></script>
+<script>
+var moduleName = "list";
+</script>
+
+</html>

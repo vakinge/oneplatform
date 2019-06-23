@@ -15,12 +15,10 @@
  */
 package com.oneplatform.platform.auth;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +33,12 @@ import com.jeesuite.security.model.UserSession;
 import com.jeesuite.springweb.WebConstants;
 import com.netflix.zuul.context.RequestContext;
 import com.oneplatform.base.GlobalContants;
-import com.oneplatform.base.GlobalContants.ModuleType;
-import com.oneplatform.system.constants.ResourceType;
+import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.system.dao.entity.AccountEntity;
-import com.oneplatform.system.dao.entity.ModuleEntity;
-import com.oneplatform.system.dao.entity.ResourceEntity;
-import com.oneplatform.system.dao.mapper.ModuleEntityMapper;
-import com.oneplatform.system.dao.mapper.ResourceEntityMapper;
 import com.oneplatform.system.dto.LoginUserInfo;
 import com.oneplatform.system.service.AccountService;
-import com.oneplatform.system.service.ResourcesService;
+import com.oneplatform.system.service.BizPlatformService;
+import com.oneplatform.system.service.PermissionService;
 
 /**
  * @description <br>
@@ -54,10 +48,9 @@ import com.oneplatform.system.service.ResourcesService;
 @Component
 public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvider {
 
-	private @Autowired ResourceEntityMapper resourceMapper;
-	private @Autowired ModuleEntityMapper moduleMapper;
-	private @Autowired ResourcesService resourcesService;
+	private @Autowired BizPlatformService bizPlatformService;
 	private @Autowired AccountService accountService;
+	private @Autowired PermissionService permissionService;
 
 	@Override
 	public String contextPath() {
@@ -85,28 +78,21 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 
 	@Override
 	public List<String> findAllUriPermissionCodes() {
-		List<String> result = new ArrayList<>();
-		Map<Integer,ModuleEntity> modulesMap = moduleMapper.findAll().stream().collect(Collectors.toMap(ModuleEntity::getId, entity -> entity));
-		List<ResourceEntity> resources = resourceMapper.findResources(ResourceType.uri.name());
-		ModuleEntity module;
-		for (ResourceEntity resource : resources) {
-			module = modulesMap.get(resource.getModuleId());
-			if(module == null)continue;
-			if(GlobalContants.MODULE_NAME.equalsIgnoreCase(module.getServiceId()) 
-					|| ModuleType.plugin.name().equals(module.getModuleType())){
-				result.add(resource.getResource());
-			}else{ 
-				result.add("/" + module.getRouteName() + resource.getResource());
-			}
-		}
+		List<String> result = permissionService.buildGlobalPermissionCodes().get(PermissionType.Authorized);
 		return result;
 	}
 
 
 	@Override
-	public List<String> getUserPermissionCodes(Serializable userId) {
-		Set<String> codes = resourcesService.findAllPermsByUserId((int)userId);
-		return new ArrayList<String>(codes);
+	public String getCurrentProfile(HttpServletRequest request) {
+		//TODO 根据请求域名判断当前业务系统
+		return "admin";
+	}
+
+	@Override
+	public Map<String, List<String>> getUserPermissionCodes(String userId) {
+		Map<String, List<String>> permissionCodes = permissionService.buildUserPermissionCodes(Integer.parseInt(userId));
+		return permissionCodes;
 	}
 
 	@Override

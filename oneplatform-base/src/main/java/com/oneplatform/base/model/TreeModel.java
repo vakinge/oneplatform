@@ -10,6 +10,10 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class TreeModel {
 
 	private Integer id;
@@ -17,11 +21,11 @@ public class TreeModel {
 	private String value;
 	private String icon;
 	private Integer pid;
-	private String pName;
 	private boolean leaf;
-	private boolean spread;
 	private String extraAttr;
 	private Object originData;
+	private boolean checked = false;
+	private boolean disabled = false;
 	private List<TreeModel> children;
 	
 
@@ -77,15 +81,6 @@ public class TreeModel {
 	public void setPid(Integer pid) {
 		this.pid = pid;
 	}
-	
-	public String getpName() {
-		return pName;
-	}
-
-	public void setpName(String pName) {
-		this.pName = pName;
-	}
-
 
 	public boolean isLeaf() {
 		return leaf;
@@ -94,22 +89,17 @@ public class TreeModel {
 		this.leaf = leaf;
 	}
 	
-	public boolean isSpread() {
-		return spread;
-	}
-
-	public void setSpread(boolean spread) {
-		this.spread = spread;
-	}
-
+	
 	public String getExtraAttr() {
 		return extraAttr;
 	}
 
+
 	public void setExtraAttr(String extraAttr) {
 		this.extraAttr = extraAttr;
 	}
-	
+
+
 	public Object getOriginData() {
 		return originData;
 	}
@@ -117,14 +107,30 @@ public class TreeModel {
 	public void setOriginData(Object originData) {
 		this.originData = originData;
 	}
+	
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
 
 	public void addChild(TreeModel child) {
-		getChildren().add(child);
-		child.setpName(name);
+		children = children == null ? (children = new ArrayList<>()) : children;
+		children.add(child);
 	}
 	
 	public List<TreeModel> getChildren() {
-		return children == null ? (children = new ArrayList<>()) : children;
+		return children;
 	}
 	public void setChildren(List<TreeModel> children) {
 		this.children = children;
@@ -165,7 +171,10 @@ public class TreeModel {
 
 	public static TreeModel build(List<TreeModel> models){
 		TreeModel root = new TreeModel();
-		
+		if(models.isEmpty()){
+			root.children = new ArrayList<>(0);
+			return root;
+		}
 		//按pid排序
 		Collections.sort(models,new Comparator<TreeModel>() {
 			@Override
@@ -181,7 +190,7 @@ public class TreeModel {
 			}
 		}
 		for (TreeModel model : models) {
-			if((model.getPid() == 0 && !model.isLeaf()) || !modelMap.containsKey(model.getPid())){
+			if(((model.getPid() == null || model.getPid() == 0) && !model.isLeaf()) || !modelMap.containsKey(model.getPid())){
 				root.addChild(model);
 			}else{
 				modelMap.get(model.getPid()).addChild(model);

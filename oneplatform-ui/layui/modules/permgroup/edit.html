@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>编辑权限组</title> 
+  <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all" />
+ </head> 
+ <body> 
+  <div class="admin-main">  
+   <form class="layui-form" action="/api/perm/permgroup/update" style="width: 700px;margin-top: 20px;" >  
+    <input type="hidden" name="id" bindAttr="id" />
+    <div class="layui-form-item">
+		<label class="layui-form-label">组名称</label>
+		<div class="layui-input-block">
+		   <input type="text" name="name" bindAttr="name" placeholder="权限组名称" lay-verify="required" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">所属平台</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="platformType" class="layui-input" readonly="readonly">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">关联菜单</label>
+		<div class="layui-input-block">
+		   <input type="text" bindAttr="menuName" class="layui-input" readonly="readonly">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">关联接口</label>
+		<div class="layui-input-block" bindAttr="template:apiListTpl">
+		
+		</div>
+	</div>
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+<script type="text/javascript" src="/assets/layui/layui.js"></script>
+<script type="text/javascript" src="/modules/permgroup/permgroup.js"></script>
+<script type="text/html" id="apiListTpl">
+  {{#  layui.each(d.apis, function(index, item){ }}
+   <input type="checkbox" name="apiIds" value="{{item.value}}" title="{{item.text}}" lay-skin="primary" checked>
+  {{#  }); }}
+  </script>
+<script>
+var moduleName = "edit";
+</script>
+</html>

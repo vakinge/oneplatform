@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>编辑接口</title> 
+  <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all" />
+ </head> 
+ <body> 
+  <div class="admin-main" dataLoad="/api/perm/resource/details/{id}">  
+   <form class="layui-form" action="/api/perm/resource/update" style="width: 700px;margin-top: 20px;" >  
+   <input type="hidden" name="id" bindAttr="id" />
+   <input type="hidden" name="type" bindAttr="type" />
+	<div class="layui-form-item">
+		<label class="layui-form-label">所属模块</label>
+		<div class="layui-input-block">
+          <input type="text" bindAttr="moduleName" readonly="readonly" class="layui-input">
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">接口名称</label>
+		<div class="layui-input-block">
+		   <input type="text" name="name" bindAttr="name" placeholder="接口名称" lay-verify="required" class="layui-input">
+		</div>
+	</div> 
+	<div class="layui-form-item">
+		<label class="layui-form-label">请求方式</label>
+		<div class="layui-input-block">
+		   <select name="httpMethod" bindAttr="httpMethod" lay-verify="required">
+              <option value="POST">POST</option>
+              <option value="GET">GET</option>
+          </select> 
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">接口地址</label>
+		<div class="layui-input-block">
+		   <input type="text" name="uri" bindAttr="uri" placeholder="接口地址" lay-verify="required" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">访问级别</label>
+		<div class="layui-input-block">
+		   <select name="grantType" lay-verify="required" bindAttr="grantType">
+		       <option value="Authorized">需接口授权</option>
+              <option value="Logined">需登录</option>
+              <option value="Anonymous">匿名接口</option>
+          </select> 
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label">关联按钮</label>
+		<div class="layui-input-block">
+		   <input type="text" name="buttonCode" bindAttr="buttonCode" placeholder="关联前端按钮编码" class="layui-input">
+		</div>
+	</div>
+		     
+    <div class="layui-form-item"> 
+     <div class="layui-input-block"> 
+        <input type="button"  class="layui-btn layui-btn-normal J_ajaxSubmit" value="保存"/>
+        <input type="reset" class="layui-btn layui-btn-primary" value="重置"/>
+     </div> 
+    </div> 
+   </form> 
+  </div> 
+ </body>
+<script type="text/javascript" src="/assets/layui/layui.js"></script>
+<script type="text/javascript" src="/modules/resource/resource.js"></script>
+<script>
+	function onFinishCallback(){
+		layui.form.render('checkbox');
+	}
+</script>
+</html>

@@ -33,14 +33,17 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.io.CharStreams;
 import com.oneplatform.base.GlobalContants;
 import com.oneplatform.base.GlobalContants.ModuleType;
-import com.oneplatform.base.annotation.ApiScanIgnore;
+import com.oneplatform.base.annotation.ApiPermOptions;
 import com.oneplatform.base.model.ApiInfo;
 import com.oneplatform.base.model.ModuleMetadata;
 
@@ -85,12 +88,13 @@ public class ModuleMetadataHolder {
 			Method[] methods;
 			String baseUri;
 			ApiInfo apiInfo;
+			ApiPermOptions classPermOptions;
+			ApiPermOptions methodPermOptions;
 			for (org.springframework.core.io.Resource resource : resources) {
 				if (resource.isReadable()) {
 					MetadataReader reader = readerFactory.getMetadataReader(resource);
 					String className = reader.getClassMetadata().getClassName();
 					Class<?> clazz = Class.forName(className);
-					if(clazz.isAnnotationPresent(ApiScanIgnore.class))continue;
 					if (clazz.isAnnotationPresent(Controller.class)
 							|| clazz.isAnnotationPresent(RestController.class)) {
 						if (clazz.isAnnotationPresent(RequestMapping.class)) {
@@ -102,28 +106,61 @@ public class ModuleMetadataHolder {
 						} else {
 							baseUri = "";
 						}
+						//
+						classPermOptions = clazz.getAnnotation(ApiPermOptions.class);
 						methods = clazz.getDeclaredMethods();
 						methodLoop: for (Method method : methods) {
-							if(method.isAnnotationPresent(ApiScanIgnore.class))continue methodLoop;
-							if (!method.isAnnotationPresent(RequestMapping.class))
+							methodPermOptions = method.isAnnotationPresent(ApiPermOptions.class) ? method.getAnnotation(ApiPermOptions.class) : classPermOptions;
+							if(methodPermOptions == null || methodPermOptions.ignore()){
 								continue methodLoop;
-							RequestMapping annotation = method.getAnnotation(RequestMapping.class);
-							apiInfo = new ApiInfo();
-							String methodUri = annotation.value()[0];
-							if (!methodUri.startsWith("/"))
-								methodUri = "/" + methodUri;
-							apiInfo.setUrl(baseUri + methodUri);
-							if (annotation.method() != null && annotation.method().length > 0) {
-								apiInfo.setMethod(annotation.method()[0].name());
 							}
+							if (!method.isAnnotationPresent(RequestMapping.class)){
+								continue methodLoop;
+							}
+							
+							String apiUri = null;String apiHttpMethod = null;
+							if (method.isAnnotationPresent(RequestMapping.class)){
+								RequestMapping annotation = method.getAnnotation(RequestMapping.class);
+								apiUri = annotation.value()[0];
+								if (annotation.method() != null && annotation.method().length > 0) {
+									apiHttpMethod = annotation.method()[0].name();
+								}
+							}else if (method.isAnnotationPresent(PostMapping.class)){
+								apiUri = method.getAnnotation(PostMapping.class).value()[0];
+								apiHttpMethod = RequestMethod.POST.name();
+							}else if (method.isAnnotationPresent(GetMapping.class)){
+								apiUri = method.getAnnotation(GetMapping.class).value()[0];
+								apiHttpMethod = RequestMethod.GET.name();
+							}else{
+								continue methodLoop;
+							}
+							
+							apiInfo = new ApiInfo();
+							if(apiUri == null){
+								apiUri = baseUri;
+							}else{
+								if (!apiUri.startsWith("/")){
+									apiUri = "/" + apiUri;
+								}
+								apiUri = baseUri + apiUri;
+							}
+							apiInfo.setUrl(apiUri);
+							apiInfo.setMethod(apiHttpMethod);
+							
 							if (method.isAnnotationPresent(ApiOperation.class)) {
 								apiInfo.setName(method.getAnnotation(ApiOperation.class).value());
 							} else {
 								apiInfo.setName(apiInfo.getUrl());
 							}
-							
-							apiInfo.setKey(clazz.getName() + "." + method.getName());
-
+							//
+							if(StringUtils.isNotBlank(methodPermOptions.name())){
+								apiInfo.setName(methodPermOptions.name());
+							}else if (method.isAnnotationPresent(ApiOperation.class)) {
+								apiInfo.setName(method.getAnnotation(ApiOperation.class).value());
+							}  
+							apiInfo.setPermissionType(methodPermOptions.perms());
+							//
+							apiInfo.setServiceId(metadata.getIdentifier());
 							metadata.getApis().add(apiInfo);
 						}
 					}
