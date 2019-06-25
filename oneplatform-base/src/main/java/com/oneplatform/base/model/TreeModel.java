@@ -31,7 +31,14 @@ public class TreeModel {
 
 	public TreeModel() {}
 	
-	
+	public TreeModel(Integer id, String name, Integer pid) {
+		this.id = id;
+		this.name = name;
+		this.pid = pid;
+		this.leaf = pid != null && pid > 0;
+	}
+
+
 	public TreeModel(Integer id, String name,String value, String icon, Integer pid, boolean leaf) {
 		this.id = id;
 		this.name = name;
@@ -199,5 +206,6 @@ public class TreeModel {
 		
 		return root;
 	}
+	
 
 }

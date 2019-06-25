@@ -177,6 +177,16 @@
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		<testResources>
+			<testResource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>*.xml</include>
+					<include>**/*.xml</include>
+					<include>*.properties</include>
+				</includes>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

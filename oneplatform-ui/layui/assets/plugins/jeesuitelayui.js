@@ -1,12 +1,11 @@
 var API_BASE_PATH = (typeof(moduleName) !="undefined") ? window.top.basePathMap[moduleName] : null;
 var CACHE = {};
-layui.define(['layer', 'laytpl', 'form', 'element', 'util'], function(exports){
+layui.define(['layer', 'laytpl', 'form', 'element'], function(exports){
   var $ = layui.jquery
   ,layer = layui.layer
   ,laytpl = layui.laytpl
   ,form = layui.form
   ,element = layui.element
-  ,util = layui.util
   ,device = layui.device()
   ,DISABLED = 'layui-btn-disabled';
   

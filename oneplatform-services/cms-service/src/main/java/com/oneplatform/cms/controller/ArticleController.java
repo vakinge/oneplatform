@@ -17,6 +17,7 @@ import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.annotation.ApiPermOptions;
 import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.model.IdParam;
+import com.oneplatform.base.model.PageResult;
 import com.oneplatform.cms.dao.entity.ArticleEntity;
 import com.oneplatform.cms.dto.param.ArticleParam;
 import com.oneplatform.cms.dto.param.ArticleQueryParam;
@@ -36,9 +37,9 @@ public class ArticleController {
 	@ApiOperation(value = "分页查询")
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ApiPermOptions(perms = PermissionType.Anonymous)
-    public @ResponseBody WrapperResponse<Page<ArticleEntity>> pageQueryCmsArticles(@RequestBody ArticleQueryParam param) {
+    public @ResponseBody PageResult<ArticleEntity> pageQueryCmsArticles(@RequestBody ArticleQueryParam param) {
 		Page<ArticleEntity> page = cmsArticleService.pageQuery(param,param);
-		return new WrapperResponse<>(page);
+		return new PageResult<>(param.getPageNo(), param.getPageSize(), page.getTotal(), page.getData());
 	}
 	
 	@ApiOperation(value = "按id查询")
