@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head> 
+  <meta charset="utf-8" /> 
+  <title>菜单管理</title> 
+  <meta name="renderer" content="webkit" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" /> 
+  <meta name="apple-mobile-web-app-capable" content="yes" /> 
+  <meta name="format-detection" content="telephone=no" /> 
+  <link rel="stylesheet" href="/assets/layui/css/layui.css" media="all" /> 
+  <style type="text/css">
+    .layui-form-item .layui-inline {
+        width: 33.333%;
+        float: left;
+        margin-right: 0;
+    }
+
+    @media (max-width: 1240px) {
+        .layui-form-item .layui-inline {
+            width: 100%;
+            float: none;
+        }
+    }
+    .left-tree{
+       display: inline-block;
+        margin-left: 2px;
+        width: 250px;
+        height: 400px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        overflow: auto;
+        background-color: #f2f2f2;
+    }
+    .rigth-content{
+        display: inline-block;
+        height: 400px;
+        width: 600px;
+        padding: 10px;
+        margin-left: 10px;
+        vertical-align: top;
+    }
+    .site-tips{
+        margin-bottom: 10px;
+        line-height: 22px;
+        border-left: 5px solid #0078AD;
+    }
+</style>
+ </head>  
+ <body class="childrenBody"> 
+  <div class="admin-main"> 
+   <fieldset class="layui-elem-field"> 
+    <legend>文章分类管理</legend> 
+    <div class="layui-field-box layui-form"> 
+     <div class="left-tree"> 
+      <ul id="tree_cont" class="layui-box layui-tree" lay-filter="menus"></ul> 
+     </div> 
+     <div id="form_cont" class="site-tips rigth-content"> 
+      <form class="layui-form" action="/api/article/category/update"> 
+       <input type="hidden" name="id" bindattr="id" /> 
+       <div class="layui-form-item"> 
+        <label class="layui-form-label">菜单名称</label> 
+        <div class="layui-input-block"> 
+         <input type="text" class="layui-input" bindattr="name" name="name" lay-verify="required" /> 
+        </div> 
+       </div> 
+       <div class="layui-form-item"> 
+        <div class="layui-input-block"> 
+         <input type="button" class="layui-btn layui-btn-normal J_ajaxSubmit" value="更新" onSuccessCallback="None" /> 
+         <input type="button" class="layui-btn layui-btn-danger J_confirm" data-url="/api/article/category/delete" data='{"id":{id}}' ajax-method="POST" value="删除" />
+        </div> 
+       </div> 
+      </form> 
+     </div> 
+    </div> 
+   </fieldset> 
+  </div> 
+  <script type="text/javascript" src="/assets/layui/layui.js"></script>
+  <script type="text/javascript" src="cms.js"></script>
+  <script>
+   var pageType = "category";
+</script>  
+ </body>
+</html>

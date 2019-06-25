@@ -12,7 +12,7 @@ layui.define(['jeesuitelayui', 'table','form'], function(exports){
   ,element = layui.element
   jeesuitelayui = layui.jeesuitelayui;
   
-  if(moduleName === 'list'){
+  if(pageType === 'list'){
 	  var $table =  table.render({
 		    elem: '#tablecont'
 		    ,height: 430
@@ -73,7 +73,7 @@ layui.define(['jeesuitelayui', 'table','form'], function(exports){
 				  }
 				});
 		  });
-  }else if(moduleName === 'add'){
+  }else if(pageType === 'add'){
 	  form.on('select(scope)',function(data) {
 		  if(data.value === 'internal'){
 			  $('#department_cont').show();
@@ -82,7 +82,7 @@ layui.define(['jeesuitelayui', 'table','form'], function(exports){
 			  $('#department_cont').hide();
 		  }
 	  });
-  }else if(moduleName === 'edit'){
+  }else if(pageType === 'edit'){
 	  var id = jeesuitelayui.getQueryParams('id');
 	  jeesuitelayui.get('/api/perm/permgroup/details/'+id,function(data){
 		  var permGroups = jeesuitelayui.getDataTryCache('/api/perm/permgroup/options?platformType=' + data.platformType);

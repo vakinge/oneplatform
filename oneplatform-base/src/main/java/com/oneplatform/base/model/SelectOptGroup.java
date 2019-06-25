@@ -36,6 +36,11 @@ public class SelectOptGroup {
 	public SelectOptGroup(String label) {
 		this.label = label;
 	}
+	
+	public SelectOptGroup(String label, String value) {
+		this.label = label;
+		this.value = value;
+	}
 
 	public String getLabel() {
 		return label;

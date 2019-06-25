@@ -11,6 +11,7 @@ public class CategoryEntity extends BaseEntity {
 
     private String name;
 
+    @Column(name = "pid",updatable=false)
     private Integer pid;
 
     @Column(name = "item_nums")

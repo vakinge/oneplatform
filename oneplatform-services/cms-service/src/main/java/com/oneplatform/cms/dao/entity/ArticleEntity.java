@@ -92,6 +92,9 @@ public class ArticleEntity extends BaseEntity {
     @Column(name = "updated_at")
     private java.util.Date updatedAt;
     
+    @Transient
+    private String categoryName;
+    
 
     public Integer getId() {
         return id;
@@ -191,4 +194,14 @@ public class ArticleEntity extends BaseEntity {
     public void setUpdatedAt(java.util.Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+    
+    
 }

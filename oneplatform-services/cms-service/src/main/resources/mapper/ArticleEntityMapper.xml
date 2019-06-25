@@ -17,10 +17,19 @@
     <result column="updated_by" property="updatedBy" jdbcType="INTEGER" />
     <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
   </resultMap>
-  
-   <select id="findListByQueryParam" parameterType="com.oneplatform.cms.dto.param.CmsArticleQueryParam"  resultMap="BaseResultMap">
-	  SELECT  * FROM CMS_ARTICLE where 1=1
-      order by id desc
-   </select>
+
+   
+   <select id="findListByQueryParam" parameterType="com.oneplatform.cms.dto.param.ArticleQueryParam" resultMap="BaseResultMap">
+      SELECT a.* FROM cms_article a 
+      <if test="specTargetId != null or specType != null">
+        JOIN cms_spec_relations r ON a.id = r.artcle_id
+      </if>  
+      WHERE 1=1 
+      <if test="categoryId != null">AND a.category_id = #{categoryId}</if> 
+      <if test="audited != null">AND a.audited = #{audited}</if> 
+      <if test="specTargetId != null">AND r.target_id = #{specTargetId}</if> 
+      <if test="specType != null">AND r.target_type = #{specType}</if> 
+      ORDER BY a.id desc
+  </select>
    
 </mapper>

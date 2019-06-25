@@ -1,5 +1,7 @@
 package com.oneplatform.cms.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,13 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.mybatis.plugin.pagination.Page;
+import com.jeesuite.security.client.LoginContext;
 import com.jeesuite.springweb.model.WrapperResponse;
 import com.oneplatform.base.annotation.ApiPermOptions;
 import com.oneplatform.base.constants.PermissionType;
 import com.oneplatform.base.model.IdParam;
 import com.oneplatform.cms.dao.entity.ArticleEntity;
-import com.oneplatform.cms.dto.param.CmsArticleParam;
-import com.oneplatform.cms.dto.param.CmsArticleQueryParam;
+import com.oneplatform.cms.dto.param.ArticleParam;
+import com.oneplatform.cms.dto.param.ArticleQueryParam;
 import com.oneplatform.cms.service.ArticleService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,9 +36,9 @@ public class ArticleController {
 	@ApiOperation(value = "分页查询")
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ApiPermOptions(perms = PermissionType.Anonymous)
-    public @ResponseBody Page<ArticleEntity> pageQueryCmsArticles(@RequestBody CmsArticleQueryParam param) {
+    public @ResponseBody WrapperResponse<Page<ArticleEntity>> pageQueryCmsArticles(@RequestBody ArticleQueryParam param) {
 		Page<ArticleEntity> page = cmsArticleService.pageQuery(param,param);
-		return page;
+		return new WrapperResponse<>(page);
 	}
 	
 	@ApiOperation(value = "按id查询")
@@ -49,10 +52,10 @@ public class ArticleController {
 	@ApiOperation(value = "新增文章")
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	@ApiPermOptions(perms = PermissionType.Authorized)
-    public @ResponseBody WrapperResponse<String> addCmsArticle(@RequestBody CmsArticleParam param) {
+    public @ResponseBody WrapperResponse<String> addCmsArticle(@RequestBody ArticleParam param) {
 		ArticleEntity entity = BeanUtils.copy(param, ArticleEntity.class);
-		//entity.setCreatedAt(new Date());
-		//entity.setCreatedBy(LoginContext.getIntFormatUserId());
+		entity.setCreatedAt(new Date());
+		entity.setCreatedBy(LoginContext.getIntFormatUserId());
 		cmsArticleService.addCmsArticle(entity);
 		
 		return new WrapperResponse<>();
@@ -61,17 +64,17 @@ public class ArticleController {
 	@ApiOperation(value = "更新文章")
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	@ApiPermOptions(perms = PermissionType.Authorized)
-    public @ResponseBody WrapperResponse<String> updateCmsArticle(@RequestBody CmsArticleParam param) {
+    public @ResponseBody WrapperResponse<String> updateCmsArticle(@RequestBody ArticleParam param) {
 		ArticleEntity entity = BeanUtils.copy(param, ArticleEntity.class);
-		//entity.setUpdatedAt(new Date());
-		//entity.setUpdatedBy(LoginContext.getIntFormatUserId());
+		entity.setUpdatedAt(new Date());
+		entity.setUpdatedBy(LoginContext.getIntFormatUserId());
 		cmsArticleService.updateCmsArticle(entity);
 		
 		return new WrapperResponse<>();
 	}
 	
 	@ApiOperation(value = "删除文章")
-	@RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
 	@ApiPermOptions(perms = PermissionType.Authorized)
     public @ResponseBody WrapperResponse<String> deleteCmsArticle(@RequestBody IdParam param) {
 		cmsArticleService.deleteCmsArticle(param.getId());

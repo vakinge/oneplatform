@@ -3,7 +3,7 @@ CREATE TABLE `cms_category` (
   `id` int(10)  NOT NULL AUTO_INCREMENT,
   `name` varchar(32) DEFAULT NULL,
   `pid` int(10)  DEFAULT NULL, 
-  `item_nums` int(10)  DEFAULT NULL, 
+  `item_nums` int(10)  DEFAULT 0, 
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='分类';
 

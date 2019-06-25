@@ -11,7 +11,7 @@ layui.define(['form','jeesuitelayui', 'layer', 'tree','element','table'], functi
   ,jeesuitelayui = layui.jeesuitelayui;
   
 
-if(moduleName === 'list'){
+if(pageType === 'list'){
   var $table = table.render({
 	    elem: '#tablecont'
 	    ,height: 465
@@ -73,7 +73,7 @@ if(moduleName === 'list'){
 		    	jeesuitelayui.iframeDialog('编辑模块','./edit.html?id='+data.id);
 		    }
 	  });
- }else if(moduleName === 'add'){
+ }else if(pageType === 'add'){
 	 $('#batchCheck').click(function(){
 		 var checkboxs = $('#apiList').find(':checkbox');
 		 if(checkboxs.length == 0)return;
@@ -87,7 +87,7 @@ if(moduleName === 'list'){
 		 }
 		 form.render('checkbox');
 	 });
- }else if(moduleName === 'edit'){
+ }else if(pageType === 'edit'){
 	  var id = jeesuitelayui.getQueryParams('id');
 	  jeesuitelayui.get('/api/perm/permgroup/details/'+id,function(data){
 		  data.menuName = data.menuName + '[' + data.menuUri + ']';

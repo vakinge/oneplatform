@@ -686,10 +686,13 @@ exports('jeesuitelayui', jeesuitelayui);
 			dataId = self.attr('data-id'),
 			callback = self.attr('onSuccessCallback');
 		
+		if(dataId){
+		   url=url.replace('{id}',dataId);	
+		   if(data)data=data.replace('{id}',dataId);
+		}
 		if(!data && method.toUpperCase() === 'POST'){
 			data = '{}';
 		}
-		if(dataId)url=url.replace('{id}',dataId);
 		layer.confirm(msg, {
 		    btn: ['确定','取消'], //按钮
 		    shade: false //不显示遮罩
