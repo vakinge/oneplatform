@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.2.RELEASE</version>
+		<version>2.3.12.RELEASE</version>
 		<relativePath />
 	</parent>
 
-	<groupId>com.jeesuite.oneplatform</groupId>
+	<groupId>com.oneplatform</groupId>
 	<artifactId>oneplatform-parent</artifactId>
 	<version>2.0.0</version>
 	<packaging>pom</packaging>
@@ -31,51 +31,54 @@
 	</developers>
 
 	<modules>
-		<module>oneplatform-base</module>
 		<module>oneplatform-platform</module>
 		<module>oneplatform-services</module>
-		<module>springcloud-eureka</module>
-		<module>springcloud-admin</module>
-		<module>oneplatform-plugins</module>
+		<module>springcloud-eureka-server</module>
 	</modules>
 
 	<properties>
+		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<compiler.jdk.version>1.8</compiler.jdk.version>
-		<output.encoding>utf-8</output.encoding>
-		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
-		<spring.version>5.0.5.RELEASE</spring.version>
-		<kafka.version>1.1.0</kafka.version>
-		<zkclient.version>0.10</zkclient.version>
-		<zookeeper.version>3.4.9</zookeeper.version>
-		<jedis.version>2.9.0</jedis.version>
-		<mybatis.version>3.4.2</mybatis.version>
-		<mapper.version>3.4.3</mapper.version>
-		<druid.version>1.0.16</druid.version>
-		<junit.version>4.12</junit.version>
-		<swagger.version>2.8.0</swagger.version>
-		<jeesuite.version>1.3.3</jeesuite.version>
-		<jeesuite.config.version>1.3.3</jeesuite.config.version>
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+		<spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+		<spring-boot.version>2.3.12.RELEASE</spring-boot.version>
+		<spring-cloud-kubernetes.version>1.1.10.RELEASE</spring-cloud-kubernetes.version>
+		<log4j.version>1.2.17</log4j.version>
+		<slf4j.version>1.7.26</slf4j.version>
+		<log4j2.version>2.11.2</log4j2.version>
+		<kafka.version>2.3.0</kafka.version>
+		<zkclient.version>0.11</zkclient.version>
+		<zookeeper.version>3.5.6</zookeeper.version>
+		<mybatis.version>3.5.6</mybatis.version>
+		<mybatis.starter.version>2.1.3</mybatis.starter.version>
+		<mybatis-generator.version>1.3.7</mybatis-generator.version>
+		<druid.version>1.2.5</druid.version>
+		<swagger.version>2.9.2</swagger.version>
+		<guava.version>30.1.1-jre</guava.version>
+		<mysql.version>8.0.16</mysql.version>
+		<junit.version>[4.13.1,)</junit.version>
+		<fastjson.version>1.2.76</fastjson.version>
+		<okhttp3.version>3.14.9</okhttp3.version>
+		<jeesuite-libs.version>1.3.9-SNAPSHOT</jeesuite-libs.version>
+		<jeesuite-config.version>1.3.9-SNAPSHOT</jeesuite-config.version>
+		<fabric8.maven.plugin.version>4.1.0</fabric8.maven.plugin.version>
 		<docker.image.prefix>oneplatform</docker.image.prefix>
 	</properties>
 
 	<repositories>
-	    <repository>
-		   <id>local-maven-repo</id>
-		   <url>file:///${project.basedir}/libs</url>
+		<repository>
+			<id>local-repo</id>
+			<url>file:///${project.basedir}/libs</url>
 		</repository>
 		<repository>
-			<id>snapshots-repo</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
+			<id>nexus-aliyun</id>
+			<name>Nexus aliyun</name>
+			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
+		<!-- <repository> <id>zvos-repo</id> <url>http://10.39.52.175/repository/maven-public/</url> 
+			<releases> <enabled>true</enabled> </releases> <snapshots> <enabled>true</enabled> 
+			</snapshots> </repository> -->
 	</repositories>
-
 
 	<dependencyManagement>
 		<dependencies>
@@ -88,9 +91,33 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<version>${spring-boot.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>${spring-boot.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
 				<groupId>org.mybatis.spring.boot</groupId>
 				<artifactId>mybatis-spring-boot-starter</artifactId>
-				<version>1.3.2</version>
+				<version>${mybatis.starter.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
@@ -100,21 +127,14 @@
 			<dependency>
 				<groupId>com.jeesuite</groupId>
 				<artifactId>jeesuite-springboot-starter</artifactId>
-				<version>${jeesuite.version}</version>
+				<version>${jeesuite-libs.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.mybatis.generator</groupId>
 				<artifactId>mybatis-generator-core</artifactId>
-				<version>1.3.2</version>
-				<scope>compile</scope>
-				<optional>true</optional>
-			</dependency>
-
-			<dependency>
-				<groupId>tk.mybatis</groupId>
-				<artifactId>mapper</artifactId>
-				<version>${mapper.version}</version>
+				<version>${mybatis-generator.version}</version>
+				<scope>test</scope>
 			</dependency>
 
 			<dependency>
@@ -131,27 +151,40 @@
 
 			<dependency>
 				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-spring</artifactId>
-				<version>${jeesuite.version}</version>
+				<artifactId>jeesuite-common</artifactId>
+				<version>${jeesuite-libs.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.jeesuite</groupId>
+				<artifactId>jeesuite-common2</artifactId>
+				<version>${jeesuite-libs.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-common</artifactId>
-				<version>${jeesuite.version}</version>
+				<artifactId>jeesuite-spring</artifactId>
+				<version>${jeesuite-libs.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.jeesuite</groupId>
 				<artifactId>jeesuite-cache</artifactId>
-				<version>${jeesuite.version}</version>
+				<version>${jeesuite-libs.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.jeesuite</groupId>
 				<artifactId>jeesuite-mybatis</artifactId>
-				<version>${jeesuite.version}</version>
+				<version>${jeesuite-libs.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>com.jeesuite</groupId>
+				<artifactId>jeesuite-scheduler</artifactId>
+				<version>${jeesuite-libs.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
@@ -159,9 +192,21 @@
 			</dependency>
 
 			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${fastjson.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger2</artifactId>
 				<version>${swagger.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-annotations</artifactId>
+				<version>1.5.20</version>
 			</dependency>
 
 			<dependency>
@@ -177,45 +222,9 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-config-client</artifactId>
-				<version>${jeesuite.config.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-scheduler</artifactId>
-				<version>${jeesuite.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-common2</artifactId>
-				<version>${jeesuite.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-filesystem</artifactId>
-				<version>${jeesuite.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-springweb</artifactId>
-				<version>${jeesuite.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-security</artifactId>
-				<version>${jeesuite.version}</version>
-			</dependency>
-
-			<dependency>
 				<groupId>com.101tec</groupId>
 				<artifactId>zkclient</artifactId>
-				<version>0.10</version>
+				<version>${zkclient.version}</version>
 				<exclusions>
 					<exclusion>
 						<artifactId>slf4j-log4j12</artifactId>
@@ -225,15 +234,45 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.apache.zookeeper</groupId>
+				<artifactId>zookeeper</artifactId>
+				<version>${zookeeper.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>com.jeesuite</groupId>
-				<artifactId>jeesuite-kafka</artifactId>
-				<version>${jeesuite.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.apache.kafka</groupId>
-						<artifactId>kafka_2.11</artifactId>
-					</exclusion>
-				</exclusions>
+				<artifactId>jeesuite-springweb</artifactId>
+				<version>${jeesuite-libs.version}</version>
+			</dependency>
+			
+			<dependency>
+			   <groupId>com.jeesuite</groupId>
+			   <artifactId>jeesuite-security</artifactId>
+			   <version>${jeesuite-libs.version}</version>
+		    </dependency>
+			
+			<dependency>
+			   <groupId>com.jeesuite</groupId>
+			   <artifactId>jeesuite-config-client</artifactId>
+			   <version>${jeesuite.config.version}</version>
+		    </dependency>
+			
+			<dependency>
+				<groupId>com.jeesuite</groupId>
+				<artifactId>jeesuite-zuul-support</artifactId>
+				<version>${jeesuite-libs.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.jeesuite</groupId>
+				<artifactId>jeesuite-config-client</artifactId>
+				<version>${jeesuite-config.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.jeesuite</groupId>
+				<artifactId>jeesuite-amqp-adapter</artifactId>
+				<version>${jeesuite-libs.version}</version>
 			</dependency>
 
 			<dependency>
@@ -243,138 +282,75 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.apache.kafka</groupId>
-				<artifactId>kafka_2.11</artifactId>
-				<version>${kafka.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-log4j12</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-api</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>log4j</groupId>
-						<artifactId>log4j</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.netflix.eureka</groupId>
-				<artifactId>eureka-client</artifactId>
-				<version>1.9.2</version>
-				<exclusions>
-					<exclusion>
-						<groupId>javax.servlet</groupId>
-						<artifactId>servlet-api</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.google.guava</groupId>
-						<artifactId>guava</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.fasterxml.jackson.core</groupId>
-						<artifactId>jackson-annotations</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>javax.ws.rs</groupId>
-						<artifactId>jsr311-api</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>${log4j2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>${log4j2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-client</artifactId>
+				<version>${rocketmq.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.netflix.archaius</groupId>
-				<artifactId>archaius-core</artifactId>
-				<version>0.7.4</version>
-				<exclusions>
-					<exclusion>
-						<groupId>com.google.guava</groupId>
-						<artifactId>guava</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>com.fasterxml.jackson.core</groupId>
-						<artifactId>jackson-annotations</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
 			</dependency>
 
 			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-netflix-core</artifactId>
-				<version>2.0.1.RELEASE</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework.boot</groupId>
-						<artifactId>spring-boot-autoconfigure</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>com.ctrip.framework.apollo</groupId>
+				<artifactId>apollo-client</artifactId>
+				<version>${apollo-client.version}</version>
 			</dependency>
+			
+			<dependency>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-kubernetes-core</artifactId>
+					<version>${spring-cloud-kubernetes.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-kubernetes-discovery</artifactId>
+					<version>${spring-cloud-kubernetes.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-starter-kubernetes-ribbon</artifactId>
+					<version>${spring-cloud-kubernetes.version}</version>
+				</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-log4j2</artifactId>
-		</dependency>
-
-
 	</dependencies>
 
-	<profiles>
-		<profile>
-			<id>docker</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.spotify</groupId>
-						<artifactId>docker-maven-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-
-
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>application.properties</include>
-					<include>application-*.properties</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>*.xml</include>
-					<include>**/*.xml</include>
-					<include>*.jks</include>
-					<include>templates/**</include>
-					<include>metadata.json</include>
-					<include>static/**</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -382,79 +358,60 @@
 					<artifactId>maven-resources-plugin</artifactId>
 					<configuration>
 						<encoding>utf-8</encoding>
-						<useDefaultDelimiters>true</useDefaultDelimiters>
+						<useDefaultDelimiters>false</useDefaultDelimiters>
+						<delimiters>
+							<delimiter>${}</delimiter>
+						</delimiters>
 						<nonFilteredFileExtensions>
 							<nonFilteredFileExtension>jks</nonFilteredFileExtension>
 						</nonFilteredFileExtensions>
 					</configuration>
 				</plugin>
 				<plugin>
-					<groupId>com.spotify</groupId>
-					<artifactId>docker-maven-plugin</artifactId>
-					<version>2.0.0</version>
-					<executions>
-						<execution>
-							<id>build-image</id>
-							<phase>package</phase>
-							<goals>
-								<goal>build</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>tag-image</id>
-							<phase>package</phase>
-							<goals>
-								<goal>tag</goal>
-							</goals>
-							<configuration>
-								<image>${docker.image.prefix}/${project.artifactId}</image>
-								<newName>${docker.image.prefix}/${project.artifactId}</newName>
-								<forceTags>true</forceTags>
-							</configuration>
-						</execution>
-						<execution>
-							<id>push-image</id>
-							<phase>install</phase>
-							<goals>
-								<goal>push</goal>
-							</goals>
-							<configuration>
-								<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-							</configuration>
-						</execution>
-					</executions>
-					<configuration>
-						<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-						<imageTags>
-							<imageTag>${project.version}</imageTag>
-							<imageTag>latest</imageTag>
-						</imageTags>
-						<forceTags>true</forceTags>
-						<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-						<resources>
-							<resource>
-								<targetPath>/</targetPath>
-								<directory>${project.build.directory}</directory>
-								<include>${project.build.finalName}.jar</include>
-								<filtering>true</filtering>
-							</resource>
-						</resources>
-						<pushImage>false</pushImage>
-						<pushImageTag>false</pushImageTag>
-					</configuration>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.5</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>${compiler.jdk.version}</source>
-					<target>${compiler.jdk.version}</target>
-					<encoding>${output.encoding}</encoding>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<sourceFileLocale>zh_CN</sourceFileLocale>
+					<emptyComments>false</emptyComments>
+					<tags>
+						<tag>TODO</tag>
+						<tag>@TODO</tag>
+						<tag>FIXME</tag>
+					</tags>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

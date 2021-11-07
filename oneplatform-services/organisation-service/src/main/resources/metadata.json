@@ -1,7 +1,0 @@
-{
-    "type": "service",
-    "name": "组织架构",
-	"identifier": "organisation-service",
-	"routeName": "organisation",
-	"apiBasePackages": "com.oneplatform.organisation.controller"
-}

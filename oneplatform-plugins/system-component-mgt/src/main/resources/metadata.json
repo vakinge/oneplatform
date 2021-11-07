@@ -1,6 +1,0 @@
-{
-    "type": "plugin",
-    "identifier": "system-mgt",
-    "name": "系统监控",
-    "apiBasePackages": "com.oneplatform.scm.controller"
-}

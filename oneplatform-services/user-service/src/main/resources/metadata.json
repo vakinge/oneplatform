@@ -1,6 +1,0 @@
-{
-    "type": "service",
-    "name": "用户服务",
-	"identifier": "user-service",
-	"apiBasePackages": "com.oneplatform.user.controller"
-}

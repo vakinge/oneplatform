@@ -1,7 +1,0 @@
-{
-    "type": "service",
-    "name": "通用服务",
-	"identifier": "common-service",
-	"routeName": "common",
-	"apiBasePackages": "com.oneplatform.common.controller"
-}
