@@ -31,7 +31,7 @@
 	</developers>
 
 	<modules>
-		<module>oneplatform-platform</module>
+		<module>oneplatform</module>
 		<module>oneplatform-services</module>
 		<module>springcloud-eureka-server</module>
 	</modules>
