@@ -9,6 +9,7 @@
 	<artifactId>oneplatform</artifactId>
 	<description>管理控制台</description>
 
+
 	<dependencies>
 	
 		<dependency>
@@ -25,6 +26,11 @@
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
 
 		<dependency>
@@ -43,11 +49,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-feign</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
@@ -57,24 +58,10 @@
 			<artifactId>spring-cloud-starter-netflix-zuul</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-springboot-starter</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
 		</dependency>
 
 		<dependency>
@@ -134,11 +121,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-bean-validators</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>com.jeesuite</groupId>
 			<artifactId>jeesuite-config-client</artifactId>
 		</dependency>
@@ -148,6 +130,7 @@
 			<artifactId>jeesuite-zuul-support</artifactId>
 		</dependency>
 		
+		<!-- swagger -->
 		<dependency>
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-annotations</artifactId>
@@ -158,9 +141,24 @@
             <artifactId>easy-captcha</artifactId>
             <version>1.6.2</version>
         </dependency>
-
-		<!-- 以下是业务模块，分布式部署请移除 -->
-		<!-- 业务模块 end -->
+        
+        <dependency>
+           <groupId>com.oneplatform</groupId>
+           <artifactId>permission-service</artifactId>
+           <version>${project.parent.version}</version>
+        </dependency>
+        
+        <dependency>
+           <groupId>com.oneplatform</groupId>
+           <artifactId>organization-service</artifactId>
+           <version>${project.parent.version}</version>
+        </dependency>
+        
+        <dependency>
+           <groupId>com.oneplatform</groupId>
+           <artifactId>system-service</artifactId>
+           <version>${project.parent.version}</version>
+        </dependency>
 
 	</dependencies>
 

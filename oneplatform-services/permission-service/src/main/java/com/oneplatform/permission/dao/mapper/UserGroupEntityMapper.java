@@ -1,0 +1,16 @@
+package com.oneplatform.permission.dao.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.jeesuite.mybatis.core.BaseMapper;
+import com.oneplatform.permission.dao.entity.UserGroupEntity;
+import com.oneplatform.permission.dto.param.UserGroupQueryParam;
+
+public interface UserGroupEntityMapper extends BaseMapper<UserGroupEntity, Integer> {
+
+    List<UserGroupEntity> findByQueryParam(UserGroupQueryParam queryParam);
+
+    List<UserGroupEntity> findGrantedUserGroups(@Param("tenantId")String tenantId, @Param("departmentId")String departmentId, @Param("userId")String userId);
+}

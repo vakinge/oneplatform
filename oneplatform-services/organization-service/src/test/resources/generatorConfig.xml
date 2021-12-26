@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<context id="Mysql" targetRuntime="MyBatis3Simple"
+		defaultModelType="flat">
+		<property name="beginningDelimiter" value="`" />
+		<property name="endingDelimiter" value="`" />
+
+		<!-- 为继承的BaseMapper接口添加对应的实现类 -->
+		<plugin type="com.jeesuite.mybatis.codegen.CrudSupportPlugin">
+			<property name="mappers" value="com.jeesuite.mybatis.core.BaseMapper" />
+		</plugin>
+
+		<jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/oneplatform?serverTimezone=UTC&amp;characterEncoding=utf-8&amp;nullCatalogMeansCurrent=true" userId="root" password="123456">
+		</jdbcConnection>
+
+		<javaModelGenerator targetPackage="com.oneplatform.organization.dao.entity" targetProject="src/main/java">
+		   <property name="rootClass" value="com.oneplatform.organization.dao.StandardBaseEntity"/>
+		</javaModelGenerator>
+			
+		<sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources" />
+		<javaClientGenerator targetPackage="com.oneplatform.organization.dao.mapper"
+			targetProject="src/main/java" type="XMLMAPPER" />
+
+		<table tableName="tenant" domainObjectName="TenantEntity"></table>
+		<table tableName="staff" domainObjectName="StaffEntity"></table>
+		<table tableName="department" domainObjectName="DepartmentEntity"></table>
+		<table tableName="position" domainObjectName="PositionEntity"></table>
+		<table tableName="staff_departments" domainObjectName="StaffDepartmentEntity"></table>
+		<table tableName="account" domainObjectName="AccountEntity"></table>
+		<table tableName="account_scopes" domainObjectName="AccountScopeEntity"></table>
+
+	</context>
+</generatorConfiguration>
