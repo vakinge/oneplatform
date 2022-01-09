@@ -34,6 +34,10 @@ public class StandardBaseEntity extends BaseEntity{
     @UpdatedBy
     @Column(name = "updated_by")
     private String updatedBy;
+    
+    private Boolean enabled;
+
+    private Boolean deleted;
 
 
     @Override
@@ -76,4 +80,22 @@ public class StandardBaseEntity extends BaseEntity{
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
     }
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+    
+    
 }

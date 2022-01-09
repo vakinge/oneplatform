@@ -25,6 +25,9 @@ public class AccountScopeEntity extends StandardBaseEntity {
      */
     @Column(name = "is_admin")
     private Boolean isAdmin;
+    
+    @Column(name = "is_default")
+    private Boolean isDefault;
 
 	public String getAccountId() {
 		return accountId;
@@ -48,6 +51,15 @@ public class AccountScopeEntity extends StandardBaseEntity {
 
 	public void setIsAdmin(Boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+	
+
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
 	}
 
 	public String getPrincipalType() {

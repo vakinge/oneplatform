@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,7 +39,7 @@ public class ApiResourceController {
     @ApiOperation(value = "新增接口",notes = "### 新增接口 \n - xxx")
     @PostMapping(value = "add")
     @ResponseBody
-    public IdParam<Integer> add(ApiResourceParam param) {
+    public IdParam<Integer> add(@RequestBody ApiResourceParam param) {
         return apiResourceService.addApiResource(param);
     }
 
@@ -47,7 +48,7 @@ public class ApiResourceController {
     @ApiOperation(value = "删除接口",notes = "### 删除接口 \n - xxx")
     @PostMapping(value = "delete")
     @ResponseBody
-    public void delete(IdParam<Integer> param) {
+    public void delete(@RequestBody IdParam<Integer> param) {
         apiResourceService.deleteApiResource(param.getId());
     }
 
@@ -56,7 +57,7 @@ public class ApiResourceController {
     @ApiOperation(value = "更新接口信息",notes = "### 更新接口信息 \n - xxx")
     @PostMapping("update")
     @ResponseBody
-    public void update(ApiResourceParam param) {
+    public void update(@RequestBody ApiResourceParam param) {
         apiResourceService.updateApiResource(param);
     }
 
@@ -65,7 +66,7 @@ public class ApiResourceController {
     @ApiOperation(value = "接口激活状态变更",notes = "### 接口激活状态变更 \n - xxx")
     @PostMapping("toggle")
     @ResponseBody
-    public void toggleApi(IdParam<Integer> param) {
+    public void toggleApi(@RequestBody IdParam<Integer> param) {
         apiResourceService.switchApiResource(param.getId());
     }
 
@@ -83,7 +84,7 @@ public class ApiResourceController {
     @ApiOperation(value = "分页查询接口列表",notes = "### 分页查询接口列表 \n - xxx")
     @PostMapping("list")
     @ResponseBody
-    public Page<ApiResource> pageQry(PageQueryRequest<ApiResourceQueryParam> queryParam) {
+    public Page<ApiResource> pageQry(@RequestBody PageQueryRequest<ApiResourceQueryParam> queryParam) {
         return apiResourceService.pageQry(new PageParams(queryParam.getPageNo(),queryParam.getPageSize()),queryParam.getExample());
     }
 

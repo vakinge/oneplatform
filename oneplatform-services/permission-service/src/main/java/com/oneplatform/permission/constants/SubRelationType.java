@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  * @date 2019年12月23日
  */
 public enum SubRelationType {
-	userToGroup,apiToButton,apiToMenu;
+	userToRole,apiToButton,apiToMenu;
 	
 	@JsonCreator
 	public static SubRelationType getEnum(String key){

@@ -11,6 +11,7 @@
     <result column="principal_type" jdbcType="VARCHAR" property="principalType" />
     <result column="principal_id" jdbcType="VARCHAR" property="principalId" />
     <result column="is_admin" jdbcType="BIT" property="isAdmin" />
+    <result column="is_default" jdbcType="BIT" property="isDefault" />
     <result column="enabled" jdbcType="BIT" property="enabled" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />

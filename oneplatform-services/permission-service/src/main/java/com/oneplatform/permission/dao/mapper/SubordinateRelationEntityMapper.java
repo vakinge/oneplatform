@@ -36,7 +36,7 @@ public interface SubordinateRelationEntityMapper extends BaseMapper<SubordinateR
      */
     void deleteByChildId(@Param("childId") String childId);
 
-	@Delete("delete from subordinate_relations where child_id = #{userId} and parent_id = #{roleId} and relation_type = 'userToGroup'")
+	@Delete("delete from subordinate_relations where child_id = #{userId} and parent_id = #{roleId} and relation_type = 'userToRole'")
 	void deleteUserRoleRelation(@Param("userId") String userId, @Param("roleId") String roleId);
 
 }

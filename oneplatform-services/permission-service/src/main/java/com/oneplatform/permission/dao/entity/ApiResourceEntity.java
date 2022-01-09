@@ -32,10 +32,7 @@ public class ApiResourceEntity extends StandardBaseEntity {
     @Column(name = "grant_type")
     private String grantType;
 
-    /**
-     * 可用状态(0:不可用;1:可用)
-     */
-    private Boolean enabled;
+
 
 	public Integer getModuleId() {
 		return moduleId;
@@ -113,22 +110,4 @@ public class ApiResourceEntity extends StandardBaseEntity {
         this.grantType = grantType;
     }
 
-
-    /**
-     * 获取可用状态(0:不可用;1:可用)
-     *
-     * @return enabled - 可用状态(0:不可用;1:可用)
-     */
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    /**
-     * 设置可用状态(0:不可用;1:可用)
-     *
-     * @param enabled 可用状态(0:不可用;1:可用)
-     */
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
 }

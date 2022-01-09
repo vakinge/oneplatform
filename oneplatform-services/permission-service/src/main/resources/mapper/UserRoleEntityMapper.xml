@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oneplatform.permission.dao.mapper.UserRoleEntityMapper">
+	<resultMap id="BaseResultMap" type="com.oneplatform.permission.dao.entity.UserRoleEntity">
+		<result column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="code" jdbcType="VARCHAR" property="code" />
+		<result column="role_type" jdbcType="VARCHAR" property="roleType" />
+		<result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
+		<result column="dept_id" jdbcType="VARCHAR" property="deptId" />
+		<result column="tags" jdbcType="VARCHAR" property="tags" />
+		<result column="remarks" jdbcType="VARCHAR" property="remarks" />
+		<result column="permissions" jdbcType="VARCHAR" property="permissions" />
+		<result column="is_default" jdbcType="BIT" property="isDefault" />
+		<result column="is_display" jdbcType="BIT" property="isDisplay" />
+		<result column="enabled" jdbcType="BIT" property="enabled" />
+		<result column="deleted" jdbcType="BIT" property="deleted" />
+		<result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+		<result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+		<result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+		<result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+	</resultMap>
+
+
+
+	<select id="findByQueryParam" resultMap="BaseResultMap">
+		select * from user_role
+		<where>
+		    <if test="name != null">and name=#{name}</if>
+			<if test="code != null">and code = #{code}</if>
+			<if test="roleType != null">and role_type=#{roleType}</if>
+			<if test="departmentId != null">and department_id = #{departmentId}</if>
+			<if test="enabled != null">and enabled = #{enabled}</if>
+		</where>
+	</select>
+
+	<select id="findGrantedUserRoles" resultMap="BaseResultMap">
+		SELECT g.* FROM user_role g JOIN
+		subordinate_relations r ON g.id=r.parent_id
+		WHERE g.role_type=#{roleType} AND r.child_id=#{userId} AND r.relation_type='userToRole' AND g.enabled=1
+		<if test="departmentId != null">
+		UNION SELECT * FROM user_role g WHERE g.role_type=#{roleType} AND g.department_id=#{departmentId} AND g.enabled=1
+		</if>
+	</select>
+</mapper>

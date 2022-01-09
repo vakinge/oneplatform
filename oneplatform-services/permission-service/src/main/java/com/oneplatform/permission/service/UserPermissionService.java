@@ -14,13 +14,14 @@ import com.jeesuite.springweb.model.ResourceScopeQueryParam;
 import com.oneplatform.permission.constants.FunctionResourceType;
 import com.oneplatform.permission.constants.GrantSourceType;
 import com.oneplatform.permission.constants.GrantTargetType;
+import com.oneplatform.permission.constants.RoleType;
 import com.oneplatform.permission.dao.StandardBaseEntity;
 import com.oneplatform.permission.dao.entity.ApiResourceEntity;
 import com.oneplatform.permission.dao.entity.FunctionResourceEntity;
-import com.oneplatform.permission.dao.entity.UserGroupEntity;
+import com.oneplatform.permission.dao.entity.UserRoleEntity;
 import com.oneplatform.permission.dao.mapper.ApiResourceEntityMapper;
 import com.oneplatform.permission.dao.mapper.FunctionResourceEntityMapper;
-import com.oneplatform.permission.dao.mapper.UserGroupEntityMapper;
+import com.oneplatform.permission.dao.mapper.UserRoleEntityMapper;
 
 /**
  * <br>
@@ -34,30 +35,28 @@ import com.oneplatform.permission.dao.mapper.UserGroupEntityMapper;
 public class UserPermissionService {
 
     @Autowired
-    private UserGroupEntityMapper userGroupMapper;
+    private UserRoleEntityMapper userGroupMapper;
     @Autowired
     private ApiResourceEntityMapper apiResourceMapper;
     @Autowired
     private FunctionResourceEntityMapper functionResourceMapper;
     @Autowired
-    private RelationInternalService relationInternalService;
+    private InternalRelationService relationService;
     
  
-    public List<UserGroupEntity> findUserAssignRoles(String tenantId,String userId) {
-    	// TODO 查询用户部门
-        String departmentId = null;
-        return userGroupMapper.findGrantedUserGroups( tenantId, departmentId,userId);
+    public List<UserRoleEntity> findUserAssignRoles(RoleType type,String userId,String departmentId) {
+        return userGroupMapper.findGrantedUserRoles(type.name(), userId, departmentId);
     }
 
-    public List<Integer> findGrantedUserGroupIds(String tenantId,String userId){
-    	List<UserGroupEntity> roles = findUserAssignRoles(tenantId, userId);
+    public List<Integer> findGrantedUserRoleIds(RoleType type,String userId,String departmentId){
+    	List<UserRoleEntity> roles = findUserAssignRoles(type,userId,departmentId);
     	List<Integer> roleIds = roles.stream().map(StandardBaseEntity::getId).collect(Collectors.toList());
     	return roleIds;
     }
 
-    public List<ApiResourceEntity> findUserGrantApis(ResourceScopeQueryParam param) {
+    public List<ApiResourceEntity> findUserGrantedApis(ResourceScopeQueryParam param) {
     	
-    	List<Integer> groupIds = findGrantedUserGroupIds(param.getTenantId(), param.getUserId());
+    	List<Integer> groupIds = findGrantedUserRoleIds(RoleType.function,param.getUserId(),param.getDepartmentId());
         
         List<ApiResourceEntity> entities = apiResourceMapper.findByUserGrantRelations(param.getUserId());
         if (!groupIds.isEmpty()) {
@@ -70,8 +69,14 @@ public class UserPermissionService {
     }
 
     
-    public List<FunctionResourceEntity> findUserGroupGrantResources(FunctionResourceType resourceType,String clientType,Integer userGroupId) {
-        Map<String, String> idMapping = relationInternalService.findGrantRelationIdMappings(GrantSourceType.function, GrantTargetType.userGroup, userGroupId.toString());
+    public List<FunctionResourceEntity> findRoleGrantedResources(FunctionResourceType resourceType,String clientType,Integer  roleId) {
+    	GrantSourceType grantSourceType = null;
+    	if(FunctionResourceType.menu == resourceType) {
+    		grantSourceType = GrantSourceType.menu;
+    	}else if(FunctionResourceType.button == resourceType) {
+    		grantSourceType = GrantSourceType.button;
+    	}
+        Map<String, String> idMapping = relationService.findGrantRelationIdMappings(grantSourceType, GrantTargetType.role,  roleId.toString());
         if (idMapping.isEmpty()) return new ArrayList<>(0);
         List<FunctionResourceEntity> entities = functionResourceMapper.selectByPrimaryKeys(idMapping.keySet().stream().map(Integer::parseInt).collect(Collectors.toList()));
         //查询父级（由于一些情况数据库只保存了子级菜单，要显示树形结构还需要）
@@ -79,12 +84,12 @@ public class UserPermissionService {
         return entities;
     }
 
-    public List<FunctionResourceEntity> findUserGrantResources(ResourceScopeQueryParam param) {
+    public List<FunctionResourceEntity> findUserGrantedResources(ResourceScopeQueryParam param) {
 
-    	List<Integer> groupIds = findGrantedUserGroupIds(param.getTenantId(), param.getUserId());
+    	List<Integer> roleIds = findGrantedUserRoleIds(RoleType.function, param.getUserId(), param.getDepartmentId());
         List<FunctionResourceEntity> entities = functionResourceMapper.findUserGrantedResources(param.getClientType(), param.getUserId());
-        if (!groupIds.isEmpty()) {
-            List<FunctionResourceEntity> roleGrantApis = functionResourceMapper.findRoleGrantedRelations(param.getClientType(), groupIds);
+        if (!roleIds.isEmpty()) {
+            List<FunctionResourceEntity> roleGrantApis = functionResourceMapper.findRoleGrantedRelations(param.getClientType(), roleIds);
             if (!roleGrantApis.isEmpty()) entities.addAll(roleGrantApis);
         }
         //

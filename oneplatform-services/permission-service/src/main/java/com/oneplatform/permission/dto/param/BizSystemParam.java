@@ -84,7 +84,7 @@ public class BizSystemParam {
     private String chargeUserName;
 
     @ApiModelProperty(value = "绑定系统的角色名称")
-    private List<UserGroupParam> roleList;
+    private List<UserRoleParam> roleList;
 
     @ApiModelProperty(value = "系统域名")
     private List<String> domainList;
@@ -268,11 +268,11 @@ public class BizSystemParam {
         this.adminList = adminList;
     }
 
-    public List<UserGroupParam> getRoleList() {
+    public List<UserRoleParam> getRoleList() {
         return roleList;
     }
 
-    public void setRoleList(List<UserGroupParam> roleList) {
+    public void setRoleList(List<UserRoleParam> roleList) {
         this.roleList = roleList;
     }
 

@@ -27,9 +27,6 @@ public class BizSystemModuleEntity extends StandardBaseEntity {
 
     @Column(name = "anonymous_uris")
     private String anonymousUris;
-
-    private Boolean enabled;
-
  
     /**
      * @return name
@@ -106,20 +103,6 @@ public class BizSystemModuleEntity extends StandardBaseEntity {
      */
     public void setAnonymousUris(String anonymousUris) {
         this.anonymousUris = anonymousUris;
-    }
-
-    /**
-     * @return enabled
-     */
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    /**
-     * @param enabled
-     */
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 
 }

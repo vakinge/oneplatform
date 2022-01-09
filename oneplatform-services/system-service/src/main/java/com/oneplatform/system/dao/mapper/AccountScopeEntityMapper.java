@@ -20,7 +20,7 @@ public interface AccountScopeEntityMapper extends BaseMapper<AccountScopeEntity,
 
 	@Select("SELECT * FROM account_scope WHERE account_id=#{accountId} AND principal_type=#{principalType} AND enabled=1")
 	@ResultMap("BaseResultMap")
-	AccountScopeEntity findByAccountIdAndType(@Param("accountId") String accountId,@Param("principalType") String principalType);
+	List<AccountScopeEntity> findByAccountIdAndType(@Param("accountId") String accountId,@Param("principalType") String principalType);
     
 	
 }

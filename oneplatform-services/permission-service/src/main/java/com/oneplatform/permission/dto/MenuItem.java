@@ -1,8 +1,6 @@
 package com.oneplatform.permission.dto;
 
-import org.apache.commons.lang3.StringUtils;
-
-import io.swagger.annotations.ApiModelProperty;
+import com.oneplatform.permission.constants.ClientType;
 
 /**
  * 
@@ -15,91 +13,35 @@ import io.swagger.annotations.ApiModelProperty;
  */
 public class MenuItem {
 
-	private Integer id;
-	@ApiModelProperty("父ID")
-	private Integer parentId;
-	private String name;
-	@ApiModelProperty("页面链接")
-	private String uri;
-	@ApiModelProperty("资源图标")
+	private String clientType = ClientType.PC.name();
+	private String router;
+	private String viewPath;
 	private String icon;
-	@ApiModelProperty("排序")
-	private Integer sort;
-	/**
-	 * @return the id
-	 */
-	public Integer getId() {
-		return id;
+	public String getClientType() {
+		return clientType;
 	}
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Integer id) {
-		this.id = id;
+	public void setClientType(String clientType) {
+		this.clientType = clientType;
 	}
-	/**
-	 * @return the parentId
-	 */
-	public Integer getParentId() {
-		return parentId;
+	public String getRouter() {
+		return router;
 	}
-	/**
-	 * @param parentId the parentId to set
-	 */
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
+	public void setRouter(String router) {
+		this.router = router;
 	}
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
+	public String getViewPath() {
+		return viewPath;
 	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setViewPath(String viewPath) {
+		this.viewPath = viewPath;
 	}
-	/**
-	 * @return the uri
-	 */
-	public String getUri() {
-		return uri;
-	}
-	/**
-	 * @param uri the uri to set
-	 */
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
-	/**
-	 * @return the icon
-	 */
 	public String getIcon() {
 		return icon;
 	}
-	/**
-	 * @param icon the icon to set
-	 */
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
-	/**
-	 * @return the sort
-	 */
-	public Integer getSort() {
-		return sort;
-	}
-	/**
-	 * @param sort the sort to set
-	 */
-	public void setSort(Integer sort) {
-		this.sort = sort;
-	}
 	
-	public boolean isLeaf(){
-		return StringUtils.isNotBlank(uri);
-	}
+	
 	
 }

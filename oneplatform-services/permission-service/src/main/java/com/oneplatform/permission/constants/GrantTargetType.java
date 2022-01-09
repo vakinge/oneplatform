@@ -10,5 +10,5 @@ package com.oneplatform.permission.constants;
  * @date 2019年12月27日
  */
 public enum GrantTargetType {
-	user,userGroup;
+	user,role;
 }

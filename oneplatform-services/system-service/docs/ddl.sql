@@ -23,6 +23,7 @@ CREATE TABLE `account_scope` (
   `principal_type` varchar(32)  NOT NULL ,
   `principal_id` varchar(32)  NOT NULL ,
   `is_admin` tinyint(1) DEFAULT 0  COMMENT '是否管理员',
+  `is_default` tinyint(1) DEFAULT 0  COMMENT '是否默认',
   `enabled` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   `created_at` datetime DEFAULT NULL,

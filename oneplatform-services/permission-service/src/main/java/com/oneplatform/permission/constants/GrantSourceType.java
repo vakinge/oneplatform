@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  * @date 2019年12月25日
  */
 public enum GrantSourceType {
-    system,function,api;
+	menu,button,api;
 
     @JsonCreator
     public static GrantSourceType getEnum(String key){

@@ -11,5 +11,14 @@
     <result column="target_type" jdbcType="CHAR" property="targetType" />
     <result column="target_id" jdbcType="VARCHAR" property="targetId" />
   </resultMap>
+  
+  <select id="findGrantRelations" resultMap="BaseResultMap">
+		SELECT * FROM grant_relations
+		<where>
+		    <if test="sourceType != null">and source_type=#{sourceType}</if>
+			<if test="targetType != null">and target_type=#{targetType}</if>
+			<if test="targetId != null">and target_id = #{targetId}</if>
+		</where>
+	</select>
  
 </mapper>

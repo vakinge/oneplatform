@@ -48,6 +48,12 @@ public class StaffEntity extends StandardBaseEntity {
      * 手机号
      */
     private String mobile;
+    
+    @Column(name = "employ_type")
+    private String employType;
+    
+    @Column(name = "entry_date")
+    private Date entryDate;
 
     /**
      * 是否部门负责人
@@ -126,6 +132,23 @@ public class StaffEntity extends StandardBaseEntity {
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+	
+
+	public String getEmployType() {
+		return employType;
+	}
+
+	public void setEmployType(String employType) {
+		this.employType = employType;
+	}
+
+	public Date getEntryDate() {
+		return entryDate;
+	}
+
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
 	}
 
 	public Boolean getIsLeader() {

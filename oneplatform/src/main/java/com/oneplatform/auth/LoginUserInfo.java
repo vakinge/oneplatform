@@ -24,4 +24,28 @@ import com.jeesuite.common.model.AuthUser;
  */
 public class LoginUserInfo extends AuthUser {
 	
+	private String defaultTenantId;
+	private String realName;
+	private String avatar;
+	
+	public String getDefaultTenantId() {
+		return defaultTenantId;
+	}
+	public void setDefaultTenantId(String defaultTenantId) {
+		this.defaultTenantId = defaultTenantId;
+	}
+	public String getRealName() {
+		return realName;
+	}
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+	
+	
 }

@@ -13,6 +13,7 @@
 	<modules>
 		<module>permission-service</module>
 		<module>organization-service</module>
+		<module>tenant-service</module>
 	</modules>
 
 	<dependencies>

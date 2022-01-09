@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jeesuite.cache.command.RedisString;
+import com.jeesuite.cache.CacheUtils;
 import com.jeesuite.common.CustomRequestHeaders;
 import com.jeesuite.common.util.SimpleCryptUtils;
 import com.jeesuite.zuul.filter.FilterHandler;
@@ -38,7 +38,8 @@ public class MobileVerifyHandler implements FilterHandler {
 				return null;
 			}
 			//TODO 验证
-			String checkCode = new RedisString("sms_code_" + mobile).get();
+			String cacheKey = "sms_code_" + mobile;
+			String checkCode = CacheUtils.getString(cacheKey);
 			if(StringUtils.isBlank(checkCode)){
 				ctx.setSendZuulResponse(false);
 				ctx.setResponseStatusCode(400);
@@ -52,7 +53,8 @@ public class MobileVerifyHandler implements FilterHandler {
 				ctx.setResponseBody("{\"code\": 400,\"msg\":\"验证码错误，请重新输入\"}");
 				return null;
 			}
-			//TODO 删除缓存验证码
+			//
+			CacheUtils.remove(cacheKey);
             
 			//通过header透传到后端
 			String encryptMobile = SimpleCryptUtils.encrypt(mobile);

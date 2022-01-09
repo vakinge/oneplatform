@@ -8,8 +8,8 @@ import com.oneplatform.permission.dao.StandardBaseEntity;
 @Table(name = "system_portal")
 public class BizSystemPortalEntity extends StandardBaseEntity {
 
-	 @Column(name = "home_page")
-    private String homePage;
+	 @Column(name = "index_path")
+    private String indexPath;
     
     @Column(name = "tenant_id",updatable = false)
     private String tenantId;
@@ -17,16 +17,12 @@ public class BizSystemPortalEntity extends StandardBaseEntity {
     @Column(name = "client_type",updatable = false)
     private String clientType;
 
-    @Column(name = "enabled")
-    private Boolean enabled = true;
-
-
-    public String getHomePage() {
-		return homePage;
+	public String getIndexPath() {
+		return indexPath;
 	}
 
-	public void setHomePage(String homePage) {
-		this.homePage = homePage;
+	public void setIndexPath(String indexPath) {
+		this.indexPath = indexPath;
 	}
 
 	public String getTenantId() {
@@ -45,11 +41,4 @@ public class BizSystemPortalEntity extends StandardBaseEntity {
 		this.clientType = clientType;
 	}
 
-	public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
 }

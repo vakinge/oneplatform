@@ -50,13 +50,21 @@ public class AccountService {
 			throw new JeesuiteBaseException("账号不存在或密码错误");
 		}
 		if(type != null) {
-			AccountScopeEntity scopeEntity = accountScopeMapper.findByAccountIdAndType(acountDto.getId(), type);
-			if(scopeEntity != null) {
-				acountDto.setTenantId(scopeEntity.getTenantId());
-				acountDto.setPrincipalType(scopeEntity.getPrincipalType());
-				acountDto.setPrincipalId(scopeEntity.getPrincipalId());
-				acountDto.setAdmin(scopeEntity.getIsAdmin());
+			List<AccountScopeEntity> scopes = accountScopeMapper.findByAccountIdAndType(acountDto.getId(), type);
+			AccountScopeEntity scopeEntity = null;
+			if(scopes.size() == 1) {
+				scopeEntity = scopes.get(0);
+			}else if(!scopes.isEmpty()){
+				scopeEntity = scopes.stream().filter(o -> o.getIsDefault()).findFirst().orElse(scopes.get(0));
 			}
+			if(scopeEntity == null) {
+				throw new JeesuiteBaseException(403,"未授权登录该系统");
+			}
+			
+			acountDto.setTenantId(scopeEntity.getTenantId());
+			acountDto.setPrincipalType(scopeEntity.getPrincipalType());
+			acountDto.setPrincipalId(scopeEntity.getPrincipalId());
+			acountDto.setAdmin(scopeEntity.getIsAdmin());
 		}
 		return acountDto;
 	}

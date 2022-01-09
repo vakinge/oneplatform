@@ -1,5 +1,6 @@
 package com.oneplatform.permission.dto.param;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeesuite.springweb.model.BaseQueryParam;
 
 
@@ -19,7 +20,11 @@ public class FunctionResourceQueryParam extends BaseQueryParam {
     
     private String type;
     
+    private String clientType;
+    
     private Boolean enabled;
+    @JsonIgnore
+    private Boolean excludeButton;
 
 	public Integer getParentId() {
 		return parentId;
@@ -53,6 +58,14 @@ public class FunctionResourceQueryParam extends BaseQueryParam {
 		this.type = type;
 	}
 
+	public String getClientType() {
+		return clientType;
+	}
+
+	public void setClientType(String clientType) {
+		this.clientType = clientType;
+	}
+
 	public Boolean getEnabled() {
 		return enabled;
 	}
@@ -60,5 +73,15 @@ public class FunctionResourceQueryParam extends BaseQueryParam {
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	public Boolean getExcludeButton() {
+		return excludeButton;
+	}
+
+	public void setExcludeButton(Boolean excludeButton) {
+		this.excludeButton = excludeButton;
+	}
+	
+	
 
 }

@@ -8,12 +8,14 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="code" jdbcType="VARCHAR" property="code" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="gender" jdbcType="CHAR" property="gender" />
     <result column="birthday" jdbcType="DATE" property="birthday" />
     <result column="id_type" jdbcType="INTEGER" property="idType" />
     <result column="id_no" jdbcType="VARCHAR" property="idNo" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="employ_type" jdbcType="VARCHAR" property="employType" />
+    <result column="entry_date" jdbcType="DATE" property="entryDate" />
     <result column="is_leader" jdbcType="BIT" property="isLeader" />
     <result column="account_id" jdbcType="VARCHAR" property="accountId" />
     <result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />

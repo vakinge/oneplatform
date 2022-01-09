@@ -1,106 +1,64 @@
 package com.oneplatform.permission.dto.param;
 
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
+
+import com.oneplatform.permission.dto.MenuItem;
 
 import io.swagger.annotations.ApiModelProperty;
 
 public class FunctionResourceParam {
 
-    private Integer id;
+	private Integer id;
 
-    /**
-     * 关联系统
-     */
-    @ApiModelProperty(hidden = true)
-    private Integer systemId;
+	/**
+	 * 父ID
+	 */
+	@ApiModelProperty("父ID")
+	private Integer parentId;
 
-    /**
-     * 父ID
-     */
-    @ApiModelProperty("父ID")
-    private Integer parentId;
+	/**
+	 * 资源名称
+	 */
+	@ApiModelProperty(value = "功能资源名称", required = true)
+	@NotBlank(message = "功能资源名称不能为空")
+	private String name;
 
-    /**
-     * 资源名称
-     */
-    @ApiModelProperty(value = "功能资源名称",required = true)
-    @NotBlank(message = "功能资源名称不能为空")
-    private String name;
-    
-    private String code;
-    
-    private String type;
+	private String code;
 
-    /**
-     * 页面链接
-     */
-    @ApiModelProperty("页面链接")
-    private String viewPath;
+	private String type;
 
-    /**
-     * 资源图标
-     */
-    @ApiModelProperty("资源图标")
-    private String icon;
-    
-    private String clientType;
+	@ApiModelProperty("排序")
+	private Integer sort;
 
-    /**
-     * 排序
-     */
-    @ApiModelProperty("排序")
-    private Integer sort;
+	private List<MenuItem> items;
+	
+	private boolean display = true;
 
+	public Integer getId() {
+		return id;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Integer getParentId() {
+		return parentId;
+	}
 
-    public Integer getSystemId() {
-        return systemId;
-    }
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
 
-    public void setSystemId(Integer systemId) {
-        this.systemId = systemId;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-   
-
-	public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getCode() {
 		return code;
@@ -118,21 +76,30 @@ public class FunctionResourceParam {
 		this.type = type;
 	}
 
-	public String getViewPath() {
-		return viewPath;
+	public Integer getSort() {
+		return sort;
 	}
 
-	public void setViewPath(String viewPath) {
-		this.viewPath = viewPath;
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 
-	public String getClientType() {
-		return clientType;
+	public List<MenuItem> getItems() {
+		return items;
 	}
 
-	public void setClientType(String clientType) {
-		this.clientType = clientType;
+	public void setItems(List<MenuItem> items) {
+		this.items = items;
 	}
 
+	public boolean isDisplay() {
+		return display;
+	}
+
+	public void setDisplay(boolean display) {
+		this.display = display;
+	}
 	
+	
+
 }

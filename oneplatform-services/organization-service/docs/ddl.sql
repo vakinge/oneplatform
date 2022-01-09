@@ -1,37 +1,17 @@
-DROP TABLE IF EXISTS `tenant`;
-CREATE TABLE `tenant` (
-  `id` varchar(32)  NOT NULL,
-  `name` varchar(32) NOT NULL COMMENT '名称',
-  `code` varchar(32) NOT NULL COMMENT '编码',
-  `telephone` varchar(15) DEFAULT NULL COMMENT '联系电话',
-  `address` varchar(100) DEFAULT NULL COMMENT '联系地址',
-  `contact_name` varchar(32) DEFAULT NULL COMMENT '联系人',
-  `website` varchar(32) DEFAULT NULL COMMENT '官网',
-  `status` varchar(32) DEFAULT 'actived',
-  `enabled` tinyint(1) DEFAULT 1,
-  `deleted` tinyint(1) DEFAULT 0 COMMENT '是否删除',
-  `effect_date` date DEFAULT NULL COMMENT '生效时间',
-  `invalid_date` date DEFAULT NULL COMMENT '失效时间',
-  `created_at` datetime DEFAULT NULL,
-  `created_by` varchar(32) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `updated_by` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='租户信息';
-
-
 DROP TABLE IF EXISTS `staff`;
 CREATE TABLE `staff` (
-  `id` varchar(45) NOT NULL COMMENT '应用系统中的员工ID',
-  `code` varchar(45) DEFAULT NULL COMMENT '员工编码',
-  `name` varchar(45) DEFAULT NULL COMMENT '员工名称',
-  `gender` varchar(2) DEFAULT NULL COMMENT '性别',
+  `id` varchar(32) NOT NULL COMMENT '应用系统中的员工ID',
+  `code` varchar(32) DEFAULT NULL COMMENT '员工编码',
+  `name` varchar(32) DEFAULT NULL COMMENT '员工名称',
+  `gender` enum('male','female') NOT NULL COMMENT '性别',
   `birthday` date DEFAULT NULL COMMENT '出生日期',
   `id_type` int(1) DEFAULT 1 COMMENT '证件类型',
   `id_no` varchar(100) DEFAULT NULL COMMENT '证件号码',
   `email` varchar(45) DEFAULT NULL COMMENT '邮箱',
   `mobile` varchar(45) DEFAULT NULL COMMENT '手机号',
   `is_leader` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否部门负责人',
+  `employ_type` varchar(16) DEFAULT NULL COMMENT '雇佣类型',
+  `entry_date` date DEFAULT NULL COMMENT '入职日期',
   `account_id` varchar(32) DEFAULT NULL COMMENT '管理员账号id',
   `tenant_id` varchar(32) DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态（0，离职；1，在职）',
