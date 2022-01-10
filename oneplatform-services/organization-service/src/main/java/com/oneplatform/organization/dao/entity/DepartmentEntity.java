@@ -44,20 +44,14 @@ public class DepartmentEntity extends StandardBaseEntity {
     /**
      * 排序索引
      */
-    @Column(name = "sort_index")
-    private Integer sortIndex;
+    @Column(name = "sort")
+    private Integer sort;
 
     /**
      * 是否虚拟组织 （0:非虚拟 ，1:虚拟）
      */
     @Column(name = "is_virtual")
     private Boolean isVirtual;
-
-    /**
-     * 是否叶子节点(0:不是 ， 1：是)
-     */
-    @Column(name = "is_leaf")
-    private Boolean isLeaf;
 
     /**
      * 部门负责人id
@@ -116,12 +110,14 @@ public class DepartmentEntity extends StandardBaseEntity {
 		this.fullName = fullName;
 	}
 
-	public Integer getSortIndex() {
-		return sortIndex;
+	
+
+	public Integer getSort() {
+		return sort;
 	}
 
-	public void setSortIndex(Integer sortIndex) {
-		this.sortIndex = sortIndex;
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 
 	public Boolean getIsVirtual() {
@@ -130,14 +126,6 @@ public class DepartmentEntity extends StandardBaseEntity {
 
 	public void setIsVirtual(Boolean isVirtual) {
 		this.isVirtual = isVirtual;
-	}
-
-	public Boolean getIsLeaf() {
-		return isLeaf;
-	}
-
-	public void setIsLeaf(Boolean isLeaf) {
-		this.isLeaf = isLeaf;
 	}
 
 	public String getLeaderId() {

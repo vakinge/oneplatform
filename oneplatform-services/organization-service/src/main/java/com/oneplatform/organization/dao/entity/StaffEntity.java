@@ -50,7 +50,7 @@ public class StaffEntity extends StandardBaseEntity {
     private String mobile;
     
     @Column(name = "employ_type")
-    private String employType;
+    private Integer employType;
     
     @Column(name = "entry_date")
     private Date entryDate;
@@ -135,11 +135,11 @@ public class StaffEntity extends StandardBaseEntity {
 	}
 	
 
-	public String getEmployType() {
+	public Integer getEmployType() {
 		return employType;
 	}
 
-	public void setEmployType(String employType) {
+	public void setEmployType(Integer employType) {
 		this.employType = employType;
 	}
 

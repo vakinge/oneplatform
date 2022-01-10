@@ -38,6 +38,7 @@ function convertToMenuItems(items) {
      }
 	   menus.push(menu);
 	 });
+   //console.log('-----------------\n' + JSON.stringify(menus) + '\n-----------------');
    return menus;
 }
 

@@ -108,8 +108,8 @@ public class UserRoleController {
 	@PostMapping("list")
 	public Page<UserRole> pageQry(@RequestBody PageQueryRequest<UserRoleQueryParam> queryParam) {
 		if(queryParam.getExample() == null)queryParam.setExample(new UserRoleQueryParam());
-		return userRoleService.pageQryUserRole(new PageParams(queryParam.getPageNo(), queryParam.getPageSize()),
-				queryParam.getExample());
+		PageParams pageParams = new PageParams(queryParam.getPageNo(), queryParam.getPageSize());
+		return userRoleService.pageQryUserRole(pageParams,queryParam.getExample());
 	}
 
 	

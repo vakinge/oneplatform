@@ -12,9 +12,8 @@
     <result column="org_type" jdbcType="VARCHAR" property="orgType" />
     <result column="full_code" jdbcType="VARCHAR" property="fullCode" />
     <result column="full_name" jdbcType="VARCHAR" property="fullName" />
-    <result column="sort_index" jdbcType="INTEGER" property="sortIndex" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="is_virtual" jdbcType="BIT" property="isVirtual" />
-    <result column="is_leaf" jdbcType="BIT" property="isLeaf" />
     <result column="leader_id" jdbcType="VARCHAR" property="leaderId" />
     <result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
     <result column="enabled" jdbcType="BIT" property="enabled" />
@@ -24,4 +23,11 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
   </resultMap>
+  
+  <select id="findListByQueryParam" resultMap="BaseResultMap">
+    SELECT * FROM department 
+    <if test="parentId != null">AND parent_id = #{parentId}</if>
+    <if test="name != null and name != ''">AND name LIKE concat('%',#{name},'%')</if>
+    <if test="enabled != null">AND enabled = #{enabled}</if>
+  </select>
 </mapper>

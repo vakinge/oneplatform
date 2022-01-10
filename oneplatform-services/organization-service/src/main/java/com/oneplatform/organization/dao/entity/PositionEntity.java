@@ -1,8 +1,10 @@
 package com.oneplatform.organization.dao.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.oneplatform.organization.dao.StandardBaseEntity;
-import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "position")
 public class PositionEntity extends StandardBaseEntity {
@@ -17,6 +19,9 @@ public class PositionEntity extends StandardBaseEntity {
      */
     @Column(name = "department_id")
     private String departmentId;
+    
+    @Transient
+    private String departmentName;
 
 	public String getName() {
 		return name;
@@ -34,5 +39,14 @@ public class PositionEntity extends StandardBaseEntity {
 		this.departmentId = departmentId;
 	}
 
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
+	
     
 }

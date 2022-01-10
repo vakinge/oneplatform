@@ -14,5 +14,22 @@
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
   </resultMap>
+  
+  <select id="findListByParam" resultMap="BaseResultMap">
+    SELECT
+     pos.*,
+     dept.full_name as department_name
+    FROM position pos
+    LEFT JOIN department dept on pos.department_id = dept.id
+    <where>
+      <if test="departmentId != null">AND department_id = #{departmentId}</if>
+      <if test="name != null and name != ''">AND name LIKE concat('%',#{name},'%')</if>
+      <if test="enabled != null">AND enabled = #{enabled}</if>
+    </where>
+    order by pos.id desc
+
+  </select>
+  
 </mapper>
