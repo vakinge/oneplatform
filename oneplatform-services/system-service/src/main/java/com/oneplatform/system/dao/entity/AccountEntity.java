@@ -14,6 +14,8 @@ public class AccountEntity extends StandardBaseEntity {
     private String mobile;
 
     private String password;
+    
+    private String avatar;
 
 	public String getName() {
 		return name;
@@ -47,5 +49,14 @@ public class AccountEntity extends StandardBaseEntity {
 		this.password = password;
 	}
 
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	
     
 }

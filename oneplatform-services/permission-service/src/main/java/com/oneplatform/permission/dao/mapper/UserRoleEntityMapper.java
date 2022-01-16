@@ -13,4 +13,6 @@ public interface UserRoleEntityMapper extends BaseMapper<UserRoleEntity, Integer
     List<UserRoleEntity> findByQueryParam(UserRoleQueryParam queryParam);
 
     List<UserRoleEntity> findGrantedUserRoles(@Param("roleType")String roleType,@Param("userId")String userId, @Param("departmentId")String departmentId);
+
+    List<UserRoleEntity> findByTags(List<String> tags);
 }

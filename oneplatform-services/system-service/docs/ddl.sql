@@ -5,6 +5,7 @@ CREATE TABLE `account` (
   `email` varchar(32) DEFAULT NULL,
   `mobile` char(11) DEFAULT NULL,
   `password` char(128) DEFAULT NULL,
+  `avatar` char(200) DEFAULT NULL,
   `enabled` tinyint(1) DEFAULT 1,
   `deleted` tinyint(1) DEFAULT 0,
   `created_at` datetime DEFAULT NULL,

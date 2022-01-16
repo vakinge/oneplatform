@@ -24,7 +24,7 @@
 
 
 	<select id="findByQueryParam" resultMap="BaseResultMap">
-		select * from user_role
+		SELECT * FROM user_role
 		<where>
 		    <if test="name != null">and name=#{name}</if>
 			<if test="code != null">and code = #{code}</if>
@@ -41,5 +41,13 @@
 		<if test="departmentId != null">
 		UNION SELECT * FROM user_role g WHERE g.role_type=#{roleType} AND g.department_id=#{departmentId} AND g.enabled=1
 		</if>
+	</select>
+	
+	<select id="findByTags" resultMap="BaseResultMap">
+		SELECT * FROM user_role WHERE 
+		<foreach collection="list" item="item" index="index" open="(" close=")" separator=" OR ">
+		   find_in_set(#{item},tags)
+       </foreach>
+       AND enabled = 1
 	</select>
 </mapper>

@@ -2,6 +2,8 @@ package com.oneplatform.organization.dto;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -21,19 +23,22 @@ public class Staff {
     @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date birthday;
     private Integer idType;
+    @Column(name = "id_no")
     private String idNo;
     private String email;
     private String mobile;
-    private String employType;
+    private Integer employType;
     @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date entryDate;
     private Boolean isLeader;
     private String accountId;
-    private String enabled;
+    private Boolean enabled;
+    private Boolean deleted;
 	private java.util.Date createdAt;
 	private java.util.Date updatedAt;
 	private String createdBy;
 	private String updatedBy;
+	
 	public String getId() {
 		return id;
 	}
@@ -88,10 +93,10 @@ public class Staff {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	public String getEmployType() {
+	public Integer getEmployType() {
 		return employType;
 	}
-	public void setEmployType(String employType) {
+	public void setEmployType(Integer employType) {
 		this.employType = employType;
 	}
 	public Date getEntryDate() {
@@ -112,11 +117,18 @@ public class Staff {
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
-	public String getEnabled() {
+	public Boolean getEnabled() {
 		return enabled;
 	}
-	public void setEnabled(String enabled) {
+	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public Boolean getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 	public java.util.Date getCreatedAt() {
 		return createdAt;
@@ -142,6 +154,6 @@ public class Staff {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-
+	
 	
 }

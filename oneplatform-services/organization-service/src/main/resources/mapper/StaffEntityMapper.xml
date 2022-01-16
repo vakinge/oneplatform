@@ -36,20 +36,19 @@
        d.full_code as department_code,
        d.full_name as department_name,
        p.name as position_name
-      FROM mdm_staff_basic s
+      FROM staff s
       LEFT JOIN staff_departments sd ON sd.staff_id = s.id AND sd.is_primary = 1 and sd.enabled = 1
       LEFT JOIN department d ON sd.department_id = d.id
       LEFT JOIN position p ON sd.position_id = p.id
    </sql>
    
    <select id="findListByParam" resultMap="BaseResultMap">
-        SELECT s.* FROM mdm_staff_basic s
+        SELECT s.* FROM staff s
         <where>
           <if test="name != null and name != ''">AND s.name=#{name}</if>
           <if test="email != null and email != ''">AND s.email=#{email}</if>
           <if test="mobile != null and mobile != ''">AND s.mobile=#{mobile}</if>
           <if test="code != null and code != ''">AND s.code=#{code}</if>
-          <if test="idNo !=null and idNo !=''">AND s.id_no=#{idNo}</if>
           <if test="enabled != null">AND s.enabled=#{enabled}</if>
         </where>
     </select>

@@ -19,6 +19,8 @@ public class StaffParam {
 	private String mobile;
 	private String employType;
 	private Date entryDate;
+	private String departmentId;
+	private String postionId;
 
 	public String getId() {
 		return id;
@@ -99,5 +101,23 @@ public class StaffParam {
 	public void setEntryDate(Date entryDate) {
 		this.entryDate = entryDate;
 	}
+
+	public String getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public String getPostionId() {
+		return postionId;
+	}
+
+	public void setPostionId(String postionId) {
+		this.postionId = postionId;
+	}
+	
+	
 
 }

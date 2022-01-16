@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jeesuite.common.CurrentRuntimeContext;
+import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.annotation.ApiMetadata;
 import com.jeesuite.common.constants.PermissionLevel;
 import com.jeesuite.common.model.IdParam;
@@ -25,6 +26,7 @@ import com.jeesuite.common.model.Page;
 import com.jeesuite.common.model.PageParams;
 import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.model.TreeModel;
+import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.springweb.model.PageQueryRequest;
 import com.oneplatform.permission.constants.FunctionResourceType;
 import com.oneplatform.permission.constants.GrantSourceType;
@@ -116,8 +118,10 @@ public class UserRoleController {
 	@ApiOperation(value = "角色下拉列表", notes = "### 角色下拉列表 \n -xxx")
 	@ApiMetadata(permissionLevel = PermissionLevel.PermissionRequired, actionLog = true)
 	@GetMapping("options")
-	public List<SelectOption> options() {
+	public List<SelectOption> options(@RequestParam(name="type") String type) {
 		UserRoleQueryParam param = new UserRoleQueryParam();
+		param.setRoleType(type);
+		param.setEnabled(true);
 		return userRoleService.listByQueryParam(param).stream().map( o -> {
 			return new SelectOption(o.getId().toString(), o.getName());
 		}).collect(Collectors.toList());
@@ -198,13 +202,14 @@ public class UserRoleController {
             , @RequestParam(value = "includeButton", required = false, defaultValue = "true") boolean includeButton) {
 
 		UserRole role = userRoleService.getUserRole(roleId);
+		if(role == null)throw new JeesuiteBaseException("角色不存在");
 
         FunctionResourceQueryParam queryParam = new FunctionResourceQueryParam();
         if (!includeButton) queryParam.setType(FunctionResourceType.menu.name());
         queryParam.setEnabled(true);
         List<FunctionResourceEntity> entities = functionResourceService.findByQueryParam(queryParam);
         //当前系统所有功能资源
-        List<ResourceTreeModel> allResorces = FunctionResourceEntity.toTreeModels(entities, null);
+        List<ResourceTreeModel> allResorces = BeanUtils.copy(entities, ResourceTreeModel.class);
 
         //当前角色的功能资源
         List<FunctionResourceEntity> roleRresorces;

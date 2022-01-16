@@ -9,7 +9,8 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="mobile" jdbcType="CHAR" property="mobile" />
-    <result column="password" jdbcType="CHAR" property="password" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="enabled" jdbcType="BIT" property="enabled" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />

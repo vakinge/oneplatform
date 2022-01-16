@@ -39,6 +39,7 @@ public class DefaultAccountApi implements AccountApi {
 			Account account = accountService.validateAccount(type,accountName, password);
 			authUser.setId(account.getId());
 			authUser.setName(account.getName());
+			authUser.setAvatar(account.getAvatar());
 			authUser.setDefaultTenantId(account.getTenantId());
 			authUser.setPrincipalType(account.getPrincipalType());
 			authUser.setPrincipalId(account.getPrincipalId());

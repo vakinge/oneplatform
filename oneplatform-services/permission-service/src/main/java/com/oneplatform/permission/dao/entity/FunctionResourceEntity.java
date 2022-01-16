@@ -1,19 +1,9 @@
 package com.oneplatform.permission.dao.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
-
-import com.jeesuite.common.util.BeanUtils;
-import com.jeesuite.common.util.JsonUtils;
 import com.oneplatform.permission.dao.StandardBaseEntity;
-import com.oneplatform.permission.dto.MenuItem;
-import com.oneplatform.permission.dto.ResourceTreeModel;
 
 
 @Table(name = "function_resource")
@@ -34,11 +24,21 @@ public class FunctionResourceEntity extends StandardBaseEntity {
 
     private String code;
     
-    @Column(name = "item_content")
-    private String itemContent;
+    private String router;
+    
+    @Column(name = "view_path")
+    private String viewPath;
+    
+    private String icon;
 
     @Column(name = "client_type",updatable = false)
     private String clientType;
+    
+    @Column(name = "is_open_access")
+    private Boolean isOpenAccess = Boolean.FALSE;
+    
+    @Column(name = "is_default")
+    private Boolean isDefault = Boolean.FALSE;
     
     @Column(name = "is_display")
     private Boolean isDisplay = Boolean.TRUE;
@@ -81,14 +81,6 @@ public class FunctionResourceEntity extends StandardBaseEntity {
 		this.code = code;
 	}
 
-	public String getItemContent() {
-		return itemContent;
-	}
-
-	public void setItemContent(String itemContent) {
-		this.itemContent = itemContent;
-	}
-
 	public String getClientType() {
 		return clientType;
 	}
@@ -97,7 +89,45 @@ public class FunctionResourceEntity extends StandardBaseEntity {
 		this.clientType = clientType;
 	}
 	
-	
+	public String getRouter() {
+		return router;
+	}
+
+	public void setRouter(String router) {
+		this.router = router;
+	}
+
+	public String getViewPath() {
+		return viewPath;
+	}
+
+	public void setViewPath(String viewPath) {
+		this.viewPath = viewPath;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+
+	public Boolean getIsOpenAccess() {
+		return isOpenAccess;
+	}
+
+	public void setIsOpenAccess(Boolean isOpenAccess) {
+		this.isOpenAccess = isOpenAccess;
+	}
 
 	public Boolean getIsDisplay() {
 		return isDisplay;
@@ -115,36 +145,6 @@ public class FunctionResourceEntity extends StandardBaseEntity {
 		this.sort = sort;
 	}
 	
-	public static List<ResourceTreeModel> toTreeModels(List<FunctionResourceEntity> entities,String clientType) {
-        List<ResourceTreeModel> result =  new ArrayList<>(entities.size());
-        
-        ResourceTreeModel model;
-        for (FunctionResourceEntity entity : entities) {
-        	model = BeanUtils.copy(entity, ResourceTreeModel.class);
-        	
-        	MenuItem menuItem = null;
-        	if(StringUtils.isNotBlank(entity.getItemContent())) {
-        		List<MenuItem> items = JsonUtils.toList(entity.getItemContent(), MenuItem.class);
-        		if(StringUtils.isNotBlank(clientType)) {
-        			menuItem = items.stream().filter(o -> clientType.equals(o.getClientType())).findFirst().orElse(null);
-        		}
-        		
-        		if(menuItem == null && !CollectionUtils.isEmpty(items)) {
-        			menuItem = items.get(0);
-        		}
-        	}
-        	if(menuItem != null) {
-    			model.setClientType(menuItem.getClientType());
-				model.setRouter(menuItem.getRouter());
-				model.setViewPath(menuItem.getViewPath());
-				model.setIcon(menuItem.getIcon());
-			}
-        	
-        	result.add(model);
-		}
-        
-        return result;
-    }
-    
+	
     
 }

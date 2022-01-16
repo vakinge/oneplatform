@@ -9,7 +9,7 @@ public class PositionQueryParam {
 
     private String name;
 	private String departmentId;
-    private Integer enabled;
+    private Boolean enabled;
     
 	public String getName() {
 		return name;
@@ -23,10 +23,10 @@ public class PositionQueryParam {
 	public void setDepartmentId(String departmentId) {
 		this.departmentId = departmentId;
 	}
-	public Integer getEnabled() {
+	public Boolean getEnabled() {
 		return enabled;
 	}
-	public void setEnabled(Integer enabled) {
+	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 

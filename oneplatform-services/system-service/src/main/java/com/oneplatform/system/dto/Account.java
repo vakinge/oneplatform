@@ -10,6 +10,8 @@ public class Account extends BaseDto{
 
     private String mobile;
     
+    private String avatar;
+    
     @JsonIgnore
     private String password;
     
@@ -42,6 +44,14 @@ public class Account extends BaseDto{
 		this.mobile = mobile;
 	}
 	
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
 	public String getPassword() {
 		return password;
 	}

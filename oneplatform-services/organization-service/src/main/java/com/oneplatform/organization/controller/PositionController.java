@@ -1,11 +1,17 @@
 package com.oneplatform.organization.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jeesuite.common.annotation.ApiMetadata;
@@ -13,6 +19,7 @@ import com.jeesuite.common.constants.PermissionLevel;
 import com.jeesuite.common.model.IdParam;
 import com.jeesuite.common.model.Page;
 import com.jeesuite.common.model.PageParams;
+import com.jeesuite.common.model.SelectOption;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.springweb.model.PageQueryRequest;
 import com.oneplatform.organization.dao.entity.PositionEntity;
@@ -30,6 +37,7 @@ import io.swagger.annotations.ApiOperation;
  *
  */
 @RestController
+@RequestMapping("position")
 public class PositionController {
 
 	private @Autowired PositionService positionService;
@@ -88,5 +96,19 @@ public class PositionController {
 		entity.setDeleted(true);
 		positionService.updatePosition(entity);
 	}
+	
+	@ApiMetadata(permissionLevel = PermissionLevel.PermissionRequired,actionLog = true)
+    @ApiOperation(value = "获取接口下拉列表",notes = "### 获取接口下拉列表 \n - xxx")
+    @GetMapping("options")
+    @ResponseBody
+    public List<SelectOption> options(@RequestParam(name="deptId",required=false) String deptId) {
+		PositionQueryParam param = new PositionQueryParam();
+		param.setDepartmentId(deptId);
+		param.setEnabled(true);
+    	List<PositionEntity> list = positionService.findListByParam(param);
+    	return list.stream().map(e -> {
+            return new SelectOption(e.getId().toString(),e.getName());
+        }).collect(Collectors.toList());
+    }
 
 }

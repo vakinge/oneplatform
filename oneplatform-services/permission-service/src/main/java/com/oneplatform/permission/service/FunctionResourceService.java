@@ -9,18 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jeesuite.common.model.IdParam;
-import com.jeesuite.common.model.Page;
-import com.jeesuite.common.model.PageParams;
 import com.jeesuite.common.util.AssertUtil;
 import com.jeesuite.common.util.BeanUtils;
-import com.jeesuite.common.util.JsonUtils;
-import com.jeesuite.mybatis.plugin.pagination.PageExecutor;
-import com.oneplatform.permission.constants.ClientType;
-import com.oneplatform.permission.constants.FunctionResourceType;
 import com.oneplatform.permission.dao.entity.FunctionResourceEntity;
 import com.oneplatform.permission.dao.mapper.FunctionResourceEntityMapper;
 import com.oneplatform.permission.dao.mapper.SubordinateRelationEntityMapper;
-import com.oneplatform.permission.dto.MenuItem;
 import com.oneplatform.permission.dto.ResourceTreeModel;
 import com.oneplatform.permission.dto.param.FunctionResourceParam;
 import com.oneplatform.permission.dto.param.FunctionResourceQueryParam;
@@ -44,14 +37,11 @@ public class FunctionResourceService {
 
     	FunctionResourceEntity entity = BeanUtils.copy(param,FunctionResourceEntity.class);
     	entity.setIsDisplay(param.isDisplay());
+    	entity.setIsOpenAccess(param.isOpenAccess());
     	FunctionResourceEntity parent = null;
     	if(param.getParentId() != null) {
     		parent = functionResourceMapper.selectByPrimaryKey(param.getParentId());
     		entity.setClientType(parent.getClientType());
-    	}
-    	
-    	if(!FunctionResourceType.button.name().equals(param.getType())) {
-    		buildMenuItems(param, entity);
     	}
     	
     	if(parent != null) {
@@ -88,6 +78,8 @@ public class FunctionResourceService {
         AssertUtil.notNull(oldEntity,"更新菜单不存在");
 
         FunctionResourceEntity entity = BeanUtils.copy(param,oldEntity);
+        entity.setIsDisplay(param.isDisplay());
+    	entity.setIsOpenAccess(param.isOpenAccess());
         functionResourceMapper.updateByPrimaryKeySelective(entity);
     }
 
@@ -126,30 +118,6 @@ public class FunctionResourceService {
         return list;
     }
 
-    /**
-     * 分页查询业务系统列表
-     * @param pageParams
-     * @param example
-     * @return
-     */
-    public Page<MenuItem> pageQryFunctionResource(PageParams pageParams, FunctionResourceQueryParam example){
-
-        return PageExecutor.pagination(pageParams, new PageExecutor.ConvertPageDataLoader<FunctionResourceEntity,MenuItem>() {
-
-			@Override
-			public List<FunctionResourceEntity> load() {
-				return functionResourceMapper.findByQueryParam(example);
-			}
-
-			@Override
-			public MenuItem convert(FunctionResourceEntity e) {
-				return BeanUtils.copy(e, MenuItem.class);
-			}
-        	
-        });
-        
-    }
-
     public List<FunctionResourceEntity> findBySystemId(Integer systemId){
     	FunctionResourceQueryParam queryParam = new FunctionResourceQueryParam();
     	queryParam.setEnabled(true);
@@ -176,30 +144,5 @@ public class FunctionResourceService {
         return items;
     }
     
-    private void buildMenuItems(FunctionResourceParam param, FunctionResourceEntity entity) {
-
-    	if(param.getItems() == null) {
-    		return;
-    	}
-    	String pcRouter = null;
-		String clientType;
-		if(param.getItems().size() == 1) {
-			pcRouter = param.getItems().get(0).getRouter();
-			clientType = param.getItems().get(0).getClientType();
-		}else {
-			StringBuilder clientTypeBuilder = new StringBuilder();
-			for (MenuItem item : param.getItems()) {
-				if(ClientType.PC.name().equals(item.getClientType())) {
-					pcRouter = item.getRouter();
-				}
-				clientTypeBuilder.append(item.getClientType()).append(",");
-			}
-			clientTypeBuilder.deleteCharAt(clientTypeBuilder.length() - 1);
-			clientType = clientTypeBuilder.toString();
-		}
-		entity.setCode(pcRouter);
-		entity.setClientType(clientType);
-		entity.setItemContent(JsonUtils.toJson(param.getItems()));
-	}
 
 }

@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.jeesuite.common.model.Page;
 import com.jeesuite.common.model.PageParams;
-import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor;
 import com.jeesuite.mybatis.plugin.pagination.PageExecutor.PageDataLoader;
 import com.oneplatform.organization.dao.entity.StaffEntity;
 import com.oneplatform.organization.dao.mapper.DepartmentEntityMapper;
 import com.oneplatform.organization.dao.mapper.PositionEntityMapper;
 import com.oneplatform.organization.dao.mapper.StaffEntityMapper;
-import com.oneplatform.organization.dto.Staff;
 import com.oneplatform.organization.dto.StaffDetails;
 import com.oneplatform.organization.dto.param.StaffQueryParam;
 

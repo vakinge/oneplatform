@@ -7,10 +7,14 @@
     <result column="type" jdbcType="CHAR" property="type" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="code" jdbcType="VARCHAR" property="code" />
-    <result column="item_content" jdbcType="VARCHAR" property="itemContent" />
+    <result column="router" jdbcType="VARCHAR" property="router" />
+    <result column="view_path" jdbcType="VARCHAR" property="viewPath" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="is_open_access" jdbcType="BIT" property="isOpenAccess" />
+    <result column="is_default" jdbcType="BIT" property="isDefault" />
     <result column="is_display" jdbcType="BIT" property="isDisplay" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="client_type" jdbcType="VARCHAR" property="clientType" />
+    <result column="client_type" jdbcType="CHAR" property="clientType" />
     <result column="enabled" jdbcType="BIT" property="enabled" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />

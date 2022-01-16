@@ -1,5 +1,6 @@
 package com.oneplatform.permission.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +133,13 @@ public class UserPermissionController {
         	current.setType(FunctionResourceType.menu.name());
         	entities = userPermissionService.findUserGrantedResources(current);
     	}
-    	List<ResourceTreeModel> menus = FunctionResourceEntity.toTreeModels(entities, clientType);
+    	
+    	List<ResourceTreeModel> menus = new ArrayList<>(entities.size());
+    	ResourceTreeModel model;
+        for (FunctionResourceEntity entity : entities) {
+        	model = BeanUtils.copy(entity, ResourceTreeModel.class);
+        	menus.add(model);
+		}
     	
     	return TreeModel.build(menus).getChildren();
     }

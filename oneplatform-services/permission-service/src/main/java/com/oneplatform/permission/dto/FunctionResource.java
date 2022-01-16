@@ -1,18 +1,19 @@
 package com.oneplatform.permission.dto;
 
-import java.util.List;
+public class FunctionResource extends BaseDto {
 
-public class FunctionResource extends BaseDto{
-
-    private Integer parentId;
-    private String type;
-    private String subType;
-    private String name;
-    private String code;
-    private String clientType;
-    private Integer sort;
-    
-    private List<MenuItem> items;
+	private Integer parentId;
+	private String type;
+	private String subType;
+	private String name;
+	private String code;
+	private String viewPath;
+	private String icon;
+	private String clientType;
+	private Integer sort;
+	private Boolean isOpenAccess = Boolean.FALSE;
+	private Boolean isDefault = Boolean.FALSE;
+	private Boolean isDisplay = Boolean.TRUE;
 
 	public Integer getParentId() {
 		return parentId;
@@ -70,13 +71,46 @@ public class FunctionResource extends BaseDto{
 		this.sort = sort;
 	}
 
-	public List<MenuItem> getItems() {
-		return items;
+	public String getViewPath() {
+		return viewPath;
 	}
 
-	public void setItems(List<MenuItem> items) {
-		this.items = items;
+	public void setViewPath(String viewPath) {
+		this.viewPath = viewPath;
 	}
-    
-    
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public Boolean getIsOpenAccess() {
+		return isOpenAccess;
+	}
+
+	public void setIsOpenAccess(Boolean isOpenAccess) {
+		this.isOpenAccess = isOpenAccess;
+	}
+
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+
+	public Boolean getIsDisplay() {
+		return isDisplay;
+	}
+
+	public void setIsDisplay(Boolean isDisplay) {
+		this.isDisplay = isDisplay;
+	}
+
+	
+
 }

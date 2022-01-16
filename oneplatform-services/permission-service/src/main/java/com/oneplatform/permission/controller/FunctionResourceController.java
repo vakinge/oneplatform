@@ -2,7 +2,6 @@ package com.oneplatform.permission.controller;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +17,8 @@ import com.jeesuite.common.constants.PermissionLevel;
 import com.jeesuite.common.model.IdParam;
 import com.jeesuite.common.model.TreeModel;
 import com.jeesuite.common.util.BeanUtils;
-import com.jeesuite.common.util.JsonUtils;
 import com.oneplatform.permission.dao.entity.FunctionResourceEntity;
 import com.oneplatform.permission.dto.FunctionResource;
-import com.oneplatform.permission.dto.MenuItem;
 import com.oneplatform.permission.dto.ResourceTreeModel;
 import com.oneplatform.permission.dto.param.FunctionResourceParam;
 import com.oneplatform.permission.service.FunctionResourceService;
@@ -73,9 +70,6 @@ public class FunctionResourceController {
     public FunctionResource get(@PathVariable("id") Integer id) {
         FunctionResourceEntity entity = functionResourceService.getFunctionResourceById(id);
         FunctionResource model = BeanUtils.copy(entity, FunctionResource.class);
-    	if(StringUtils.isNotBlank(entity.getItemContent())) {
-    		model.setItems(JsonUtils.toList(entity.getItemContent(), MenuItem.class));
-    	}
 		return model;
     }
 
