@@ -33,6 +33,7 @@
         <if test="name != null and name != ''">and name like concat('%',#{name},'%')</if>
         <if test="enabled != null">and enabled = #{enabled}</if>
         <if test="excludeButton != null and excludeButton">and type &lt;&gt; 'button'</if>
+        and is_display = 1
       </where>
     </select>
     

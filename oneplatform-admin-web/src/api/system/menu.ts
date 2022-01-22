@@ -1,4 +1,5 @@
 import { http } from '@/utils/http/axios';
+import { Layout } from '@/router/constant';
 
 /**
  * @description: 根据用户id获取用户菜单
@@ -17,12 +18,28 @@ export async function currentUserMenus() {
  */
 export function getMenuList(params?) {
   return http.request({
-    url: '/menu/list',
+    url: '/perm/functionResource/tree',
     method: 'GET',
     params,
   });
 }
 
+
+export function addMenu(params) {
+  return http.request({
+    url: '/perm/functionResource/add',
+    method: 'POST',
+    params,
+  });
+}
+
+export function updateMenu(params) {
+  return http.request({
+    url: '/perm/functionResource/update',
+    method: 'POST',
+    params,
+  });
+}
 
 function convertToMenuItems(items) {
    let menus = [];
@@ -30,6 +47,7 @@ function convertToMenuItems(items) {
 	 items.map((item,index)=>{
      let menu = {};
      menu.path = item.router;
+     menu.name = item.code;
      menu.component = item.type === 'catalog' ? 'LAYOUT' : item.viewPath;
      if(item.type === 'catalog'){
        menu.component = 'LAYOUT';
@@ -47,6 +65,6 @@ function convertToMenuItems(items) {
      }
 	   menus.push(menu);
 	 });
-   //console.log('-----------------\n' + JSON.stringify(menus) + '\n-----------------');
+
    return menus;
 }

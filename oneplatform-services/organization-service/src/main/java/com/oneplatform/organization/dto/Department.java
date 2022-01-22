@@ -14,7 +14,7 @@ public class Department extends TreeModel{
     private String fullCode;
     private String fullName;
     private Boolean isVirtual;
-    private Integer enabled;
+    private Boolean enabled;
     private java.util.Date createdAt;
     private java.util.Date updatedAt;
     private String createdBy;
@@ -63,11 +63,12 @@ public class Department extends TreeModel{
 		this.isVirtual = isVirtual;
 	}
 
-	public Integer getEnabled() {
+
+	public Boolean getEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(Integer enabled) {
+	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 

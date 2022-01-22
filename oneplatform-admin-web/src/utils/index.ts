@@ -136,7 +136,7 @@ export const withInstall = <T>(component: T, alias?: string) => {
 let result = null;
 export function getTreeItem(data: any[], key?: string | number): any {
   data.map((item) => {
-    if (item.key === key) {
+    if (item.id === key) {
       result = item;
     } else {
       if (item.children && item.children.length) {

@@ -8,9 +8,9 @@ export function usePermission() {
    * @param accesses
    */
   function _somePermissions(accesses: string[]) {
+    if(userStore.isAdmin)return true;
     return userStore.getPermissions.some((item) => {
-      const { value }: any = item;
-      return accesses.includes(value);
+      return accesses.includes(item);
     });
   }
 

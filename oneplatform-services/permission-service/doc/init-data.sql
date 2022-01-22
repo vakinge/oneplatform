@@ -1,9 +1,4 @@
 INSERT INTO `function_resource` (`id`,`parent_id`,`type`, `name`, `code`, `router`, `view_path`, `icon`, `client_type`, `is_open_access`, `is_default`, `is_display`, `sort`, `enabled`, `deleted`, `created_at`, `created_by`) VALUES 
-(1000,NULL,'catalog', 'Dashboard', '/dashboard', '/dashboard', '/dashboard/workbench', 'icon', 'pc', '0', '1', '1', '99', '1', '0', '1970-01-01', '系统'),
-(1001,1000,'menu', 'Dashboard', '/dashboard/workbench', 'workbench', '/dashboard/workbench/index', 'icon', 'pc', '0', '1', '1', '99', '1', '0', '1970-01-01', '系统'),
-(1100,NULL,'catalog', '系统管理', '/system', '/system', NULL, 'icon', 'pc', '0', '1', '1', '99', '1', '0', '1970-01-01', '系统'),
-(1101,1100,'menu', '菜单管理', '/system/menu', 'menu', '/system/menu/index', 'icon', 'pc', '0', '1', '1', '99', '1', '0', '1970-01-01', '系统'),
-(1102,1100,'menu', '功能角色管理', '/system/role', 'role', '/system/role/index', 'icon', 'pc', '0', '1', '1', '99', '1', '0', '1970-01-01', '系统'),
 (1103,1100,'menu', '数据角色管理', '/system/dataRole', 'dataRole', '/system/dataRole/index', 'icon', 'pc', '0', '1', '1', '99', '1', '0', '1970-01-01', '系统'),
 (1104,1100,'menu', '字典管理', '/system/dict', 'dict', '/system/dict/index', 'icon', 'pc', '0', '1', '1', '99', '1', '0', '1970-01-01', '系统'),
 (1105,1100,'menu', '系统配置管理', '/system/config', 'config', '/system/config/index', 'icon', 'pc', '0', '1', '1', '99', '1', '0', '1970-01-01', '系统'),

@@ -35,6 +35,13 @@ export function login(params) {
   );
 }
 
+export function getUserPermssions() {
+  return http.request({
+    url: '/perm/user/buttons',
+    method: 'get',
+  });
+}
+
 /**
  * @description: 用户修改密码
  */

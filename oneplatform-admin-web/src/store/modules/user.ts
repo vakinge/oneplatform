@@ -5,21 +5,13 @@ import { ACCESS_TOKEN, CURRENT_USER, IS_LOCKSCREEN } from '@/store/mutation-type
 import { ResultEnum } from '@/enums/httpEnum';
 
 const Storage = createStorage({ storage: localStorage });
-import { getUserInfo, login } from '@/api/system/user';
+import { getUserInfo, login, getUserPermssions } from '@/api/system/user';
 import { storage } from '@/utils/Storage';
 
-export interface IUserState {
-  token: string;
-  username: string;
-  welcome: string;
-  avatar: string;
-  permissions: any[];
-  info: any;
-}
 
 export const useUserStore = defineStore({
   id: 'app-user',
-  state: (): IUserState => ({
+  state: (): any => ({
     token: Storage.get(ACCESS_TOKEN, ''),
     username: '',
     welcome: '',
@@ -42,6 +34,9 @@ export const useUserStore = defineStore({
     },
     getUserInfo(): object {
       return this.info;
+    },
+    isAdmin(): boolean {
+      return this.info && this.info.admin;
     },
   },
   actions: {
@@ -69,8 +64,11 @@ export const useUserStore = defineStore({
     },
 
     // 获取用户信息
-    GetInfo() {
-      const that = this;
+    async GetInfo() {
+      let that = this;
+      const permissions = await getUserPermssions();
+      this.setPermissions(permissions);
+      //
       return new Promise((resolve, reject) => {
         getUserInfo()
           .then((res) => {

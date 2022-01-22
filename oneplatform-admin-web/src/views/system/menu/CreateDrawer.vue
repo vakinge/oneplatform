@@ -1,6 +1,6 @@
 <template>
-  <n-drawer v-model:show="isDrawer" :width="width" :placement="placement">
-    <n-drawer-content :title="title" closable>
+  <n-drawer v-model:show="isDrawer" width="500px" :placement="placement">
+    <n-drawer-content title="添加" closable>
       <n-form
         :model="formParams"
         :rules="rules"
@@ -9,30 +9,36 @@
         :label-width="100"
       >
         <n-form-item label="类型" path="type">
-          <span>{{ formParams.type === 1 ? '侧边栏菜单' : '' }}</span>
+          <span>{{formParams.type}}</span>
         </n-form-item>
-        <n-form-item label="标题" path="label">
-          <n-input placeholder="请输入标题" v-model:value="formParams.label" />
+        <n-form-item label="父节点" path="parentId" v-if="formParams.parentId">
+          <span>{{formParams.parentName}}</span>
         </n-form-item>
-        <n-form-item label="副标题" path="subtitle">
-          <n-input placeholder="请输入副标题" v-model:value="formParams.subtitle" />
+        <n-form-item label="名称" path="name">
+          <n-input placeholder="请输入名称" v-model:value="formParams.name" />
         </n-form-item>
-        <n-form-item label="路径" path="path">
-          <n-input placeholder="请输入路径" v-model:value="formParams.path" />
+        <n-form-item label="路由" path="router">
+          <n-input placeholder="请输入路由地址" v-model:value="formParams.router" />
         </n-form-item>
-        <n-form-item label="打开方式" path="openType">
-          <n-radio-group v-model:value="formParams.openType" name="openType">
+        <n-form-item label="页面路径" path="viewPath" v-if="formParams.type ==='menu'">
+          <n-input placeholder="请输入路径" v-model:value="formParams.viewPath" />
+        </n-form-item>
+        <n-form-item label="适用客户端" path="clientType" v-if="formParams.type ==='catalog'">
+          <n-radio-group v-model:value="formParams.clientType" name="clientType">
             <n-space>
-              <n-radio :value="1">当前窗口</n-radio>
-              <n-radio :value="2">新窗口</n-radio>
+              <n-radio key="pc" value="pc">PC端</n-radio>
+              <n-radio key="mobile" value="mobile">手机端</n-radio>
             </n-space>
           </n-radio-group>
         </n-form-item>
-        <n-form-item label="菜单权限" path="auth">
-          <n-input placeholder="请输入权限，多个权限用，分割" v-model:value="formParams.auth" />
+        <n-form-item label="是否展示" path="isDisplay">
+          <n-switch v-model:value="formParams.isDisplay" />
         </n-form-item>
-        <n-form-item label="隐藏侧边栏" path="hidden">
-          <n-switch v-model:value="formParams.hidden" />
+        <n-form-item label="开放权限" path="isOpenAccess">
+          <n-switch v-model:value="formParams.isOpenAccess" />
+        </n-form-item>
+        <n-form-item label="排序" path="sort" v-if="formParams.type !=='button'">
+           <n-input-number size="small" v-model:value="formParams.sort" />
         </n-form-item>
       </n-form>
 
@@ -49,6 +55,7 @@
 <script lang="ts">
   import { defineComponent, reactive, ref, toRefs } from 'vue';
   import { useMessage } from 'naive-ui';
+  import { addMenu } from '@/api/system/menu';
 
   const rules = {
     label: {
@@ -65,40 +72,40 @@
   export default defineComponent({
     name: 'CreateDrawer',
     components: {},
-    props: {
-      title: {
-        type: String,
-        default: '添加顶级菜单',
-      },
-      width: {
-        type: Number,
-        default: 450,
-      },
-    },
+    props: {},
     setup() {
       const message = useMessage();
       const formRef: any = ref(null);
+      let menuType = ref('');
+      let parentId = ref('');
+      let parentName = ref('');
+      
       const defaultValueRef = () => ({
-        label: '',
-        type: 1,
-        subtitle: '',
-        openType: 1,
-        auth: '',
-        path: '',
-        hidden: false,
+        clientType: 'pc',
+        isDisplay: true,
+        isOpenAccess: false,
       });
-
+      
       const state = reactive({
         isDrawer: false,
         subLoading: false,
-        formParams: defaultValueRef(),
+        formParams: {
+          type: menuType,
+          parentId: parentId,
+          parentName: parentName,
+          clientType: 'pc',
+          isDisplay: true,
+          isOpenAccess: false,
+          sort: 99,
+        },
         placement: 'right',
-        alertText:
-          '该功能主要实时预览各种布局效果，更多完整配置在 projectSetting.ts 中设置，建议在生产环境关闭该布局预览功能。',
       });
-
-      function openDrawer() {
+ 
+      function openDrawer(type,node) {
         state.isDrawer = true;
+        menuType.value = type;
+        parentId.value = node.id;
+        parentName.value = node.name;
       }
 
       function closeDrawer() {
@@ -106,8 +113,13 @@
       }
 
       function formSubmit() {
-        formRef.value.validate((errors) => {
+        formRef.value.validate(async (errors) => {
           if (!errors) {
+            delete state.formParams.children;
+            if(formParams.type === 'catalog'){
+              delete state.formParams.viewPath;
+            }
+            await addMenu(state.formParams);
             message.success('添加成功');
             handleReset();
             closeDrawer();

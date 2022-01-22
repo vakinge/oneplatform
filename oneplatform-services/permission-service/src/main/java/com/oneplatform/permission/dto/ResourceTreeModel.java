@@ -14,6 +14,8 @@ public class ResourceTreeModel extends TreeModel {
 	private String viewPath;
 	private String icon;
 	private Boolean isDisplay;
+	private Boolean isDefault;
+	private Boolean isOpenAccess;
     
 	public String getType() {
 		return type;
@@ -57,5 +59,18 @@ public class ResourceTreeModel extends TreeModel {
 	public void setIsDisplay(Boolean isDisplay) {
 		this.isDisplay = isDisplay;
 	}
+	public Boolean getIsDefault() {
+		return isDefault;
+	}
+	public void setIsDefault(Boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+	public Boolean getIsOpenAccess() {
+		return isOpenAccess;
+	}
+	public void setIsOpenAccess(Boolean isOpenAccess) {
+		this.isOpenAccess = isOpenAccess;
+	}
+	
 	
 }

@@ -79,7 +79,7 @@ public class FunctionResourceController {
     @ApiOperation(value = "获取菜单权限树")
     @GetMapping(value = "/tree")
     @ResponseBody
-    public List<TreeModel> menuPermissions(@RequestParam(value = "withButton",required = false,defaultValue="true") boolean withButton) {
+    public List<TreeModel> menuPermissions(@RequestParam(value = "button",required = false,defaultValue="true") boolean withButton) {
         List<ResourceTreeModel> resources = functionResourceService.getSystemMenuTree(withButton);  
 		return TreeModel.build(resources).getChildren();
     }
