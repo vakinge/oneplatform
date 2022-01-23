@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from 'vue-router';
 import { Layout } from '@/router/constant';
-import { OptionsSharp } from '@vicons/ionicons5';
+import { SettingOutlined } from '@vicons/antd';
 import { renderIcon } from '@/utils/index';
 
 /**
@@ -22,10 +22,18 @@ const routes: Array<RouteRecordRaw> = [
     component: Layout,
     meta: {
       title: '系统管理',
-      icon: renderIcon(OptionsSharp),
+      icon: renderIcon(SettingOutlined),
       sort: 1,
     },
     children: [
+      {
+        path: 'account',
+        name: 'system_account',
+        meta: {
+          title: '账号管理',
+        },
+        component: () => import('@/views/system/account/index.vue'),
+      },
       {
         path: 'menu',
         name: 'system_menu',
@@ -41,6 +49,30 @@ const routes: Array<RouteRecordRaw> = [
           title: '角色管理',
         },
         component: () => import('@/views/system/role/index.vue'),
+      },
+      {
+        path: 'datarole',
+        name: 'system_datarole',
+        meta: {
+          title: '数据角色',
+        },
+        component: () => import('@/views/system/datarole/index.vue'),
+      },
+      {
+        path: 'dict',
+        name: 'system_dict',
+        meta: {
+          title: '字典管理',
+        },
+        component: () => import('@/views/system/dict/index.vue'),
+      },
+      {
+        path: 'config',
+        name: 'system_config',
+        meta: {
+          title: '系统配置管理',
+        },
+        component: () => import('@/views/system/config/index.vue'),
       },
     ],
   },

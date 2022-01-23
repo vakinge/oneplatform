@@ -1,1 +1,0 @@
-import '@purge-icons/generated';

@@ -7,7 +7,7 @@
     >
       <div class="logo" v-if="navMode === 'horizontal'">
         <img src="~@/assets/images/logo.png" alt="" />
-        <h2 v-show="!collapsed" class="title">NaiveUiAdmin</h2>
+        <h2 v-show="!collapsed" class="title">Oneplatform</h2>
       </div>
       <AsideMenu
         v-model:collapsed="collapsed"
