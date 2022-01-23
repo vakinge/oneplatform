@@ -32,7 +32,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '菜单权限管理',
         },
-        component: () => import('@/views/system/menu/menu.vue'),
+        component: () => import('@/views/system/menu/index.vue'),
       },
       {
         path: 'role',
@@ -40,7 +40,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '角色权限管理',
         },
-        component: () => import('@/views/system/role/role.vue'),
+        component: () => import('@/views/system/role/index.vue'),
       },
     ],
   },

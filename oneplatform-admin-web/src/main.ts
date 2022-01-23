@@ -5,7 +5,7 @@ import router, { setupRouter } from './router';
 import { setupStore } from '@/store';
 import MakeitCaptcha from 'makeit-captcha';
 import 'makeit-captcha/dist/captcha.min.css';
-import { setupNaive, setupDirectives } from '@/plugins';
+import { setupNaive, setupDirectives ,setupFastCrud } from '@/plugins';
 import { AppProvider } from '@/components/Application';
 
 async function bootstrap() {
@@ -17,6 +17,9 @@ async function bootstrap() {
 
   // 注册全局常用的 naive-ui 组件
   setupNaive(app);
+  
+  // 注册fast-crud
+  setupFastCrud(app);
 
   // 注册全局自定义组件
   //setupCustomComponents();

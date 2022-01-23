@@ -25,6 +25,12 @@
     "test prod gzip": "http-server dist --cors --gzip -c-1"
   },
   "dependencies": {
+    "@fast-crud/fast-crud": "^1.0.0-alpha.6",
+    "@fast-crud/fast-extends": "^1.0.0-alpha.6",
+    "@fast-crud/ui-naive": "^1.0.0-alpha.6",
+    "@iconify/iconify": "^2.0.1",
+    "@iconify/json": "^1.1.376",
+    "@purge-icons/generated": "^0.7.0",
     "@vicons/antd": "^0.10.0",
     "@vicons/ionicons5": "^0.10.0",
     "@vueup/vue-quill": "^1.0.0-beta.7",
