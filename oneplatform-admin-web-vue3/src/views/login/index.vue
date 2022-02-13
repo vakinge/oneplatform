@@ -39,11 +39,6 @@
               </template>
             </n-input>
           </n-form-item>
-          <n-form-item path="isCaptcha">
-            <div class="w-full">
-              <mi-captcha width="384" theme-color="#2d8cf0" :logo="logo" @success="onAuthCode" />
-            </div>
-          </n-form-item>
           <n-form-item class="default-color">
             <div class="flex justify-between">
               <div class="flex-initial">
@@ -111,19 +106,11 @@
   const formInline = reactive({
     account: 'sa',
     password: '123456',
-    isCaptcha: false,
   });
 
   const rules = {
     account: { required: true, message: '请输入用户名', trigger: 'blur' },
     password: { required: true, message: '请输入密码', trigger: 'blur' },
-    isCaptcha: {
-      required: true,
-      type: 'boolean',
-      trigger: 'change',
-      message: '请点击按钮进行验证码校验',
-      validator: (_, value) => value === true,
-    },
   };
 
   const userStore = useUserStore();
@@ -161,10 +148,6 @@
       }
     });
   };
-
-  const onAuthCode = () => {
-    formInline.isCaptcha = true;
-  }
 </script>
 
 <style lang="less" scoped>

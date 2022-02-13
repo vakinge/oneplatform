@@ -50,3 +50,26 @@ CREATE TABLE `open_account_binding` (
    UNIQUE INDEX `ao_uq_index` (`account_id`,`open_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='第三方账号绑定';
 
+DROP TABLE IF EXISTS `action_logs`;
+CREATE TABLE `action_logs` (
+  `id` varchar(32) NOT NULL,
+  `app_id` varchar(32)  NOT NULL, 
+  `tenant_id` varchar(32)  DEFAULT NULL,
+  `action_name` varchar(64) NOT NULL,
+  `action_key` varchar(128) NOT NULL,
+  `user_id` varchar(32) DEFAULT NULL,
+  `user_name` varchar(32) DEFAULT NULL,
+  `client_type` varchar(32) DEFAULT NULL,
+  `platform_type` varchar(32) DEFAULT NULL,
+  `module_id` varchar(32) DEFAULT NULL,
+  `request_ip` varchar(20) DEFAULT NULL, 
+  `request_id` varchar(32) DEFAULT NULL,
+  `request_at` datetime DEFAULT NULL,
+  `query_parameters` varchar(500) DEFAULT NULL,
+  `request_data` TEXT DEFAULT NULL,
+  `response_data` TEXT DEFAULT NULL,
+  `response_code` int(3) DEFAULT NULL,
+  `use_time` int(6) DEFAULT NULL,
+  `exceptions` TEXT DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志';

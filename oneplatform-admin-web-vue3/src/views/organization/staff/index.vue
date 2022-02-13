@@ -27,7 +27,7 @@
      <fs-page>
      <fs-crud ref="crudRef" v-bind="crudBinding">
        <template #pagination-left>
-         <fs-button icon="ion:trash-outline" @click="handleBatchDelete" />
+         <fs-button icon="ion:paper-plane-sharp" @click="handleBatchDelete" />
        </template>
      </fs-crud>
      </fs-page>

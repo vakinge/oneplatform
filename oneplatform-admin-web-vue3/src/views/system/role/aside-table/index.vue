@@ -1,16 +1,13 @@
 <template>
-  <fs-page>
-    <fs-crud ref="crudRef" v-bind="crudBinding" />
-  </fs-page>
+  <fs-crud ref="crudRef" v-bind="crudBinding" /> 
 </template>
 
 <script>
   import { defineComponent, ref, onMounted } from 'vue';
-  import { useCrud } from '@fast-crud/fast-crud';
   import createCrudOptions from './crud';
-  import { useExpose } from '@fast-crud/fast-crud';
+  import { useExpose, useCrud } from '@fast-crud/fast-crud';
   export default defineComponent({
-    name: 'ScheduleMgt',
+    name: 'AsideTable',
     setup() {
       // crud组件的ref
       const crudRef = ref();
@@ -19,7 +16,7 @@
       // 暴露的方法
       const { expose } = useExpose({ crudRef, crudBinding });
       // 你的crud配置
-      const { crudOptions } = createCrudOptions({ expose });
+      const { crudOptions, selectedIds } = createCrudOptions({ expose });
       // 初始化crud配置
       // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
       const { resetCrudOptions } = useCrud({ expose, crudOptions });
@@ -34,6 +31,8 @@
       return {
         crudBinding,
         crudRef,
+        setSearchFormData: expose.setSearchFormData,
+        doRefresh: expose.doRefresh,
       };
     },
   });

@@ -1,6 +1,6 @@
 import { http } from '@/utils/http/axios';
 
-const apiPrefix = '/org/position';
+const apiPrefix = '/sys/account';
 export function GetList(query) {
   return http.request({
     url: apiPrefix + '/list',
@@ -30,6 +30,14 @@ export function DelObj(id) {
     url: apiPrefix + '/delete',
     method: 'post',
     params: { id },
+  });
+}
+
+export function toggleObj(id) {
+  return http.request({
+    url: apiPrefix + '/toggle',
+    method: 'post',
+    data: { id: id },
   });
 }
 

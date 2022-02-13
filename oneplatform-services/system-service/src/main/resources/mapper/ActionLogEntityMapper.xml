@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oneplatform.system.dao.mapper.ActionLogEntityMapper">
+  <resultMap id="BaseResultMap" type="com.oneplatform.system.dao.entity.ActionLogEntity">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="tenant_id" jdbcType="VARCHAR" property="tenantId" />
+    <result column="action_name" jdbcType="VARCHAR" property="actionName" />
+    <result column="action_key" jdbcType="VARCHAR" property="actionKey" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="client_type" jdbcType="VARCHAR" property="clientType" />
+    <result column="platform_type" jdbcType="VARCHAR" property="platformType" />
+    <result column="module_id" jdbcType="VARCHAR" property="moduleId" />
+    <result column="request_ip" jdbcType="VARCHAR" property="requestIp" />
+    <result column="request_id" jdbcType="VARCHAR" property="requestId" />
+    <result column="request_at" jdbcType="TIMESTAMP" property="requestAt" />
+    <result column="query_parameters" jdbcType="VARCHAR" property="queryParameters" />
+    <result column="response_code" jdbcType="INTEGER" property="responseCode" />
+    <result column="use_time" jdbcType="INTEGER" property="useTime" />
+    <result column="request_data" jdbcType="LONGVARCHAR" property="requestData" />
+    <result column="response_data" jdbcType="LONGVARCHAR" property="responseData" />
+    <result column="exceptions" jdbcType="LONGVARCHAR" property="exceptions" />
+  </resultMap>
+  
+  <select id="findListByQueryParam" resultMap="BaseResultMap">
+   SELECT id,app_id,action_name,action_key,user_name,client_type,platform_type,request_ip,request_id,request_at,response_code,use_time 
+   FROM action_logs 
+   <where>
+    <if test="userName != null">AND user_name = #{userName}</if>
+   </where>
+   ORDER BY request_at DESC
+  </select>
+</mapper>

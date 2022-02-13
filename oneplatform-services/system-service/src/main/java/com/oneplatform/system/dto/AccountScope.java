@@ -2,11 +2,19 @@ package com.oneplatform.system.dto;
 
 public class AccountScope {
 
+	private String id;
 	private String tenantId;
 	private String principalType;
 	private String principalId;
 	private boolean admin;
 	
+
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getTenantId() {
 		return tenantId;
 	}

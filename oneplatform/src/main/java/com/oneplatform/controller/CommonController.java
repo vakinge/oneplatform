@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.jeesuite.common.annotation.ApiMetadata;
+import com.jeesuite.common.constants.PermissionLevel;
 import com.jeesuite.security.SecurityDelegating;
-import com.jeesuite.zuul.SessionCookieUtil;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.base.Captcha;
 
@@ -19,6 +20,7 @@ public class CommonController {
 
     
     @RequestMapping("captcha")
+    @ApiMetadata(permissionLevel = PermissionLevel.Anonymous,actionLog = false)
     public void captcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 设置请求头为输出图片类型
         response.setContentType("image/gif");
@@ -33,7 +35,7 @@ public class CommonController {
         // 设置类型，纯数字、纯字母、字母数字混合
         specCaptcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
 
-        String sessionId = SessionCookieUtil.getSessionId(request, response);
+        String sessionId = SecurityDelegating.getCurrentSessionId();
         SecurityDelegating.setTemporaryCacheValue(sessionId, specCaptcha.text(), 60);
         // 输出图片流
         specCaptcha.out(response.getOutputStream());

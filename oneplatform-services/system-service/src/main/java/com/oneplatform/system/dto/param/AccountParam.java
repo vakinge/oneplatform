@@ -1,10 +1,16 @@
-package com.oneplatform.system.dto;
+package com.oneplatform.system.dto.param;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-public class Account extends BaseDto{
+/**
+ * 
+ * 
+ * <br>
+ * Class Name   : AccountParam
+ *
+ * @author <a href="mailto:vakinge@gmail.com">vakin</a>
+ * @version 1.0.0
+ * @date Feb 12, 2022
+ */
+public class AccountParam {
 
 	private String name;
 
@@ -13,14 +19,9 @@ public class Account extends BaseDto{
     private String mobile;
     
     private String avatar;
-    
-    @JsonIgnore
     private String password;
     
-    private String staffName;
-    private String staffNo;
-    
-    private List<AccountScope> scopes;
+    private String staffId;
 
 	public String getName() {
 		return name;
@@ -45,7 +46,7 @@ public class Account extends BaseDto{
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	
+
 	public String getAvatar() {
 		return avatar;
 	}
@@ -61,31 +62,15 @@ public class Account extends BaseDto{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 
-	public String getStaffName() {
-		return staffName;
+	public String getStaffId() {
+		return staffId;
 	}
 
-	public void setStaffName(String staffName) {
-		this.staffName = staffName;
+	public void setStaffId(String staffId) {
+		this.staffId = staffId;
 	}
-
-	public String getStaffNo() {
-		return staffNo;
-	}
-
-	public void setStaffNo(String staffNo) {
-		this.staffNo = staffNo;
-	}
-
-	public List<AccountScope> getScopes() {
-		return scopes;
-	}
-
-	public void setScopes(List<AccountScope> scopes) {
-		this.scopes = scopes;
-	}
-
-	
+    
+    
+    
 }

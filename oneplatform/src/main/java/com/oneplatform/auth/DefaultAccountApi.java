@@ -1,6 +1,5 @@
 package com.oneplatform.auth;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jeesuite.common.JeesuiteBaseException;
-import com.jeesuite.common.model.AuthUser;
 import com.jeesuite.common.util.BeanUtils;
 import com.jeesuite.common.util.ResourceUtils;
 import com.jeesuite.zuul.api.AccountApi;
@@ -36,14 +34,27 @@ public class DefaultAccountApi implements AccountApi {
 			authUser.setAdmin(true);
 			authUser.setName(accountName);
 		}else {
-			Account account = accountService.validateAccount(type,accountName, password);
+			Account account = accountService.validateAccount(accountName, password);
 			authUser.setId(account.getId());
 			authUser.setName(account.getName());
 			authUser.setAvatar(account.getAvatar());
-			authUser.setDefaultTenantId(account.getTenantId());
-			authUser.setPrincipalType(account.getPrincipalType());
-			authUser.setPrincipalId(account.getPrincipalId());
-			authUser.setAdmin(account.isAdmin());
+			
+			if(type != null) {
+				List<AccountScope> scopes = findAccountScopes(account.getId());
+				AccountScope scope = null;
+				if(scopes != null) {
+					scope = scopes.stream().filter(o -> type.equals(o.getPrincipalType())).findFirst().orElse(null);
+				}
+				if(scope == null) {
+					throw new JeesuiteBaseException(403,"无权访问");
+				}
+				authUser.setDefaultTenantId(scope.getTenantId());
+				authUser.setPrincipalType(scope.getPrincipalType());
+				authUser.setPrincipalId(scope.getPrincipalId());
+				authUser.setAdmin(scope.isAdmin());
+				
+			}
+			
 		}
 		
 		return authUser;

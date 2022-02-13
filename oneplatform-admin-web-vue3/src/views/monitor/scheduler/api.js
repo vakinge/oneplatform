@@ -1,10 +1,10 @@
 import { http } from '@/utils/http/axios';
 
-const apiPrefix = '/org/position';
+const apiPrefix = '/schedule';
 export function GetList(query) {
   return http.request({
-    url: apiPrefix + '/list',
-    method: 'post',
+    url: apiPrefix + '/jobs',
+    method: 'get',
     data: query,
   });
 }

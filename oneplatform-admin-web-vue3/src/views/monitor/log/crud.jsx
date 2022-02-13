@@ -1,7 +1,7 @@
 import * as api from './api';
 import { dict, compute } from '@fast-crud/fast-crud';
 import { useMessage } from 'naive-ui';
-export default function ({ expose }) {
+export default function ({ expose,resourceDrawerRef }) {
   const pageRequest = async (query) => {
     return await api.GetList(query);
   };
@@ -26,43 +26,122 @@ export default function ({ expose }) {
         delRequest,
       },
       rowHandle: {
+        show: true,
+        width: 330,
         buttons: {
-          remove: {
-            // 根据row的值判断按钮是否显示
-            show: compute(({ row }) => {
-              return row.radio !== '0';
-            }),
-            dropdown: true, //---------》给想要折叠的按钮配置dropdown为true，就会放入dropdown中《---------------
-          },
-          orderExample: {
-            text: '我排前面',
-            title: '按钮排序示例',
-            size: 'small',
-            order: 0, //数字越小，越靠前,默认排序号为1
-            click(opts) {
-              console.log('自定义操作列按钮点击', opts);
-              message.success('自定义操作列按钮点击');
-            },
-          },
-        },
-        dropdown: {
-          // 操作列折叠，dropdown参数配置
-          // 至少几个以上的按钮才会被折叠
-          // atLeast: 2, //TODO 注意 [atLeast]参数即将废弃，请给button配置dropdown即可放入折叠
-          more: {
-            //更多按钮配置
-            text: '更多',
-            icon: null,
-          },
+          view: { show: true },
+          edit: { show: false },
+          remove: { show: false },
         },
       },
       columns: {
+        _checked: {
+          title: '选择',
+          form: { show: false },
+          column: {
+            type: 'selection',
+            align: 'center',
+            width: '55px',
+            columnSetDisabled: true, //禁止在列设置中选择
+            selectable(row, index) {
+              return row.id !== 1; //设置第一行不允许选择
+            },
+          },
+        },
         id: {
           title: 'ID',
           key: 'id',
-          type: 'number',
+          type: 'text',
           column: {
-            width: 50,
+            show: false
+          },
+          form: {
+            show: false,
+          },
+        },
+        actionName: {
+          title: '操作名称',
+          key: 'actionName',
+          type: 'text',
+          search: { show: true },
+          column: {
+            width: 120,
+          },
+          form: {
+            show: true,
+          },
+        },
+        userName: {
+          title: '用户',
+          key: 'userName',
+          type: 'text',
+          column: {
+            width: 100,
+          },
+          form: {
+            show: false,
+          },
+        },
+        clientType: {
+          title: '端类型',
+          key: 'clientType',
+          column: {
+            width: 120,
+          },
+          form: {
+            show: false,
+          },
+        },
+        platformType: {
+          title: '平台',
+          key: 'platformType',
+          column: {
+            width: 120,
+          },
+          form: {
+            show: false,
+          },
+        },
+        requestIp: {
+          title: '请求IP',
+          key: 'requestIp',
+          column: {
+            width: 120,
+          },
+          form: {
+            show: false,
+          },
+        },
+        requestAt: {
+          title: '操作时间',
+          key: 'requestAt',
+          column: {
+            width: 120,
+          },
+          form: {
+            show: false,
+          },
+        },
+        useTime: {
+          title: '耗时',
+          key: 'useTime',
+          column: {
+            width: 80,
+          },
+          form: {
+            show: false,
+          },
+        },
+        responseCode: {
+          title: '结果',
+          column:{
+              width: 100,
+              cellRender(scope){
+                if(scope.value === 200)
+                  return <n-tag type="success"> 成功 </n-tag>;
+                else 
+                  return <n-tag type="warning"> 失败 </n-tag>;
+              }
           },
           form: {
             show: false,

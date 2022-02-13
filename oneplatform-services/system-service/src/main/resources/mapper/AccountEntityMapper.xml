@@ -18,4 +18,14 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
     <result column="updated_by" jdbcType="VARCHAR" property="updatedBy" />
   </resultMap>
+  
+  <select id="findListByParam" resultMap="BaseResultMap">
+    SELECT * FROM account 
+    <where>
+      <if test="name != null"> AND name = #{name}</if>
+      <if test="email != null"> AND email = #{email}</if>
+      <if test="mobile != null"> AND mobile = #{mobile}</if>
+      <if test="enabled != null"> AND enabled = #{enabled}</if>
+    </where>
+  </select>
 </mapper>

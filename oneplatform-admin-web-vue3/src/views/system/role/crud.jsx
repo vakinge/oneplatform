@@ -1,10 +1,7 @@
 import * as api from './api';
-import { dict, compute } from '@fast-crud/fast-crud';
-import { useMessage } from 'naive-ui';
-export default function ({ expose }) {
-  const pageRequest = async (query) => {
-    return await api.GetList(query);
-  };
+import { ref, shallowRef } from 'vue';
+import { compute } from '@fast-crud/fast-crud';
+export default function ({ expose, asideTableRef }) {
   const editRequest = async ({ form, row }) => {
     form.id = row.id;
     return await api.UpdateObj(form);
@@ -12,35 +9,55 @@ export default function ({ expose }) {
   const delRequest = async ({ row }) => {
     return await api.DelObj(row.id);
   };
-
   const addRequest = async ({ form }) => {
     return await api.AddObj(form);
   };
-  const message = useMessage();
+  const currentRow = ref();
+
+  const onCurrentRowChange = (id) => {
+    currentRow.value = id;
+    asideTableRef.value.setSearchFormData({ form: { gradeId: id } });
+    asideTableRef.value.doRefresh();
+  };
   return {
     crudOptions: {
+      table: {
+        rowProps: (row) => {
+          const clazz = row.id === currentRow.value ? 'fs-current-row' : '';
+          return {
+            style: 'cursor: pointer;',
+            onClick() {
+              onCurrentRowChange(row.id);
+            },
+            class: clazz,
+          };
+        },
+      },
+      pagination: {},
+      form: {
+        wrapper: {
+          is: 'n-drawer',
+          size: '50%',
+        },
+      },
       request: {
-        pageRequest,
+        pageRequest: api.GetList,
         addRequest,
         editRequest,
         delRequest,
       },
       rowHandle: {
+        width: '150px',
+        fixed: 'right',
+      },
+      toolbar: {
         show: true,
-        width: 330,
         buttons: {
-          view: { show: true },
-          edit: { show: true },
-          remove: { show: true },
-          custom: {
-            text: '分配权限',
-            order: 0,
-            size: 'small',
-            show: true,
-            click(context) {
-              parent.openResourceDrawer();
-            },
-          },
+          search: { show: false },
+          refresh: { show: true },
+          compact: { show: false },
+          export: { show: false },
+          columns: { show: false },
         },
       },
       columns: {

@@ -1,5 +1,7 @@
 package com.oneplatform.system.dao.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
@@ -7,8 +9,11 @@ import org.apache.ibatis.annotations.Select;
 import com.jeesuite.mybatis.core.BaseMapper;
 import com.jeesuite.mybatis.plugin.cache.annotation.Cache;
 import com.oneplatform.system.dao.entity.AccountEntity;
+import com.oneplatform.system.dto.param.AccountQueryParam;
 
 public interface AccountEntityMapper extends BaseMapper<AccountEntity, String> {
+	
+	List<AccountEntity> findListByParam(AccountQueryParam param);
 	
 	@Cache(uniqueIndex = true)
     @Select("SELECT * FROM account WHERE mobile=#{mobile} LIMIT 1")

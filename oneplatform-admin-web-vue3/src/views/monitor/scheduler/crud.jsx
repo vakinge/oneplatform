@@ -3,7 +3,12 @@ import { dict, compute } from '@fast-crud/fast-crud';
 import { useMessage } from 'naive-ui';
 export default function ({ expose }) {
   const pageRequest = async (query) => {
-    return await api.GetList(query);
+    let data = await api.GetList(query);
+    return {
+      pageNo: 1,
+      pageSize: data.length,
+      data: data,
+    };
   };
   const editRequest = async ({ form, row }) => {
     form.id = row.id;
@@ -26,49 +31,119 @@ export default function ({ expose }) {
         delRequest,
       },
       rowHandle: {
+        show: true,
+        width: 100,
         buttons: {
-          remove: {
-            // 根据row的值判断按钮是否显示
-            show: compute(({ row }) => {
-              return row.radio !== '0';
-            }),
-            dropdown: true, //---------》给想要折叠的按钮配置dropdown为true，就会放入dropdown中《---------------
-          },
-          orderExample: {
-            text: '我排前面',
-            title: '按钮排序示例',
+          view: { show: false },
+          edit: { show: false },
+          remove: { show: false },
+          custom: {
+            text: '执行',
+            order: 0,
             size: 'small',
-            order: 0, //数字越小，越靠前,默认排序号为1
-            click(opts) {
-              console.log('自定义操作列按钮点击', opts);
-              message.success('自定义操作列按钮点击');
+            show: true,
+            click(context) {
+              //context.row.id
             },
-          },
-        },
-        dropdown: {
-          // 操作列折叠，dropdown参数配置
-          // 至少几个以上的按钮才会被折叠
-          // atLeast: 2, //TODO 注意 [atLeast]参数即将废弃，请给button配置dropdown即可放入折叠
-          more: {
-            //更多按钮配置
-            text: '更多',
-            icon: null,
           },
         },
       },
       columns: {
-        id: {
-          title: 'ID',
-          key: 'id',
-          type: 'number',
+        jobName: {
+          title: '任务名称',
+          key: 'jobName',
+          type: 'text',
           column: {
-            width: 50,
+            width: 100,
+          },
+          form: {
+            show: true,
+          },
+        },
+        groupName: {
+          title: '分组',
+          key: 'groupName',
+          type: 'text',
+          search: { show: true },
+          column: {
+            width: 100,
+          },
+          form: {
+            show: false,
+          },
+        },
+        cronExpr: {
+          title: '时间表达式',
+          key: 'cronExpr',
+          column: {
+            width: 120,
+          },
+          form: {
+            show: false,
+          },
+        },
+        currentNodeId: {
+          title: '当前节点',
+          key: 'currentNodeId',
+          column: {
+            width: 120,
+          },
+          form: {
+            show: false,
+          },
+        },
+        lastFireTime: {
+          title: '上次执行时间',
+          key: 'lastFireTime',
+          column: {
+            width: 120,
+          },
+          form: {
+            show: false,
+          },
+        },
+        nextFireTime: {
+          title: '下次执行时间',
+          key: 'nextFireTime',
+          column: {
+            width: 120,
+          },
+          form: {
+            show: false,
+          },
+        },
+        running: {
+          title: '运行状态',
+          column:{
+              width: 100,
+              cellRender(scope){
+                if(scope.value)
+                  return <n-tag type="success"> 是 </n-tag>;
+                else 
+                  return <n-tag type="warning"> 否 </n-tag>;
+              }
+          },
+          form: {
+            show: false,
+          },
+        },
+        active: {
+          title: '启用状态',
+          column:{
+              width: 100,
+              cellRender(scope){
+                if(scope.value)
+                  return <n-tag type="success"> 启用 </n-tag>;
+                else 
+                  return <n-tag type="warning"> 禁用 </n-tag>;
+              }
           },
           form: {
             show: false,
           },
         },
       },
+      pagination:{show: false},
     },
   };
 }

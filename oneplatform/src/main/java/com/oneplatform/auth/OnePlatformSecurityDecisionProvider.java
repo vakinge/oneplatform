@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import com.jeesuite.common.JeesuiteBaseException;
 import com.jeesuite.common.model.AuthUser;
 import com.jeesuite.common.util.BeanUtils;
-import com.jeesuite.security.SecurityDecisionProvider;
 import com.jeesuite.security.model.ApiPermission;
 import com.jeesuite.zuul.api.AccountApi;
+import com.jeesuite.zuul.security.GatewaySecurityDecisionProvider;
 
 @Component
-public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvider {
+public class OnePlatformSecurityDecisionProvider extends GatewaySecurityDecisionProvider {
 
 	@Autowired
 	private AccountApi accountService;
@@ -27,12 +27,6 @@ public class OnePlatformSecurityDecisionProvider extends SecurityDecisionProvide
 		//TODO 租户列表
 			
 		return userInfo;
-	}
-
-	@Override
-	public List<ApiPermission> getAllApiPermissions() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
