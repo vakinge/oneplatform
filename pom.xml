@@ -41,7 +41,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 		<spring-cloud.version>Hoxton.SR12</spring-cloud.version>
-		<spring-boot.version>2.3.12.RELEASE</spring-boot.version>
+		<spring-boot.version>2.5.12</spring-boot.version>
 		<spring-cloud-kubernetes.version>1.1.10.RELEASE</spring-cloud-kubernetes.version>
 		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.7.26</slf4j.version>
