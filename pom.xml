@@ -57,7 +57,7 @@
 		<guava.version>30.1.1-jre</guava.version>
 		<mysql.version>8.0.16</mysql.version>
 		<junit.version>[4.13.1,)</junit.version>
-		<fastjson.version>1.2.76</fastjson.version>
+		<fastjson.version>1.2.83</fastjson.version>
 		<okhttp3.version>3.14.9</okhttp3.version>
 		<jeesuite-libs.version>1.3.9-SNAPSHOT</jeesuite-libs.version>
 		<jeesuite-config.version>1.3.9-SNAPSHOT</jeesuite-config.version>
